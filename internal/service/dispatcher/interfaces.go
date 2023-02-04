@@ -1,3 +1,4 @@
+//go:generate mockgen -source=$GOFILE -destination=interfaces_mocks.go -package=$GOPACKAGE
 package dispatcher
 
 import "github.com/jaroslav1991/tts/internal/model"

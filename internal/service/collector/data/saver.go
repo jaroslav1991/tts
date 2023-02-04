@@ -3,8 +3,9 @@ package data
 import (
 	"errors"
 	"fmt"
-	"github.com/jaroslav1991/tts/internal/service"
 	"os"
+
+	"github.com/jaroslav1991/tts/internal/service/collector"
 )
 
 var (
@@ -13,7 +14,7 @@ var (
 )
 
 type Saver struct {
-	service.DataSaver
+	collector.DataSaver
 	FileName string
 }
 

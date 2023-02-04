@@ -1,15 +1,16 @@
 package data
 
 import (
-	"github.com/jaroslav1991/tts/internal/service"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/jaroslav1991/tts/internal/service/model"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestPreparer_PrepareData(t *testing.T) {
 	preparer := Preparer{}
 
-	data := service.DataModel{
+	data := model.DataModel{
 		Program:  "test1",
 		Duration: 0,
 	}

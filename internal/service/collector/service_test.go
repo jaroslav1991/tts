@@ -1,10 +1,11 @@
-package service
+package collector
 
 import (
 	"errors"
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	"github.com/jaroslav1991/tts/internal/service/model"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -14,7 +15,7 @@ func TestService_SaveData_Positive(t *testing.T) {
 
 	request := "some request"
 
-	data := DataModel{
+	data := model.DataModel{
 		Program:  "",
 		Duration: 0,
 	}
@@ -43,7 +44,7 @@ func TestService_SaveData_Negative_SaveError(t *testing.T) {
 
 	request := "some request"
 
-	data := DataModel{
+	data := model.DataModel{
 		Program:  "",
 		Duration: 0,
 	}
@@ -75,7 +76,7 @@ func TestService_SaveData_Negative_PrepareError(t *testing.T) {
 
 	request := "some request"
 
-	data := DataModel{
+	data := model.DataModel{
 		Program:  "",
 		Duration: 0,
 	}
@@ -103,7 +104,7 @@ func TestService_SaveData_Negative_ValidateError(t *testing.T) {
 
 	request := "some request"
 
-	data := DataModel{
+	data := model.DataModel{
 		Program:  "",
 		Duration: 0,
 	}
@@ -132,7 +133,7 @@ func TestService_SaveData_Negative_ReadError(t *testing.T) {
 	err := errors.New("some error")
 
 	reader := NewMockDataReader(ctrl)
-	reader.EXPECT().ReadData("some request").Return(DataModel{}, err)
+	reader.EXPECT().ReadData("some request").Return(model.DataModel{}, err)
 
 	validator := NewMockDataValidator(ctrl)
 	preparer := NewMockDataPreparer(ctrl)

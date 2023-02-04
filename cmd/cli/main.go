@@ -6,9 +6,9 @@ import (
 	"log"
 	"strings"
 
-	"github.com/jaroslav1991/tts/internal/service"
-	"github.com/jaroslav1991/tts/internal/service/cli"
-	"github.com/jaroslav1991/tts/internal/service/data"
+	"github.com/jaroslav1991/tts/internal/service/collector"
+	"github.com/jaroslav1991/tts/internal/service/collector/cli"
+	"github.com/jaroslav1991/tts/internal/service/collector/data"
 )
 
 var (
@@ -40,7 +40,7 @@ func main() {
 		return
 	}
 
-	newService := service.NewService(
+	newService := collector.NewService(
 		&cli.DataReader{},
 		&data.Validator{},
 		&data.Preparer{},

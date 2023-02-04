@@ -8,9 +8,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/jaroslav1991/tts/internal/service"
-	"github.com/jaroslav1991/tts/internal/service/data"
-	serviceHttp "github.com/jaroslav1991/tts/internal/service/http"
+	"github.com/jaroslav1991/tts/internal/service/collector"
+	"github.com/jaroslav1991/tts/internal/service/collector/data"
+	serviceHttp "github.com/jaroslav1991/tts/internal/service/collector/http"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/suite"
 )
@@ -32,7 +32,7 @@ func (s *httpTestsSuite) SetupTest() {
 	}
 
 	s.tempFile = f
-	s.server = httptest.NewServer(serviceHttp.NewHandler(service.NewService(
+	s.server = httptest.NewServer(serviceHttp.NewHandler(collector.NewService(
 		&serviceHttp.DataReader{},
 		&data.Validator{},
 		&data.Preparer{},

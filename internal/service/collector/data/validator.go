@@ -2,8 +2,10 @@ package data
 
 import (
 	"errors"
-	"github.com/jaroslav1991/tts/internal/service"
 	"strings"
+
+	"github.com/jaroslav1991/tts/internal/service/collector"
+	"github.com/jaroslav1991/tts/internal/service/model"
 )
 
 var (
@@ -12,10 +14,10 @@ var (
 )
 
 type Validator struct {
-	service.DataValidator
+	collector.DataValidator
 }
 
-func (v Validator) ValidateData(data service.DataModel) error {
+func (v Validator) ValidateData(data model.DataModel) error {
 
 	if strings.TrimSpace(data.Program) == "" {
 		return ErrInvalidProgramField

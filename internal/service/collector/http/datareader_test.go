@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/jaroslav1991/tts/internal/service/model"
+	"github.com/jaroslav1991/tts/internal/model"
 	"github.com/stretchr/testify/assert"
 )
 

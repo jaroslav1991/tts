@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/jaroslav1991/tts/internal/service/model"
+	"github.com/jaroslav1991/tts/internal/model"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -1,7 +1,7 @@
 //go:generate mockgen -source=$GOFILE -destination=interfaces_mocks.go -package=$GOPACKAGE
 package collector
 
-import "github.com/jaroslav1991/tts/internal/service/model"
+import "github.com/jaroslav1991/tts/internal/model"
 
 type DataReader interface {
 	ReadData(request any) (model.DataModel, error)

@@ -2,31 +2,31 @@ package main
 
 import (
 	"errors"
-	"fmt"
+	"flag"
+	"log"
+	"strings"
+
 	"github.com/jaroslav1991/tts/internal/service"
 	"github.com/jaroslav1991/tts/internal/service/cli"
 	"github.com/jaroslav1991/tts/internal/service/data"
-	"log"
-	"os"
 )
 
-// todo implement cli logic
+var (
+	tmpFileName = flag.String(
+		"tmpFile",
+		"./tempFile",
+		"File for temporary storage of stats",
+	)
 
-//var (
-//	tmpFileName = flag.String(
-//		"tmpFile",
-//		"./tempFile",
-//		"File for temporary storage of stats",
-//	)
-//
-//	inputData = flag.String(
-//		"data",
-//		"",
-//		"Stats data",
-//	)
-//)
+	inputData = flag.String(
+		"data",
+		"",
+		"Stats data JSON string",
+	)
+)
 
 func main() {
+	flag.Parse()
 
 	var err error
 	defer func() {
@@ -35,15 +35,17 @@ func main() {
 		}
 	}()
 
-	if len(os.Args) < 2 {
-		err = errors.New("need more than 1 args")
+	if strings.TrimSpace(*inputData) == "" {
+		err = errors.New("provide stats data JSON with key -data")
 		return
 	}
 
-	newService := service.NewService(&cli.DataReader{}, &data.Validator{}, &data.Preparer{}, &data.Saver{FileName: "./tmpFile"})
+	newService := service.NewService(
+		&cli.DataReader{},
+		&data.Validator{},
+		&data.Preparer{},
+		&data.Saver{FileName: *tmpFileName},
+	)
 
-	err = newService.SaveData(os.Args[1])
-
-	fmt.Println(os.Args[1])
-
+	err = newService.SaveData(*inputData)
 }

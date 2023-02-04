@@ -1,0 +1,10 @@
+# Example for send stats via http
+POST http://localhost:8484/
+Content-Type: application/json
+
+{
+  "program": "IDE",
+  "durationMS": 7500
+}
+
+###

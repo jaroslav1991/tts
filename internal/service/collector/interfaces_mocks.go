@@ -8,7 +8,7 @@ import (
 	"reflect"
 
 	"github.com/golang/mock/gomock"
-	"github.com/jaroslav1991/tts/internal/service/model"
+	"github.com/jaroslav1991/tts/internal/model"
 )
 
 // MockDataReader is a mock of DataReader interface.

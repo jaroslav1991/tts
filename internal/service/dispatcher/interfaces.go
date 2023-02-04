@@ -1,6 +1,6 @@
 package dispatcher
 
-import "github.com/jaroslav1991/tts/internal/service/model"
+import "github.com/jaroslav1991/tts/internal/model"
 
 type Sender interface {
 	Send(data []model.DataModel) error

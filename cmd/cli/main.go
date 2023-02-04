@@ -1,5 +1,5 @@
 package main
 
 func main() {
-	// todo
+	// todo implement cli logic
 }

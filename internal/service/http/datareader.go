@@ -6,29 +6,44 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"time"
 
 	"github.com/jaroslav1991/tts/internal/service"
 )
 
-type HttpDataReader struct {
+var (
+	ErrInvalidRequestType   = errors.New("expected http.Request")
+	ErrReadBodyFailed       = errors.New("read body failed")
+	ErrInvalidRequestMethod = errors.New("expected http POST method")
+	ErrUnmarshalRequestData = errors.New("unmarshal request data")
+)
+
+type DataReader struct {
+	service.DataReader
 }
 
-func (r *HttpDataReader) ReadData(untypedRequest any) (service.DataModel, error) {
+func (r *DataReader) ReadData(untypedRequest any) (service.DataModel, error) {
 	request, ok := untypedRequest.(*http.Request)
 	if !ok {
-		return service.DataModel{}, errors.New("expected http.Request")
+		return service.DataModel{}, ErrInvalidRequestType
+	}
+
+	if request.Method != http.MethodPost {
+		return service.DataModel{}, ErrInvalidRequestMethod
 	}
 
 	b, err := io.ReadAll(request.Body)
 	if err != nil {
-		return service.DataModel{}, fmt.Errorf("read body: %w", err)
+		return service.DataModel{}, fmt.Errorf("%w: %v", ErrReadBodyFailed, err)
 	}
 
-	var result service.DataModel
-
-	if err := json.Unmarshal(b, &result); err != nil {
-		return service.DataModel{}, fmt.Errorf("marshal request data: %w", err)
+	var dto DTO
+	if err := json.Unmarshal(b, &dto); err != nil {
+		return service.DataModel{}, fmt.Errorf("%w: %v", ErrUnmarshalRequestData, err)
 	}
 
-	return result, nil
+	return service.DataModel{
+		Program:  dto.Program,
+		Duration: dto.DurationMS * time.Millisecond,
+	}, nil
 }

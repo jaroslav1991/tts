@@ -37,6 +37,9 @@ func (s *Service) SaveData(request any) error {
 	return nil
 }
 
+// SendData
+// todo implement SendData logic
+// todo implement tests for SendData
 func (s *Service) SendData() error {
 	panic("implement me")
 }

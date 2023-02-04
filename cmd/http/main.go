@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/jaroslav1991/tts/internal/service"
+	"github.com/jaroslav1991/tts/internal/service/data"
 	serviceHttp "github.com/jaroslav1991/tts/internal/service/http"
 )
 
@@ -16,12 +17,11 @@ func main() {
 		}
 	}()
 
-	// todo
 	http.HandleFunc("/", serviceHttp.NewHandler(service.NewService(
-		&serviceHttp.HttpDataReader{},
-		&service.NoopDataValidator{},
-		&service.NoopDataPreparer{},
-		&service.NoopDataSaver{},
+		&serviceHttp.DataReader{},
+		&data.Validator{},
+		&data.Preparer{},
+		&data.Saver{},
 	)))
 
 	err = http.ListenAndServe(":8484", nil)

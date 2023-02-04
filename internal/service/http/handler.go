@@ -2,18 +2,13 @@ package http
 
 import "net/http"
 
-type Service interface {
-	SaveData(request any) error
-}
-
-func NewHandler(service Service) func(writer http.ResponseWriter, request *http.Request) {
+func NewHandler(service Service) http.HandlerFunc {
 	return func(writer http.ResponseWriter, request *http.Request) {
 		if err := service.SaveData(request); err != nil {
-			_, _ = writer.Write([]byte(err.Error()))
 			writer.WriteHeader(http.StatusInternalServerError)
+			_, _ = writer.Write([]byte(err.Error()))
 			return
 		}
-
 		writer.WriteHeader(http.StatusOK)
 	}
 }

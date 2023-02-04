@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/jaroslav1991/tts/internal/service"
-	"github.com/jaroslav1991/tts/internal/service/data"
-	serviceHttp "github.com/jaroslav1991/tts/internal/service/http"
+	"github.com/jaroslav1991/tts/internal/service/collector"
+	"github.com/jaroslav1991/tts/internal/service/collector/data"
+	serviceHttp "github.com/jaroslav1991/tts/internal/service/collector/http"
 )
 
 var (
@@ -34,7 +34,7 @@ func main() {
 		}
 	}()
 
-	http.HandleFunc("/", serviceHttp.NewHandler(service.NewService(
+	http.HandleFunc("/", serviceHttp.NewHandler(collector.NewService(
 		&serviceHttp.DataReader{},
 		&data.Validator{},
 		&data.Preparer{},

@@ -1,9 +1,10 @@
 package data
 
 import (
-	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSaver_SaveData(t *testing.T) {

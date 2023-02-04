@@ -2,12 +2,13 @@
 // Source: interfaces.go
 
 // Package service is a generated GoMock package.
-package service
+package collector
 
 import (
-	reflect "reflect"
+	"reflect"
 
-	gomock "github.com/golang/mock/gomock"
+	"github.com/golang/mock/gomock"
+	"github.com/jaroslav1991/tts/internal/service/model"
 )
 
 // MockDataReader is a mock of DataReader interface.
@@ -34,10 +35,10 @@ func (m *MockDataReader) EXPECT() *MockDataReaderMockRecorder {
 }
 
 // ReadData mocks base method.
-func (m *MockDataReader) ReadData(request any) (DataModel, error) {
+func (m *MockDataReader) ReadData(request any) (model.DataModel, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReadData", request)
-	ret0, _ := ret[0].(DataModel)
+	ret0, _ := ret[0].(model.DataModel)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -72,7 +73,7 @@ func (m *MockDataValidator) EXPECT() *MockDataValidatorMockRecorder {
 }
 
 // ValidateData mocks base method.
-func (m *MockDataValidator) ValidateData(data DataModel) error {
+func (m *MockDataValidator) ValidateData(data model.DataModel) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ValidateData", data)
 	ret0, _ := ret[0].(error)
@@ -109,7 +110,7 @@ func (m *MockDataPreparer) EXPECT() *MockDataPreparerMockRecorder {
 }
 
 // PrepareData mocks base method.
-func (m *MockDataPreparer) PrepareData(data DataModel) ([]byte, error) {
+func (m *MockDataPreparer) PrepareData(data model.DataModel) ([]byte, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PrepareData", data)
 	ret0, _ := ret[0].([]byte)

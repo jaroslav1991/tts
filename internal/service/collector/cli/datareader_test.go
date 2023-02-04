@@ -1,10 +1,11 @@
 package cli
 
 import (
-	"github.com/jaroslav1991/tts/internal/service"
-	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
+
+	"github.com/jaroslav1991/tts/internal/service/model"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestDataReader_ReadData_Positive(t *testing.T) {
@@ -18,7 +19,7 @@ func TestDataReader_ReadData_Positive(t *testing.T) {
 	actualData, actualErr := reader.ReadData(requestData)
 	assert.NoError(t, actualErr)
 
-	assert.Equal(t, service.DataModel{
+	assert.Equal(t, model.DataModel{
 		Program:  "Some IDE",
 		Duration: 15 * time.Second,
 	}, actualData)

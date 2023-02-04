@@ -3,7 +3,7 @@ package data
 import (
 	"testing"
 
-	"github.com/jaroslav1991/tts/internal/service/model"
+	"github.com/jaroslav1991/tts/internal/model"
 	"github.com/stretchr/testify/assert"
 )
 

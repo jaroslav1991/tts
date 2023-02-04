@@ -4,8 +4,8 @@ import (
 	"errors"
 	"strings"
 
+	"github.com/jaroslav1991/tts/internal/model"
 	"github.com/jaroslav1991/tts/internal/service/collector"
-	"github.com/jaroslav1991/tts/internal/service/model"
 )
 
 var (

@@ -38,7 +38,7 @@ func (s *httpTestsSuite) SetupTest() {
 		&data.Validator{},
 		&data.Preparer{},
 		&data.Saver{
-			FileName: s.tempFile.Name(),
+			NewStatsFileName: s.tempFile.Name(),
 		},
 	)))
 }

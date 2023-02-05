@@ -44,7 +44,7 @@ func main() {
 		&cli.DataReader{},
 		&data.Validator{},
 		&data.Preparer{},
-		&data.Saver{FileName: *tmpFileName},
+		&data.Saver{NewStatsFileName: *tmpFileName},
 	)
 
 	err = newService.SaveData(*inputData)

@@ -32,7 +32,9 @@ func (s *Service) SendData() error {
 			return err
 		}
 
-		return s.storage.ClearSentData(file)
+		if err := s.storage.ClearSentData(file); err != nil {
+			return err
+		}
 	}
 
 	return nil

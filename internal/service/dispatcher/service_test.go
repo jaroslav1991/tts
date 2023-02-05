@@ -32,6 +32,34 @@ func TestService_SendData_Positive(t *testing.T) {
 	assert.NoError(t, service.SendData())
 }
 
+func TestService_SendData_Positive2(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	defer ctrl.Finish()
+
+	filesToSend := []string{"fileToSend1", "fileToSend2"}
+	file1 := "fileToSend1"
+	file2 := "fileToSend2"
+	dataToSend := []model.DataModel{{Program: "test1", Duration: 5}, {Program: "test2", Duration: 6}}
+
+	storage := NewMockStorage(ctrl)
+	sender := NewMockSender(ctrl)
+
+	storage.EXPECT().FixDataToSend().Return(nil)
+
+	storage.EXPECT().GetFilesToSend().Return(filesToSend, nil)
+
+	storage.EXPECT().ReadDataToSend(file1).Return(dataToSend, nil)
+	sender.EXPECT().Send(dataToSend).Return(nil)
+	storage.EXPECT().ClearSentData(file1).Return(nil)
+
+	storage.EXPECT().ReadDataToSend(file2).Return(dataToSend, nil)
+	sender.EXPECT().Send(dataToSend).Return(nil)
+	storage.EXPECT().ClearSentData(file2).Return(nil)
+
+	service := NewService(sender, storage)
+	assert.NoError(t, service.SendData())
+}
+
 func TestService_SendData_Negative_ClearError(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
@@ -40,7 +68,7 @@ func TestService_SendData_Negative_ClearError(t *testing.T) {
 
 	filesToSend := []string{"fileToSend1"}
 	file := "fileToSend1"
-	dataToSend := []model.DataModel{}
+	dataToSend := []model.DataModel{{Program: "test1", Duration: 5}, {Program: "test2", Duration: 6}}
 
 	storage := NewMockStorage(ctrl)
 	storage.EXPECT().FixDataToSend().Return(nil)
@@ -66,7 +94,7 @@ func TestService_SendData_Negative_SenderError(t *testing.T) {
 
 	filesToSend := []string{"fileToSend1"}
 	file := "fileToSend1"
-	dataToSend := []model.DataModel{}
+	dataToSend := []model.DataModel{{Program: "test1", Duration: 5}, {Program: "test2", Duration: 6}}
 
 	storage := NewMockStorage(ctrl)
 	storage.EXPECT().FixDataToSend().Return(nil)
@@ -90,7 +118,7 @@ func TestService_SendData_Negative_ReadDataError(t *testing.T) {
 
 	filesToSend := []string{"fileToSend1"}
 	file := "fileToSend1"
-	dataToSend := []model.DataModel{}
+	dataToSend := []model.DataModel{{Program: "test1", Duration: 5}, {Program: "test2", Duration: 6}}
 
 	storage := NewMockStorage(ctrl)
 	storage.EXPECT().FixDataToSend().Return(nil)

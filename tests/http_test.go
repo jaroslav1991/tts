@@ -62,8 +62,8 @@ func (s *httpTestsSuite) TestHttp_Positive() {
 	s.NoError(err)
 
 	response, err := s.server.Client().Do(request)
-	defer response.Body.Close()
 	s.NoError(err)
+	defer response.Body.Close()
 
 	assert.Equal(s.T(), http.StatusOK, response.StatusCode)
 
@@ -81,8 +81,8 @@ func (s *httpTestsSuite) TestHttp_Negative() {
 	s.NoError(err)
 
 	response, err := s.server.Client().Do(request)
-	defer response.Body.Close()
 	s.NoError(err)
+	defer response.Body.Close()
 
 	s.Equal(http.StatusInternalServerError, response.StatusCode)
 

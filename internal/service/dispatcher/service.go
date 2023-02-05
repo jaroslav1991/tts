@@ -11,7 +11,7 @@ type Service struct {
 
 func (s *Service) SendData() error {
 	// rename file: temp -> temp_to_send_time
-	if err := s.storage.FixDataToSend(); err != nil {
+	if _, err := s.storage.FixDataToSend(); err != nil {
 		return err
 	}
 

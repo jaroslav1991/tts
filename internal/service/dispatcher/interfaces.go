@@ -10,7 +10,7 @@ type Sender interface {
 
 // TODO implement storage
 type Storage interface {
-	FixDataToSend() error
+	FixDataToSend() (string, error)
 	ClearSentData(file string) error
 
 	GetFilesToSend() ([]string, error)

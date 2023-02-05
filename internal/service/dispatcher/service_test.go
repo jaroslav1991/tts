@@ -17,7 +17,7 @@ func TestService_SendData_Positive(t *testing.T) {
 	dataToSend := []model.DataModel{{Program: "test1", Duration: 5}}
 
 	storage := NewMockStorage(ctrl)
-	storage.EXPECT().FixDataToSend().Return(nil)
+	storage.EXPECT().FixDataToSend().Return("", nil)
 
 	storage.EXPECT().GetFilesToSend().Return(filesToSend, nil)
 
@@ -44,7 +44,7 @@ func TestService_SendData_Positive2(t *testing.T) {
 	storage := NewMockStorage(ctrl)
 	sender := NewMockSender(ctrl)
 
-	storage.EXPECT().FixDataToSend().Return(nil)
+	storage.EXPECT().FixDataToSend().Return("", nil)
 
 	storage.EXPECT().GetFilesToSend().Return(filesToSend, nil)
 
@@ -71,7 +71,7 @@ func TestService_SendData_Negative_ClearError(t *testing.T) {
 	dataToSend := []model.DataModel{{Program: "test1", Duration: 5}, {Program: "test2", Duration: 6}}
 
 	storage := NewMockStorage(ctrl)
-	storage.EXPECT().FixDataToSend().Return(nil)
+	storage.EXPECT().FixDataToSend().Return("", nil)
 
 	storage.EXPECT().GetFilesToSend().Return(filesToSend, nil)
 
@@ -97,7 +97,7 @@ func TestService_SendData_Negative_SenderError(t *testing.T) {
 	dataToSend := []model.DataModel{{Program: "test1", Duration: 5}, {Program: "test2", Duration: 6}}
 
 	storage := NewMockStorage(ctrl)
-	storage.EXPECT().FixDataToSend().Return(nil)
+	storage.EXPECT().FixDataToSend().Return("", nil)
 
 	storage.EXPECT().GetFilesToSend().Return(filesToSend, nil)
 
@@ -121,7 +121,7 @@ func TestService_SendData_Negative_ReadDataError(t *testing.T) {
 	dataToSend := []model.DataModel{{Program: "test1", Duration: 5}, {Program: "test2", Duration: 6}}
 
 	storage := NewMockStorage(ctrl)
-	storage.EXPECT().FixDataToSend().Return(nil)
+	storage.EXPECT().FixDataToSend().Return("", nil)
 
 	storage.EXPECT().GetFilesToSend().Return(filesToSend, nil)
 
@@ -142,7 +142,7 @@ func TestService_SendData_Negative_GetFilesError(t *testing.T) {
 	filesToSend := []string{"fileToSend1"}
 
 	storage := NewMockStorage(ctrl)
-	storage.EXPECT().FixDataToSend().Return(nil)
+	storage.EXPECT().FixDataToSend().Return("", nil)
 
 	storage.EXPECT().GetFilesToSend().Return(filesToSend, err)
 
@@ -159,7 +159,7 @@ func TestService_SendData_Negative_FixDataError(t *testing.T) {
 	err := errors.New("some error")
 
 	storage := NewMockStorage(ctrl)
-	storage.EXPECT().FixDataToSend().Return(err)
+	storage.EXPECT().FixDataToSend().Return("", err)
 
 	sender := NewMockSender(ctrl)
 

@@ -15,11 +15,11 @@ var (
 
 type Saver struct {
 	collector.DataSaver
-	FileName string
+	NewStatsFileName string
 }
 
 func (s *Saver) SaveData(data []byte) error {
-	file, err := os.OpenFile(s.FileName, os.O_CREATE|os.O_APPEND|os.O_RDWR, os.ModePerm)
+	file, err := os.OpenFile(s.NewStatsFileName, os.O_CREATE|os.O_APPEND|os.O_RDWR, os.ModePerm)
 	if err != nil {
 		return fmt.Errorf("%w: %v", ErrCantOpenFile, err)
 	}

@@ -39,7 +39,7 @@ func main() {
 		&data.Validator{},
 		&data.Preparer{},
 		&data.Saver{
-			FileName: *tmpFileName,
+			NewStatsFileName: *tmpFileName,
 		},
 	)))
 

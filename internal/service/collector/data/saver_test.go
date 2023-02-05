@@ -14,7 +14,7 @@ func TestSaver_SaveData(t *testing.T) {
 	defer os.Remove(f.Name())
 	defer f.Close()
 
-	saver := Saver{FileName: f.Name()}
+	saver := Saver{NewStatsFileName: f.Name()}
 
 	actualErr := saver.SaveData([]byte(`test`))
 	assert.NoError(t, actualErr)

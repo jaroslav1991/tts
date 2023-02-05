@@ -69,7 +69,7 @@ func (s *httpTestsSuite) TestHttp_Positive() {
 
 	actualData, err := io.ReadAll(s.tempFile)
 	s.NoError(err)
-	s.NotEqual(`{"Program":"IDE1","Duration":15000000000}`+"\n", string(actualData))
+	s.Equal(`{"Program":"IDE1","Duration":15000000000}`+"\n", string(actualData))
 }
 
 func (s *httpTestsSuite) TestHttp_Negative() {

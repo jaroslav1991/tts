@@ -8,11 +8,12 @@ import (
 	"os"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
+
 	"github.com/jaroslav1991/tts/internal/service/collector"
 	"github.com/jaroslav1991/tts/internal/service/collector/data"
 	serviceHttp "github.com/jaroslav1991/tts/internal/service/collector/http"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/suite"
 )
 
 func TestSuite(t *testing.T) {
@@ -61,8 +62,8 @@ func (s *httpTestsSuite) TestHttp_Positive() {
 	s.NoError(err)
 
 	response, err := s.server.Client().Do(request)
-	defer response.Body.Close()
 	s.NoError(err)
+	defer response.Body.Close()
 
 	assert.Equal(s.T(), http.StatusOK, response.StatusCode)
 
@@ -80,8 +81,8 @@ func (s *httpTestsSuite) TestHttp_Negative() {
 	s.NoError(err)
 
 	response, err := s.server.Client().Do(request)
-	defer response.Body.Close()
 	s.NoError(err)
+	defer response.Body.Close()
 
 	s.Equal(http.StatusInternalServerError, response.StatusCode)
 

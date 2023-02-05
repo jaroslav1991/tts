@@ -1,5 +1,7 @@
 package dispatcher
 
+import "log"
+
 func NewService(sender Sender, storage Storage) *Service {
 	return &Service{sender: sender, storage: storage}
 }
@@ -12,7 +14,8 @@ type Service struct {
 func (s *Service) SendData() error {
 	// rename file: temp -> temp_to_send_time
 	if _, err := s.storage.FixDataToSend(); err != nil {
-		return err
+		log.Println("non critical error: fix data to send: ", err)
+		//return err
 	}
 
 	// get file list to send

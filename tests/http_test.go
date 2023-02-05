@@ -8,11 +8,12 @@ import (
 	"os"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
+
 	"github.com/jaroslav1991/tts/internal/service/collector"
 	"github.com/jaroslav1991/tts/internal/service/collector/data"
 	serviceHttp "github.com/jaroslav1991/tts/internal/service/collector/http"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/suite"
 )
 
 func TestSuite(t *testing.T) {
@@ -37,7 +38,7 @@ func (s *httpTestsSuite) SetupTest() {
 		&data.Validator{},
 		&data.Preparer{},
 		&data.Saver{
-			FileName: s.tempFile.Name(),
+			NewStatsFileName: s.tempFile.Name(),
 		},
 	)))
 }

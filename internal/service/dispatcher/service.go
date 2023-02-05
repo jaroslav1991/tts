@@ -1,13 +1,14 @@
 package dispatcher
 
+func NewService(sender Sender, storage Storage) *Service {
+	return &Service{sender: sender, storage: storage}
+}
+
 type Service struct {
 	sender  Sender
 	storage Storage
 }
 
-// SendData
-// todo implement SendData logic
-// todo implement tests for SendData
 func (s *Service) SendData() error {
 	// rename file: temp -> temp_to_send_time
 	if err := s.storage.FixDataToSend(); err != nil {
@@ -31,7 +32,9 @@ func (s *Service) SendData() error {
 			return err
 		}
 
-		return s.storage.ClearSentData(file)
+		if err := s.storage.ClearSentData(file); err != nil {
+			return err
+		}
 	}
 
 	return nil

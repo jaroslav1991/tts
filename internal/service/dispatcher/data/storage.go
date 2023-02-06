@@ -14,11 +14,12 @@ var currentTime = time.Now
 type Storage struct {
 	dispatcher.Storage
 	NewStatsFileName string
+	FilePath         string
 }
 
 func (s *Storage) FixDataToSend() (string, error) {
 	nowUnixNano := currentTime().UnixNano()
-	newFileName := fmt.Sprintf("%s.%d", s.NewStatsFileName, nowUnixNano)
+	newFileName := fmt.Sprintf("%s%d", s.FilePath+string(os.PathSeparator), nowUnixNano)
 
 	if err := os.Rename(s.NewStatsFileName, newFileName); err != nil {
 		return "", err
@@ -31,8 +32,18 @@ func (s *Storage) ClearSentData(file string) error {
 }
 
 func (s *Storage) GetFilesToSend() ([]string, error) {
-	//TODO implement GetFilesToSend
-	panic("implement me")
+	files, err := os.ReadDir(s.FilePath)
+	if err != nil {
+		return nil, err
+	}
+
+	filesToSend := []string{}
+
+	for _, file := range files {
+		filesToSend = append(filesToSend, file.Name())
+	}
+
+	return filesToSend, nil
 }
 
 func (s *Storage) ReadDataToSend(file string) ([]model.DataModel, error) {

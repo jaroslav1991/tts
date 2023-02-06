@@ -1,7 +1,9 @@
 package data
 
 import (
+	"encoding/json"
 	"fmt"
+	"github.com/jaroslav1991/tts/internal/model"
 	"os"
 	"strings"
 	"testing"
@@ -113,4 +115,75 @@ func TestStorage_GetFilesToSend_Negative(t *testing.T) {
 	_, actErr := storage.GetFilesToSend()
 	assert.Error(t, actErr)
 
+}
+
+func TestStorage_ReadDataToSend_Positive(t *testing.T) {
+	var models []model.DataModel
+
+	expectedModel := []model.DataModel{{Program: "test1", Duration: 2}, {Program: "test2", Duration: 3}}
+	expectedModelBytes := []byte(`[{"Program": "test1", "Duration": 2},{"Program": "test2", "Duration": 3}]`)
+
+	err := json.Unmarshal(expectedModelBytes, &models)
+	assert.NoError(t, err)
+
+	tempDir := os.TempDir() + string(os.PathSeparator) + fmt.Sprintf("%d", time.Now().UnixNano())
+
+	err = os.Mkdir(tempDir, os.ModePerm)
+	assert.NoError(t, err)
+
+	defer os.RemoveAll(tempDir)
+
+	file, err := os.CreateTemp(tempDir, "testingFile")
+	assert.NoError(t, err)
+
+	_, err = file.Write(expectedModelBytes)
+	assert.NoError(t, err)
+	assert.NoError(t, file.Close())
+
+	storage := Storage{FilePath: tempDir}
+
+	actualData, actErr := storage.ReadDataToSend(file.Name())
+	assert.NoError(t, actErr)
+	assert.Equal(t, actualData, expectedModel)
+
+	fmt.Println(actualData)
+	fmt.Println(expectedModel)
+}
+
+func TestStorage_ReadDataToSend_UnmarshalErr(t *testing.T) {
+	tempDir := os.TempDir() + string(os.PathSeparator) + fmt.Sprintf("%d", time.Now().UnixNano())
+
+	err := os.Mkdir(tempDir, os.ModePerm)
+	assert.NoError(t, err)
+
+	defer os.RemoveAll(tempDir)
+
+	file, err := os.CreateTemp(tempDir, "testingFile")
+	assert.NoError(t, err)
+	assert.NoError(t, file.Close())
+
+	storage := Storage{FilePath: tempDir}
+
+	_, actErr := storage.ReadDataToSend(file.Name())
+	assert.ErrorIs(t, actErr, ErrUnmarshalData)
+}
+
+func TestStorage_ReadDataToSend_ReadFileErr(t *testing.T) {
+	tempDir := os.TempDir() + string(os.PathSeparator) + fmt.Sprintf("%d", time.Now().UnixNano())
+
+	err := os.Mkdir(tempDir, os.ModePerm)
+	assert.NoError(t, err)
+
+	defer os.RemoveAll(tempDir)
+
+	file, err := os.CreateTemp(tempDir, "testingFile")
+	assert.NoError(t, err)
+	assert.NoError(t, file.Close())
+	assert.NoError(t, os.Remove(file.Name()))
+
+	storage := Storage{FilePath: tempDir}
+
+	_, actErr := storage.ReadDataToSend(file.Name())
+	assert.Error(t, actErr)
+	assert.ErrorIs(t, actErr, os.ErrNotExist)
 }

@@ -1,6 +1,8 @@
 package data
 
 import (
+	"encoding/json"
+	"errors"
 	"fmt"
 	"os"
 	"time"
@@ -9,7 +11,10 @@ import (
 	"github.com/jaroslav1991/tts/internal/service/dispatcher"
 )
 
-var currentTime = time.Now
+var (
+	currentTime      = time.Now
+	ErrUnmarshalData = errors.New("unmarshal read data")
+)
 
 type Storage struct {
 	dispatcher.Storage
@@ -47,6 +52,16 @@ func (s *Storage) GetFilesToSend() ([]string, error) {
 }
 
 func (s *Storage) ReadDataToSend(file string) ([]model.DataModel, error) {
-	//TODO implement ReadDataToSend
-	panic("implement me")
+	readData, err := os.ReadFile(file)
+	if err != nil {
+		return nil, err
+	}
+
+	var dataModels []model.DataModel
+
+	if err := json.Unmarshal(readData, &dataModels); err != nil {
+		return nil, ErrUnmarshalData
+	}
+
+	return dataModels, nil
 }

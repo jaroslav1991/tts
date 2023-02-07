@@ -145,9 +145,6 @@ func TestStorage_ReadDataToSend_Positive(t *testing.T) {
 	actualData, actErr := storage.ReadDataToSend(file.Name())
 	assert.NoError(t, actErr)
 	assert.Equal(t, actualData, expectedModel)
-
-	fmt.Println(actualData)
-	fmt.Println(expectedModel)
 }
 
 func TestStorage_ReadDataToSend_UnmarshalErr(t *testing.T) {

@@ -13,7 +13,7 @@ import (
 
 var (
 	currentTime      = time.Now
-	ErrUnmarshalData = errors.New("unmarshal read data")
+	ErrUnmarshalData = errors.New("can't unmarshal read data")
 )
 
 type Storage struct {
@@ -60,7 +60,7 @@ func (s *Storage) ReadDataToSend(file string) ([]model.DataModel, error) {
 	var dataModels []model.DataModel
 
 	if err := json.Unmarshal(readData, &dataModels); err != nil {
-		return nil, ErrUnmarshalData
+		return nil, fmt.Errorf("%w: %v", ErrUnmarshalData, err)
 	}
 
 	return dataModels, nil

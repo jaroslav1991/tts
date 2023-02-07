@@ -1,7 +1,6 @@
 package data
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/jaroslav1991/tts/internal/model"
 	"os"
@@ -118,17 +117,12 @@ func TestStorage_GetFilesToSend_Negative(t *testing.T) {
 }
 
 func TestStorage_ReadDataToSend_Positive(t *testing.T) {
-	var models []model.DataModel
-
 	expectedModel := []model.DataModel{{Program: "test1", Duration: 2}, {Program: "test2", Duration: 3}}
 	expectedModelBytes := []byte(`[{"Program": "test1", "Duration": 2},{"Program": "test2", "Duration": 3}]`)
 
-	err := json.Unmarshal(expectedModelBytes, &models)
-	assert.NoError(t, err)
-
 	tempDir := os.TempDir() + string(os.PathSeparator) + fmt.Sprintf("%d", time.Now().UnixNano())
 
-	err = os.Mkdir(tempDir, os.ModePerm)
+	err := os.Mkdir(tempDir, os.ModePerm)
 	assert.NoError(t, err)
 
 	defer os.RemoveAll(tempDir)

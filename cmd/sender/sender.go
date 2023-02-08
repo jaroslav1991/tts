@@ -29,7 +29,7 @@ func main() {
 	}()
 
 	newService := dispatcher.NewService(
-		&data.Sender{},
+		&data.Sender{HttpAddr: "http://localhost:8080/events"},
 		&data.Storage{
 			NewStatsFileName: *tmpFileName,
 			FilePath:         *pathFileName,

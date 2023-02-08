@@ -12,21 +12,18 @@ type Service struct {
 }
 
 func (s *Service) SendData() error {
-	// rename file: temp -> temp_to_send_time
 	if _, err := s.storage.FixDataToSend(); err != nil {
 		log.Println("non critical error: fix data to send: ", err)
-		//return err
 	}
 
-	// get file list to send
 	filesToSend, err := s.storage.GetFilesToSend()
 	if err != nil {
 		return err
 	}
 
 	for _, file := range filesToSend {
-		// []model
 		dataToSend, err := s.storage.ReadDataToSend(file)
+
 		if err != nil {
 			return err
 		}

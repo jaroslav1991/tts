@@ -8,6 +8,7 @@ import (
 	"github.com/jaroslav1991/tts/internal/model"
 	"github.com/jaroslav1991/tts/internal/service/dispatcher"
 	"net/http"
+	"time"
 )
 
 type Sender struct {
@@ -22,7 +23,13 @@ func (s *Sender) Send(data []model.DataModel) error {
 		return fmt.Errorf("%w: %v", ErrUnmarshalData, err)
 	}
 
-	_, err = http.Post("/sender", "application/json", bytes.NewBuffer(bytesDataToSend))
+	go func() {
+		for {
+			_, err = http.Post("/sender", "application/json", bytes.NewBuffer(bytesDataToSend))
+
+			time.Sleep(time.Second)
+		}
+	}()
 
 	return nil
 }

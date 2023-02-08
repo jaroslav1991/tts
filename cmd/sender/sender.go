@@ -14,7 +14,7 @@ var (
 		"File for temporary storage of stats",
 	)
 	pathFileName = flag.String(
-		"fileToSend",
+		"pathToSend",
 		"./fileToSend",
 		"File for sending to server",
 	)

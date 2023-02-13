@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/jaroslav1991/tts/internal/model"
 	"os"
-	"strings"
 	"testing"
 	"time"
 
@@ -95,11 +94,11 @@ func TestStorage_GetFilesToSend_Positive(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NoError(t, f2.Close())
 
-	baseNameF1 := strings.ReplaceAll(f.Name(), tempDir+string(os.PathSeparator), "")
-	baseNameF2 := strings.ReplaceAll(f2.Name(), tempDir+string(os.PathSeparator), "")
+	//baseNameF1 := strings.ReplaceAll(f.Name(), tempDir+string(os.PathSeparator), "")
+	//baseNameF2 := strings.ReplaceAll(f2.Name(), tempDir+string(os.PathSeparator), "")
 
 	storage := Storage{FilePath: tempDir}
-	expectedRes := []string{baseNameF1, baseNameF2}
+	expectedRes := []string{f.Name(), f2.Name()}
 
 	actualRes, actErr := storage.GetFilesToSend()
 	assert.NoError(t, actErr)
@@ -117,9 +116,34 @@ func TestStorage_GetFilesToSend_Negative(t *testing.T) {
 }
 
 func TestStorage_ReadDataToSend_Positive(t *testing.T) {
-	expectedModel := []model.DataModel{{Program: "test1", Duration: 2}, {Program: "test2", Duration: 3}}
-	expectedModelBytes := []byte(`[{"Program": "test1", "Duration": 2},{"Program": "test2", "Duration": 3}]`)
+	expectedModel := []model.DataModel{{Program: "test1", Duration: 2}, {Program: "test1", Duration: 2}}
 
+	tempDir := os.TempDir() + string(os.PathSeparator) + fmt.Sprintf("%d", time.Now().UnixNano())
+
+	err := os.Mkdir(tempDir, os.ModePerm)
+	assert.NoError(t, err)
+
+	defer os.RemoveAll(tempDir)
+
+	file, err := os.CreateTemp(tempDir, "testingFile")
+	assert.NoError(t, err)
+
+	_, err = file.Write([]byte(`
+			{"Program": "test1", "Duration": 2}
+			{"Program": "test1", "Duration": 2}
+	`))
+	assert.NoError(t, err)
+	assert.NoError(t, file.Close())
+
+	storage := Storage{FilePath: tempDir}
+
+	actualData, actErr := storage.ReadDataToSend(file.Name())
+	assert.NoError(t, actErr)
+	assert.Equal(t, expectedModel, actualData)
+}
+
+func TestStorage_ReadDataToSend_UnmarshalErr(t *testing.T) {
+	expectedModelBytes := []byte(`[{"Program": "test1", "Duration": 2}, {"Program": "test2", "Duration": 3}]`)
 	tempDir := os.TempDir() + string(os.PathSeparator) + fmt.Sprintf("%d", time.Now().UnixNano())
 
 	err := os.Mkdir(tempDir, os.ModePerm)
@@ -131,25 +155,6 @@ func TestStorage_ReadDataToSend_Positive(t *testing.T) {
 	assert.NoError(t, err)
 
 	_, err = file.Write(expectedModelBytes)
-	assert.NoError(t, err)
-	assert.NoError(t, file.Close())
-
-	storage := Storage{FilePath: tempDir}
-
-	actualData, actErr := storage.ReadDataToSend(file.Name())
-	assert.NoError(t, actErr)
-	assert.Equal(t, actualData, expectedModel)
-}
-
-func TestStorage_ReadDataToSend_UnmarshalErr(t *testing.T) {
-	tempDir := os.TempDir() + string(os.PathSeparator) + fmt.Sprintf("%d", time.Now().UnixNano())
-
-	err := os.Mkdir(tempDir, os.ModePerm)
-	assert.NoError(t, err)
-
-	defer os.RemoveAll(tempDir)
-
-	file, err := os.CreateTemp(tempDir, "testingFile")
 	assert.NoError(t, err)
 	assert.NoError(t, file.Close())
 

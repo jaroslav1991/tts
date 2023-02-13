@@ -1,6 +1,8 @@
 package dispatcher
 
-import "log"
+import (
+	"log"
+)
 
 func NewService(sender Sender, storage Storage) *Service {
 	return &Service{sender: sender, storage: storage}

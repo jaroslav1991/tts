@@ -3,6 +3,8 @@ package main
 import (
 	"errors"
 	"flag"
+	"github.com/jaroslav1991/tts/internal/service/dispatcher"
+	dataDis "github.com/jaroslav1991/tts/internal/service/dispatcher/data"
 	"log"
 	"strings"
 
@@ -19,9 +21,21 @@ var (
 	)
 
 	inputData = flag.String(
-		"data",
+		"d",
 		"",
 		"Stats data JSON string",
+	)
+
+	pathFileName = flag.String(
+		"pathToSend",
+		"./fileToSend",
+		"File for sending to server",
+	)
+
+	httpRemote = flag.String(
+		"s",
+		"http://localhost:8080/events",
+		"Http address for sending events",
 	)
 )
 
@@ -47,5 +61,15 @@ func main() {
 		&data.Saver{NewStatsFileName: *tmpFileName},
 	)
 
+	newServiceDis := dispatcher.NewService(
+		&dataDis.Sender{HttpAddr: *httpRemote},
+		&dataDis.Storage{
+			NewStatsFileName: *tmpFileName,
+			FilePath:         *pathFileName,
+		},
+	)
+
 	err = newService.SaveData(*inputData)
+	err = newServiceDis.SendData()
+
 }

@@ -4,7 +4,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"os"
+	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/jaroslav1991/tts/internal/model"
@@ -23,6 +26,12 @@ type Storage struct {
 }
 
 func (s *Storage) FixDataToSend() (string, error) {
+	if err := os.Mkdir(s.FilePath, os.ModePerm); err != nil {
+		if !errors.Is(err, os.ErrExist) {
+			return "", fmt.Errorf("can't create path: %v, %w", s.FilePath+string(os.PathSeparator), err)
+		}
+	}
+
 	nowUnixNano := currentTime().UnixNano()
 	newFileName := fmt.Sprintf("%s%d", s.FilePath+string(os.PathSeparator), nowUnixNano)
 
@@ -37,6 +46,11 @@ func (s *Storage) ClearSentData(file string) error {
 }
 
 func (s *Storage) GetFilesToSend() ([]string, error) {
+	absolutePath, err := filepath.Abs(s.FilePath)
+	if err != nil {
+		log.Println("can't find absolute path", err)
+	}
+
 	files, err := os.ReadDir(s.FilePath)
 	if err != nil {
 		return nil, err
@@ -45,7 +59,7 @@ func (s *Storage) GetFilesToSend() ([]string, error) {
 	filesToSend := []string{}
 
 	for _, file := range files {
-		filesToSend = append(filesToSend, file.Name())
+		filesToSend = append(filesToSend, absolutePath+string(os.PathSeparator)+file.Name())
 	}
 
 	return filesToSend, nil
@@ -57,10 +71,19 @@ func (s *Storage) ReadDataToSend(file string) ([]model.DataModel, error) {
 		return nil, err
 	}
 
+	lines := strings.Split(string(readData), "\n")
+
 	var dataModels []model.DataModel
 
-	if err := json.Unmarshal(readData, &dataModels); err != nil {
-		return nil, fmt.Errorf("%w: %v", ErrUnmarshalData, err)
+	for _, line := range lines {
+		var dataModel model.DataModel
+
+		if strings.TrimSpace(line) != "" {
+			if err := json.Unmarshal([]byte(line), &dataModel); err != nil {
+				return nil, fmt.Errorf("%w: %v", ErrUnmarshalData, err)
+			}
+			dataModels = append(dataModels, dataModel)
+		}
 	}
 
 	return dataModels, nil

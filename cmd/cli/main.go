@@ -31,6 +31,12 @@ var (
 		"./fileToSend",
 		"File for sending to server",
 	)
+
+	httpRemote = flag.String(
+		"s",
+		"http://localhost:8080/events",
+		"Http address for sending events",
+	)
 )
 
 func main() {
@@ -56,7 +62,7 @@ func main() {
 	)
 
 	newServiceDis := dispatcher.NewService(
-		&dataDis.Sender{HttpAddr: "http://localhost:8080/events"},
+		&dataDis.Sender{HttpAddr: *httpRemote},
 		&dataDis.Storage{
 			NewStatsFileName: *tmpFileName,
 			FilePath:         *pathFileName,

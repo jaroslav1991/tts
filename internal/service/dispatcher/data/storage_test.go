@@ -94,9 +94,6 @@ func TestStorage_GetFilesToSend_Positive(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NoError(t, f2.Close())
 
-	//baseNameF1 := strings.ReplaceAll(f.Name(), tempDir+string(os.PathSeparator), "")
-	//baseNameF2 := strings.ReplaceAll(f2.Name(), tempDir+string(os.PathSeparator), "")
-
 	storage := Storage{FilePath: tempDir}
 	expectedRes := []string{f.Name(), f2.Name()}
 

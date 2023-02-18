@@ -23,6 +23,6 @@ func TestPreparer_PrepareData(t *testing.T) {
 	actualData, err := preparer.PrepareData(pluginInfo, aggregationInfo)
 	assert.NoError(t, err)
 
-	expected := `{"PluginInfo":{"Program":"test1","Duration":0},"AggregatorInfo":{"CurrentGitBranch":"master"}}`
+	expected := `{"PluginInfo":{"Program":"test1","Duration":0,"PathProject":""},"AggregatorInfo":{"CurrentGitBranch":"master"}}`
 	assert.Equal(t, expected, string(actualData))
 }

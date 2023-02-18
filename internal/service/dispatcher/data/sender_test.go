@@ -15,10 +15,10 @@ func TestSender_Send_Positive(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		body, err := io.ReadAll(request.Body)
 		assert.NoError(t, err)
-		assert.Equal(t, `[{"Program":"test1","Duration":2}]`, string(body))
+		assert.Equal(t, `[{"PluginInfo":{"Program":"test","Duration":5,"PathProject":"testPath"},"AggregatorInfo":{"CurrentGitBranch":"testBranch"}}]`, string(body))
 	}))
 
-	actualData := []model.PluginInfo{{Program: "test1", Duration: 2}}
+	actualData := []model.DataModel{{PluginInfo: model.PluginInfo{Program: "test", Duration: 5, PathProject: "testPath"}, AggregatorInfo: model.AggregatorInfo{CurrentGitBranch: "testBranch"}}}
 
 	sender := Sender{HttpAddr: server.URL}
 	actualErr := sender.Send(actualData)

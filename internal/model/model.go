@@ -4,8 +4,9 @@ import "time"
 
 // PluginInfo - info received from plugin
 type PluginInfo struct {
-	Program  string
-	Duration time.Duration
+	Program     string
+	Duration    time.Duration
+	PathProject string
 }
 
 // AggregatorInfo - info about project from aggregator

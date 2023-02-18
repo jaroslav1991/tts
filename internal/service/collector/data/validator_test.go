@@ -12,8 +12,9 @@ func TestValidator_ValidateData_Positive(t *testing.T) {
 	validator := Validator{}
 
 	actualErr := validator.ValidateData(model.PluginInfo{
-		Program:  "testPro",
-		Duration: 5,
+		Program:     "testPro",
+		Duration:    5,
+		PathProject: "testPath",
 	})
 	assert.NoError(t, actualErr)
 }
@@ -36,4 +37,14 @@ func TestValidator_ValidateData_Negative_Duration_Field(t *testing.T) {
 		Duration: 0,
 	})
 	assert.ErrorIs(t, actualErr, ErrInvalidDurationField)
+}
+
+func TestValidator_ValidateData_Negative_Path_Field(t *testing.T) {
+	validator := Validator{}
+
+	actualErr := validator.ValidateData(model.PluginInfo{
+		Program:  "test",
+		Duration: 5,
+	})
+	assert.ErrorIs(t, actualErr, ErrInvalidPathFiled)
 }

@@ -32,7 +32,8 @@ func (r *DataReader) ReadData(untypedRequest any) (model.PluginInfo, error) {
 	}
 
 	return model.PluginInfo{
-		Program:  dto.Program,
-		Duration: dto.DurationMS * time.Millisecond,
+		Program:     dto.Program,
+		Duration:    dto.DurationMS * time.Millisecond,
+		PathProject: dto.PathProject,
 	}, nil
 }

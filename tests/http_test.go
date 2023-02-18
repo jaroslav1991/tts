@@ -36,6 +36,7 @@ func (s *httpTestsSuite) SetupTest() {
 	s.server = httptest.NewServer(serviceHttp.NewHandler(collector.NewService(
 		&serviceHttp.DataReader{},
 		&data.Validator{},
+		&data.Aggregator{},
 		&data.Preparer{},
 		&data.Saver{
 			NewStatsFileName: s.tempFile.Name(),

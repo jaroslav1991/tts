@@ -35,7 +35,7 @@ func (m *MockSender) EXPECT() *MockSenderMockRecorder {
 }
 
 // Send mocks base method.
-func (m *MockSender) Send(data []model.PluginInfo) error {
+func (m *MockSender) Send(data []model.DataModel) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "Send", data)
 	ret0, _ := ret[0].(error)
@@ -116,10 +116,10 @@ func (mr *MockStorageMockRecorder) GetFilesToSend() *gomock.Call {
 }
 
 // ReadDataToSend mocks base method.
-func (m *MockStorage) ReadDataToSend(file string) ([]model.PluginInfo, error) {
+func (m *MockStorage) ReadDataToSend(file string) ([]model.DataModel, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReadDataToSend", file)
-	ret0, _ := ret[0].([]model.PluginInfo)
+	ret0, _ := ret[0].([]model.DataModel)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

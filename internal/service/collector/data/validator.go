@@ -11,6 +11,7 @@ import (
 var (
 	ErrInvalidProgramField  = errors.New("invalid program field")
 	ErrInvalidDurationField = errors.New("invalid duration field")
+	ErrInvalidPathFiled     = errors.New("invalid path project field")
 )
 
 type Validator struct {
@@ -25,6 +26,10 @@ func (v Validator) ValidateData(data model.PluginInfo) error {
 
 	if data.Duration < 1 {
 		return ErrInvalidDurationField
+	}
+
+	if strings.TrimSpace(data.PathProject) == "" {
+		return ErrInvalidPathFiled
 	}
 
 	return nil

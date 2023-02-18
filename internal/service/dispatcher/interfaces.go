@@ -4,7 +4,7 @@ package dispatcher
 import "github.com/jaroslav1991/tts/internal/model"
 
 type Sender interface {
-	Send(data []model.PluginInfo) error
+	Send(data []model.DataModel) error
 }
 
 type Storage interface {
@@ -12,5 +12,5 @@ type Storage interface {
 	ClearSentData(file string) error
 
 	GetFilesToSend() ([]string, error)
-	ReadDataToSend(file string) ([]model.PluginInfo, error)
+	ReadDataToSend(file string) ([]model.DataModel, error)
 }

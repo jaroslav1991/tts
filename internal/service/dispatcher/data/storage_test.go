@@ -114,7 +114,14 @@ func TestStorage_GetFilesToSend_Negative(t *testing.T) {
 }
 
 func TestStorage_ReadDataToSend_Positive(t *testing.T) {
-	expectedModel := []model.PluginInfo{{Program: "test1", Duration: 2}, {Program: "test1", Duration: 2}}
+	//expectedModel := []model.PluginInfo{{Program: "test1", Duration: 2}, {Program: "test1", Duration: 2}}
+
+	expectedModel := []model.DataModel{
+		{
+			PluginInfo:     model.PluginInfo{Program: "test", Duration: 5, PathProject: "testPath"},
+			AggregatorInfo: model.AggregatorInfo{CurrentGitBranch: "testBranch"},
+		},
+	}
 
 	tempDir := os.TempDir() + string(os.PathSeparator) + fmt.Sprintf("%d", time.Now().UnixNano())
 
@@ -126,10 +133,7 @@ func TestStorage_ReadDataToSend_Positive(t *testing.T) {
 	file, err := os.CreateTemp(tempDir, "testingFile")
 	assert.NoError(t, err)
 
-	_, err = file.Write([]byte(`
-			{"Program": "test1", "Duration": 2}
-			{"Program": "test1", "Duration": 2}
-	`))
+	_, err = file.Write([]byte(`{"PluginInfo":{"Program":"test","Duration":5,"PathProject":"testPath"},"AggregatorInfo":{"CurrentGitBranch":"testBranch"}}`))
 	assert.NoError(t, err)
 	assert.NoError(t, file.Close())
 

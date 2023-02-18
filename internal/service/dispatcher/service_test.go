@@ -16,7 +16,12 @@ func TestService_SendData_Positive(t *testing.T) {
 
 	filesToSend := []string{"fileToSend1"}
 	file := "fileToSend1"
-	dataToSend := []model.DataModel{{Program: "test1", Duration: 5}}
+	dataToSend := []model.DataModel{
+		{
+			PluginInfo:     model.PluginInfo{Program: "test", Duration: 5, PathProject: "testPath"},
+			AggregatorInfo: model.AggregatorInfo{CurrentGitBranch: "testBranch"},
+		},
+	}
 
 	storage := NewMockStorage(ctrl)
 	storage.EXPECT().FixDataToSend().Return("", nil)
@@ -40,8 +45,12 @@ func TestService_SendData_Positive_WhenNoDataToFix(t *testing.T) {
 
 	filesToSend := []string{"fileToSend1"}
 	file := "fileToSend1"
-	dataToSend := []model.DataModel{{Program: "test1", Duration: 5}}
-
+	dataToSend := []model.DataModel{
+		{
+			PluginInfo:     model.PluginInfo{Program: "test", Duration: 5, PathProject: "testPath"},
+			AggregatorInfo: model.AggregatorInfo{CurrentGitBranch: "testBranch"},
+		},
+	}
 	storage := NewMockStorage(ctrl)
 	storage.EXPECT().FixDataToSend().Return("", errors.New("no new data"))
 
@@ -65,8 +74,16 @@ func TestService_SendData_Positive_MultiFiles(t *testing.T) {
 	filesToSend := []string{"fileToSend1", "fileToSend2"}
 	file1 := "fileToSend1"
 	file2 := "fileToSend2"
-	dataToSend := []model.DataModel{{Program: "test1", Duration: 5}, {Program: "test2", Duration: 6}}
-
+	dataToSend := []model.DataModel{
+		{
+			PluginInfo:     model.PluginInfo{Program: "test", Duration: 5, PathProject: "testPath"},
+			AggregatorInfo: model.AggregatorInfo{CurrentGitBranch: "testBranch"},
+		},
+		{
+			PluginInfo:     model.PluginInfo{Program: "test2", Duration: 5, PathProject: "testPath2"},
+			AggregatorInfo: model.AggregatorInfo{CurrentGitBranch: "testBranch2"},
+		},
+	}
 	storage := NewMockStorage(ctrl)
 	sender := NewMockSender(ctrl)
 
@@ -93,8 +110,12 @@ func TestService_SendData_Negative_ClearError(t *testing.T) {
 
 	filesToSend := []string{"fileToSend1"}
 	file := "fileToSend1"
-	dataToSend := []model.DataModel{{Program: "test1", Duration: 5}, {Program: "test2", Duration: 6}}
-
+	dataToSend := []model.DataModel{
+		{
+			PluginInfo:     model.PluginInfo{Program: "test", Duration: 5, PathProject: "testPath"},
+			AggregatorInfo: model.AggregatorInfo{CurrentGitBranch: "testBranch"},
+		},
+	}
 	storage := NewMockStorage(ctrl)
 	storage.EXPECT().FixDataToSend().Return("", nil)
 
@@ -119,8 +140,12 @@ func TestService_SendData_Negative_SenderError(t *testing.T) {
 
 	filesToSend := []string{"fileToSend1"}
 	file := "fileToSend1"
-	dataToSend := []model.DataModel{{Program: "test1", Duration: 5}, {Program: "test2", Duration: 6}}
-
+	dataToSend := []model.DataModel{
+		{
+			PluginInfo:     model.PluginInfo{Program: "test", Duration: 5, PathProject: "testPath"},
+			AggregatorInfo: model.AggregatorInfo{CurrentGitBranch: "testBranch"},
+		},
+	}
 	storage := NewMockStorage(ctrl)
 	storage.EXPECT().FixDataToSend().Return("", nil)
 
@@ -143,7 +168,12 @@ func TestService_SendData_Negative_ReadDataError(t *testing.T) {
 
 	filesToSend := []string{"fileToSend1"}
 	file := "fileToSend1"
-	dataToSend := []model.DataModel{{Program: "test1", Duration: 5}, {Program: "test2", Duration: 6}}
+	dataToSend := []model.DataModel{
+		{
+			PluginInfo:     model.PluginInfo{Program: "test", Duration: 5, PathProject: "testPath"},
+			AggregatorInfo: model.AggregatorInfo{CurrentGitBranch: "testBranch"},
+		},
+	}
 
 	storage := NewMockStorage(ctrl)
 	storage.EXPECT().FixDataToSend().Return("", nil)

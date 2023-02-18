@@ -1,11 +1,13 @@
-package data
+package storage
 
 import (
 	"fmt"
-	"github.com/jaroslav1991/tts/internal/model"
 	"os"
+	"strings"
 	"testing"
 	"time"
+
+	"github.com/jaroslav1991/tts/internal/model"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -79,7 +81,9 @@ func TestStorage_ClearSentData_Positive(t *testing.T) {
 }
 
 func TestStorage_GetFilesToSend_Positive(t *testing.T) {
-	tempDir := os.TempDir() + string(os.PathSeparator) + fmt.Sprintf("test%d", time.Now().UnixNano())
+	osTempDir := strings.TrimRight(os.TempDir(), string(os.PathSeparator))
+
+	tempDir := osTempDir + string(os.PathSeparator) + fmt.Sprintf("test%d", time.Now().UnixNano())
 
 	err := os.Mkdir(tempDir, os.ModePerm)
 	assert.NoError(t, err)
@@ -113,7 +117,14 @@ func TestStorage_GetFilesToSend_Negative(t *testing.T) {
 }
 
 func TestStorage_ReadDataToSend_Positive(t *testing.T) {
-	expectedModel := []model.DataModel{{Program: "test1", Duration: 2}, {Program: "test1", Duration: 2}}
+	//expectedModel := []model.PluginInfo{{Program: "test1", Duration: 2}, {Program: "test1", Duration: 2}}
+
+	expectedModel := []model.DataModel{
+		{
+			PluginInfo:     model.PluginInfo{Program: "test", Duration: 5, PathProject: "testPath"},
+			AggregatorInfo: model.AggregatorInfo{CurrentGitBranch: "testBranch"},
+		},
+	}
 
 	tempDir := os.TempDir() + string(os.PathSeparator) + fmt.Sprintf("%d", time.Now().UnixNano())
 
@@ -125,10 +136,7 @@ func TestStorage_ReadDataToSend_Positive(t *testing.T) {
 	file, err := os.CreateTemp(tempDir, "testingFile")
 	assert.NoError(t, err)
 
-	_, err = file.Write([]byte(`
-			{"Program": "test1", "Duration": 2}
-			{"Program": "test1", "Duration": 2}
-	`))
+	_, err = file.Write([]byte(`{"PluginInfo":{"Program":"test","Duration":5,"PathProject":"testPath"},"AggregatorInfo":{"CurrentGitBranch":"testBranch"}}`))
 	assert.NoError(t, err)
 	assert.NoError(t, file.Close())
 

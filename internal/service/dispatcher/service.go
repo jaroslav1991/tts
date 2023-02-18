@@ -24,13 +24,13 @@ func (s *Service) SendData() error {
 	}
 
 	for _, file := range filesToSend {
-		dataToSend, err := s.storage.ReadDataToSend(file)
+		dataModels, err := s.storage.ReadDataToSend(file)
 
 		if err != nil {
 			return err
 		}
 
-		if err := s.sender.Send(dataToSend); err != nil {
+		if err := s.sender.Send(dataModels); err != nil {
 			return err
 		}
 

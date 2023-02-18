@@ -11,6 +11,12 @@ type Preparer struct {
 	collector.DataPreparer
 }
 
-func (p Preparer) PrepareData(data model.DataModel) ([]byte, error) {
-	return json.Marshal(data)
+func (p Preparer) PrepareData(
+	pluginInfo model.PluginInfo,
+	aggregationInfo model.AggregatorInfo,
+) ([]byte, error) {
+	return json.Marshal(model.DataModel{
+		PluginInfo:     pluginInfo,
+		AggregatorInfo: aggregationInfo,
+	})
 }

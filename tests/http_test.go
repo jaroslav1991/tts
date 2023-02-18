@@ -36,6 +36,7 @@ func (s *httpTestsSuite) SetupTest() {
 	s.server = httptest.NewServer(serviceHttp.NewHandler(collector.NewService(
 		&serviceHttp.DataReader{},
 		&data.Validator{},
+		&data.Aggregator{},
 		&data.Preparer{},
 		&data.Saver{
 			NewStatsFileName: s.tempFile.Name(),
@@ -55,7 +56,8 @@ func (s *httpTestsSuite) TestHttp_Positive() {
 		bytes.NewReader([]byte(`
 			{
 				"program": "IDE1",
-				"durationMS": 15000
+				"durationMS": 15000,
+				"pathProject": "some project path"
 			}
 		`)),
 	)
@@ -65,11 +67,18 @@ func (s *httpTestsSuite) TestHttp_Positive() {
 	s.NoError(err)
 	defer response.Body.Close()
 
-	assert.Equal(s.T(), http.StatusOK, response.StatusCode)
+	responseBody, err := io.ReadAll(response.Body)
+	s.NoError(err)
+
+	s.Equal("", string(responseBody))
+
+	if !assert.Equal(s.T(), http.StatusOK, response.StatusCode) {
+		return
+	}
 
 	actualData, err := io.ReadAll(s.tempFile)
 	s.NoError(err)
-	s.Equal(`{"Program":"IDE1","Duration":15000000000}`+"\n", string(actualData))
+	s.Equal(`{"PluginInfo":{"Program":"IDE1","Duration":15000000000,"PathProject":"some project path"},"AggregatorInfo":{"CurrentGitBranch":""}}`+"\n", string(actualData))
 }
 
 func (s *httpTestsSuite) TestHttp_Negative() {

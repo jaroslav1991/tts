@@ -8,7 +8,8 @@ import (
 
 	"github.com/jaroslav1991/tts/internal/service/collector/data/aggregator"
 	"github.com/jaroslav1991/tts/internal/service/dispatcher"
-	dataDis "github.com/jaroslav1991/tts/internal/service/dispatcher/data"
+	"github.com/jaroslav1991/tts/internal/service/dispatcher/data/sender"
+	"github.com/jaroslav1991/tts/internal/service/dispatcher/data/storage"
 
 	"github.com/jaroslav1991/tts/internal/service/collector"
 	"github.com/jaroslav1991/tts/internal/service/collector/cli"
@@ -69,8 +70,8 @@ func main() {
 	)
 
 	newDispatcher := dispatcher.NewService(
-		&dataDis.Sender{HttpAddr: *httpRemote},
-		&dataDis.Storage{
+		&sender.Sender{HttpAddr: *httpRemote},
+		&storage.Storage{
 			NewStatsFileName: *tmpFileName,
 			FilePath:         *pathFileName,
 		},

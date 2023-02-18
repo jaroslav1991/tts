@@ -1,4 +1,4 @@
-package data
+package sender
 
 import (
 	"io"
@@ -15,7 +15,7 @@ func TestSender_Send_Positive(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		body, err := io.ReadAll(request.Body)
 		assert.NoError(t, err)
-		assert.Equal(t, `[{"PluginInfo":{"Program":"test","Duration":5,"PathProject":"testPath"},"AggregatorInfo":{"CurrentGitBranch":"testBranch"}}]`, string(body))
+		assert.Equal(t, `[{"program":"test","duration":5,"pathProject":"testPath","currentGitBranch":"testBranch"}]`, string(body))
 	}))
 
 	actualData := []model.DataModel{{PluginInfo: model.PluginInfo{Program: "test", Duration: 5, PathProject: "testPath"}, AggregatorInfo: model.AggregatorInfo{CurrentGitBranch: "testBranch"}}}

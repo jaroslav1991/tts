@@ -2,9 +2,11 @@ package main
 
 import (
 	"flag"
-	"github.com/jaroslav1991/tts/internal/service/dispatcher"
-	"github.com/jaroslav1991/tts/internal/service/dispatcher/data"
 	"log"
+
+	"github.com/jaroslav1991/tts/internal/service/dispatcher"
+	"github.com/jaroslav1991/tts/internal/service/dispatcher/data/sender"
+	"github.com/jaroslav1991/tts/internal/service/dispatcher/data/storage"
 )
 
 var (
@@ -28,13 +30,13 @@ func main() {
 		}
 	}()
 
-	newService := dispatcher.NewService(
-		&data.Sender{HttpAddr: "http://localhost:8080/events"},
-		&data.Storage{
+	newDispatcher := dispatcher.NewService(
+		&sender.Sender{HttpAddr: "http://localhost:8080/events"},
+		&storage.Storage{
 			NewStatsFileName: *tmpFileName,
 			FilePath:         *pathFileName,
 		},
 	)
 
-	err = newService.SendData()
+	err = newDispatcher.SendData()
 }

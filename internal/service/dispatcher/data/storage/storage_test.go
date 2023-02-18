@@ -1,8 +1,9 @@
-package data
+package storage
 
 import (
 	"fmt"
 	"os"
+	"strings"
 	"testing"
 	"time"
 
@@ -80,7 +81,9 @@ func TestStorage_ClearSentData_Positive(t *testing.T) {
 }
 
 func TestStorage_GetFilesToSend_Positive(t *testing.T) {
-	tempDir := os.TempDir() + string(os.PathSeparator) + fmt.Sprintf("test%d", time.Now().UnixNano())
+	osTempDir := strings.TrimRight(os.TempDir(), string(os.PathSeparator))
+
+	tempDir := osTempDir + string(os.PathSeparator) + fmt.Sprintf("test%d", time.Now().UnixNano())
 
 	err := os.Mkdir(tempDir, os.ModePerm)
 	assert.NoError(t, err)

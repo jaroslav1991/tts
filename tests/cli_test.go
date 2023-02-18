@@ -1,12 +1,14 @@
 package tests
 
 import (
+	"encoding/json"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"os/exec"
 	"testing"
 
+	"github.com/jaroslav1991/tts/internal/service/dispatcher/data/sender"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -15,8 +17,21 @@ func TestCliSuccess(t *testing.T) {
 		requestBody, err := io.ReadAll(request.Body)
 		assert.NoError(t, err)
 
-		expected := `[{"program":"some program","duration":15000000,"pathProject":"../","currentGitBranch":"aggregation"}]`
-		assert.Equal(t, expected, string(requestBody))
+		var requestDTO sender.RemoteRequestDTO
+		assert.NoError(t, json.Unmarshal(requestBody, &requestDTO))
+
+		if assert.Len(t, requestDTO, 1) {
+			assert.NotEmpty(t, requestDTO[0].CurrentGitBranch)
+			// branch is dynamic param
+			requestDTO[0].CurrentGitBranch = "master"
+
+			assert.Equal(t, sender.RemoteRequestDTO{{
+				Program:          "some program",
+				Duration:         15000000,
+				PathProject:      "../",
+				CurrentGitBranch: "master",
+			}}, requestDTO)
+		}
 	}))
 
 	cmd := exec.Command(

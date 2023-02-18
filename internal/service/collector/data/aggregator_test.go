@@ -23,8 +23,6 @@ func TestAggregator_Aggregate_Empty(t *testing.T) {
 	assert.NoError(t, err)
 
 	assert.Equal(t, target, actualData)
-	t.Log(target)
-	t.Log(actualData)
 }
 
 type errorMergeAggregatorMock struct{}

@@ -3,19 +3,26 @@ package data
 import (
 	"testing"
 
-	"github.com/jaroslav1991/tts/internal/model"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/jaroslav1991/tts/internal/model"
 )
 
 func TestPreparer_PrepareData(t *testing.T) {
 	preparer := Preparer{}
 
-	data := model.DataModel{
+	pluginInfo := model.PluginInfo{
 		Program:  "test1",
 		Duration: 0,
 	}
 
-	actualData, err := preparer.PrepareData(data)
+	aggregationInfo := model.AggregatorInfo{
+		CurrentGitBranch: "master",
+	}
+
+	actualData, err := preparer.PrepareData(pluginInfo, aggregationInfo)
 	assert.NoError(t, err)
-	assert.Equal(t, `{"Program":"test1","Duration":0}`, string(actualData))
+
+	expected := `{"PluginInfo":{"Program":"test1","Duration":0},"AggregatorInfo":{"CurrentGitBranch":"master"}}`
+	assert.Equal(t, expected, string(actualData))
 }

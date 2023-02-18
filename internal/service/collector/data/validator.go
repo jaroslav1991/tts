@@ -17,7 +17,7 @@ type Validator struct {
 	collector.DataValidator
 }
 
-func (v Validator) ValidateData(data model.DataModel) error {
+func (v Validator) ValidateData(data model.PluginInfo) error {
 
 	if strings.TrimSpace(data.Program) == "" {
 		return ErrInvalidProgramField

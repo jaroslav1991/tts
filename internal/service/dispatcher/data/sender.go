@@ -5,9 +5,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"net/http"
+
 	"github.com/jaroslav1991/tts/internal/model"
 	"github.com/jaroslav1991/tts/internal/service/dispatcher"
-	"net/http"
 )
 
 type Sender struct {
@@ -17,7 +18,7 @@ type Sender struct {
 
 var ErrMarshalData = errors.New("can't marshal data to send")
 
-func (s *Sender) Send(data []model.DataModel) error {
+func (s *Sender) Send(data []model.PluginInfo) error {
 	bytesDataToSend, err := json.Marshal(data)
 	if err != nil {
 		return fmt.Errorf("%w: %v", ErrUnmarshalData, err)

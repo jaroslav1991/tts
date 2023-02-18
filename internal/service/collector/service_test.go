@@ -5,8 +5,9 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/jaroslav1991/tts/internal/model"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/jaroslav1991/tts/internal/model"
 )
 
 func TestService_SaveData_Positive(t *testing.T) {
@@ -15,7 +16,7 @@ func TestService_SaveData_Positive(t *testing.T) {
 
 	request := "some request"
 
-	data := model.DataModel{
+	data := model.PluginInfo{
 		Program:  "",
 		Duration: 0,
 	}
@@ -44,7 +45,7 @@ func TestService_SaveData_Negative_SaveError(t *testing.T) {
 
 	request := "some request"
 
-	data := model.DataModel{
+	data := model.PluginInfo{
 		Program:  "",
 		Duration: 0,
 	}
@@ -76,7 +77,7 @@ func TestService_SaveData_Negative_PrepareError(t *testing.T) {
 
 	request := "some request"
 
-	data := model.DataModel{
+	data := model.PluginInfo{
 		Program:  "",
 		Duration: 0,
 	}
@@ -104,7 +105,7 @@ func TestService_SaveData_Negative_ValidateError(t *testing.T) {
 
 	request := "some request"
 
-	data := model.DataModel{
+	data := model.PluginInfo{
 		Program:  "",
 		Duration: 0,
 	}
@@ -133,7 +134,7 @@ func TestService_SaveData_Negative_ReadError(t *testing.T) {
 	err := errors.New("some error")
 
 	reader := NewMockDataReader(ctrl)
-	reader.EXPECT().ReadData("some request").Return(model.DataModel{}, err)
+	reader.EXPECT().ReadData("some request").Return(model.PluginInfo{}, err)
 
 	validator := NewMockDataValidator(ctrl)
 	preparer := NewMockDataPreparer(ctrl)

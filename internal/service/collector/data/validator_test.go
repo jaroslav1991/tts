@@ -3,14 +3,15 @@ package data
 import (
 	"testing"
 
-	"github.com/jaroslav1991/tts/internal/model"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/jaroslav1991/tts/internal/model"
 )
 
 func TestValidator_ValidateData_Positive(t *testing.T) {
 	validator := Validator{}
 
-	actualErr := validator.ValidateData(model.DataModel{
+	actualErr := validator.ValidateData(model.PluginInfo{
 		Program:  "testPro",
 		Duration: 5,
 	})
@@ -20,7 +21,7 @@ func TestValidator_ValidateData_Positive(t *testing.T) {
 func TestValidator_ValidateData_Negative_Program_Field(t *testing.T) {
 	validator := Validator{}
 
-	actualErr := validator.ValidateData(model.DataModel{
+	actualErr := validator.ValidateData(model.PluginInfo{
 		Program:  " ",
 		Duration: 5,
 	})
@@ -30,7 +31,7 @@ func TestValidator_ValidateData_Negative_Program_Field(t *testing.T) {
 func TestValidator_ValidateData_Negative_Duration_Field(t *testing.T) {
 	validator := Validator{}
 
-	actualErr := validator.ValidateData(model.DataModel{
+	actualErr := validator.ValidateData(model.PluginInfo{
 		Program:  "test",
 		Duration: 0,
 	})

@@ -3,10 +3,12 @@ package main
 import (
 	"errors"
 	"flag"
-	"github.com/jaroslav1991/tts/internal/service/dispatcher"
-	dataDis "github.com/jaroslav1991/tts/internal/service/dispatcher/data"
 	"log"
 	"strings"
+
+	"github.com/jaroslav1991/tts/internal/service/collector/data/aggregator"
+	"github.com/jaroslav1991/tts/internal/service/dispatcher"
+	dataDis "github.com/jaroslav1991/tts/internal/service/dispatcher/data"
 
 	"github.com/jaroslav1991/tts/internal/service/collector"
 	"github.com/jaroslav1991/tts/internal/service/collector/cli"
@@ -54,14 +56,19 @@ func main() {
 		return
 	}
 
-	newService := collector.NewService(
+	newCollector := collector.NewService(
 		&cli.DataReader{},
 		&data.Validator{},
+		&data.Aggregator{
+			Aggregators: []data.MergeAggregator{
+				&aggregator.CurrentBranchAggregator{},
+			},
+		},
 		&data.Preparer{},
 		&data.Saver{NewStatsFileName: *tmpFileName},
 	)
 
-	newServiceDis := dispatcher.NewService(
+	newDispatcher := dispatcher.NewService(
 		&dataDis.Sender{HttpAddr: *httpRemote},
 		&dataDis.Storage{
 			NewStatsFileName: *tmpFileName,
@@ -69,7 +76,10 @@ func main() {
 		},
 	)
 
-	err = newService.SaveData(*inputData)
-	err = newServiceDis.SendData()
+	// todo собирать информацию о проекте
+	if err = newCollector.SaveData(*inputData); err != nil {
+		return
+	}
 
+	err = newDispatcher.SendData()
 }

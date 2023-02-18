@@ -2,10 +2,11 @@ package data
 
 import (
 	"fmt"
-	"github.com/jaroslav1991/tts/internal/model"
 	"os"
 	"testing"
 	"time"
+
+	"github.com/jaroslav1991/tts/internal/model"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -113,7 +114,7 @@ func TestStorage_GetFilesToSend_Negative(t *testing.T) {
 }
 
 func TestStorage_ReadDataToSend_Positive(t *testing.T) {
-	expectedModel := []model.DataModel{{Program: "test1", Duration: 2}, {Program: "test1", Duration: 2}}
+	expectedModel := []model.PluginInfo{{Program: "test1", Duration: 2}, {Program: "test1", Duration: 2}}
 
 	tempDir := os.TempDir() + string(os.PathSeparator) + fmt.Sprintf("%d", time.Now().UnixNano())
 

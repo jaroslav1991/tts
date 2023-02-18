@@ -1,12 +1,14 @@
 package data
 
 import (
-	"github.com/jaroslav1991/tts/internal/model"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+
+	"github.com/jaroslav1991/tts/internal/model"
 )
 
 func TestSender_Send_Positive(t *testing.T) {
@@ -16,7 +18,7 @@ func TestSender_Send_Positive(t *testing.T) {
 		assert.Equal(t, `[{"Program":"test1","Duration":2}]`, string(body))
 	}))
 
-	actualData := []model.DataModel{{Program: "test1", Duration: 2}}
+	actualData := []model.PluginInfo{{Program: "test1", Duration: 2}}
 
 	sender := Sender{HttpAddr: server.URL}
 	actualErr := sender.Send(actualData)

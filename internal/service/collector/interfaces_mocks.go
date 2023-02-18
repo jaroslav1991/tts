@@ -35,10 +35,10 @@ func (m *MockDataReader) EXPECT() *MockDataReaderMockRecorder {
 }
 
 // ReadData mocks base method.
-func (m *MockDataReader) ReadData(request any) (model.DataModel, error) {
+func (m *MockDataReader) ReadData(request any) (model.PluginInfo, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ReadData", request)
-	ret0, _ := ret[0].(model.DataModel)
+	ret0, _ := ret[0].(model.PluginInfo)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -73,7 +73,7 @@ func (m *MockDataValidator) EXPECT() *MockDataValidatorMockRecorder {
 }
 
 // ValidateData mocks base method.
-func (m *MockDataValidator) ValidateData(data model.DataModel) error {
+func (m *MockDataValidator) ValidateData(data model.PluginInfo) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ValidateData", data)
 	ret0, _ := ret[0].(error)
@@ -110,7 +110,7 @@ func (m *MockDataPreparer) EXPECT() *MockDataPreparerMockRecorder {
 }
 
 // PrepareData mocks base method.
-func (m *MockDataPreparer) PrepareData(data model.DataModel) ([]byte, error) {
+func (m *MockDataPreparer) PrepareData(data model.PluginInfo) ([]byte, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "PrepareData", data)
 	ret0, _ := ret[0].([]byte)

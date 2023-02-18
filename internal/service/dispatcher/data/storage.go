@@ -65,7 +65,7 @@ func (s *Storage) GetFilesToSend() ([]string, error) {
 	return filesToSend, nil
 }
 
-func (s *Storage) ReadDataToSend(file string) ([]model.DataModel, error) {
+func (s *Storage) ReadDataToSend(file string) ([]model.PluginInfo, error) {
 	readData, err := os.ReadFile(file)
 	if err != nil {
 		return nil, err
@@ -73,10 +73,10 @@ func (s *Storage) ReadDataToSend(file string) ([]model.DataModel, error) {
 
 	lines := strings.Split(string(readData), "\n")
 
-	var dataModels []model.DataModel
+	var dataModels []model.PluginInfo
 
 	for _, line := range lines {
-		var dataModel model.DataModel
+		var dataModel model.PluginInfo
 
 		if strings.TrimSpace(line) != "" {
 			if err := json.Unmarshal([]byte(line), &dataModel); err != nil {

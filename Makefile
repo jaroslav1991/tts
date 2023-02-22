@@ -16,7 +16,7 @@ build_all:
 
 	set GOOS=linux
 	set GOARCH=arm64
-	go build -o nil/$(PROJECT_NAME).linux-arm64 cmd/cli/main.go
+	go build -o bin/$(PROJECT_NAME).linux-arm64 cmd/cli/main.go
 
 	set GOOS=windows
 	set GOARCH=amd64

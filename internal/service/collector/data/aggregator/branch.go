@@ -18,9 +18,9 @@ func (a *CurrentBranchAggregator) Aggregate(
 	info model.PluginInfo,
 	target *model.AggregatorInfo,
 ) error {
-	path := info.PathProject
+	filename := info.PathProject + string(os.PathSeparator) + ".git" + string(os.PathSeparator) + "HEAD"
 
-	currentBranch, err := os.ReadFile(path + string(os.PathSeparator) + ".git" + string(os.PathSeparator) + "HEAD")
+	currentBranch, err := os.ReadFile(filename)
 	if err != nil {
 		log.Printf("current branch path not found: %v", err)
 		target.CurrentGitBranch = "undefined"

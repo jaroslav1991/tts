@@ -6,15 +6,6 @@ import (
 	"testing"
 )
 
-func TestCurrentBranchAggregator_Aggregate_Positive(t *testing.T) {
-	branch := CurrentBranchAggregator{}
-	info := model.PluginInfo{PathProject: "C:\\Users\\jaros\\GolandProjects\\tts"}
-	target := model.AggregatorInfo{CurrentGitBranch: "aggregator-01"}
-
-	actualErr := branch.Aggregate(info, &target)
-	assert.NoError(t, actualErr)
-}
-
 func TestCurrentBranchAggregator_Aggregate_BranchNotFound(t *testing.T) {
 	branch := CurrentBranchAggregator{}
 	expectedBranch := CurrentBranchAggregator{}

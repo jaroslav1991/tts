@@ -9,9 +9,12 @@ import (
 )
 
 var (
-	ErrInvalidProgramField  = errors.New("invalid program field")
-	ErrInvalidDurationField = errors.New("invalid duration field")
-	ErrInvalidPathFiled     = errors.New("invalid path project field")
+	ErrInvalidPluginTypeField    = errors.New("invalid plugin type field")
+	ErrInvalidPluginVersionField = errors.New("invalid plugin version field")
+	ErrInvalidCliTypeFiled       = errors.New("invalid cli type field")
+	ErrInvalidCliVersionFiled    = errors.New("invalid cli version field")
+	ErrInvalidCreatedAtFiled     = errors.New("invalid created at field")
+	ErrInvalidTypeFiled          = errors.New("invalid type field")
 )
 
 type Validator struct {
@@ -19,17 +22,30 @@ type Validator struct {
 }
 
 func (v Validator) ValidateData(data model.PluginInfo) error {
-
-	if strings.TrimSpace(data.Program) == "" {
-		return ErrInvalidProgramField
+	if strings.TrimSpace(data.PluginType) == "" {
+		return ErrInvalidPluginTypeField
 	}
 
-	if data.Duration < 1 {
-		return ErrInvalidDurationField
+	if strings.TrimSpace(data.PluginVersion) == "" {
+		return ErrInvalidPluginVersionField
 	}
 
-	if strings.TrimSpace(data.PathProject) == "" {
-		return ErrInvalidPathFiled
+	if strings.TrimSpace(data.CliType) == "" {
+		return ErrInvalidCliTypeFiled
+	}
+
+	if strings.TrimSpace(data.CliVersion) == "" {
+		return ErrInvalidCliVersionFiled
+	}
+
+	for _, event := range data.Events {
+		if strings.TrimSpace(event.CreatedAt) == "" {
+			return ErrInvalidCreatedAtFiled
+		}
+
+		if strings.TrimSpace(event.Type) == "" {
+			return ErrInvalidTypeFiled
+		}
 	}
 
 	return nil

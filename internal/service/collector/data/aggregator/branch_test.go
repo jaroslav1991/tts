@@ -8,11 +8,21 @@ import (
 
 func TestCurrentBranchAggregator_Aggregate_BranchNotFound(t *testing.T) {
 	branch := CurrentBranchAggregator{}
-	expectedBranch := CurrentBranchAggregator{}
-	info := model.PluginInfo{PathProject: ""}
-	target := model.AggregatorInfo{CurrentGitBranch: "undefined"}
+	info := model.PluginInfo{}
+	info.Events.Branch = nil
+	target := model.AggregatorInfo{CurrentGitBranch: "master"}
 
 	actualErr := branch.Aggregate(info, &target)
 	assert.NoError(t, actualErr)
-	assert.Equal(t, expectedBranch.Aggregate(info, &model.AggregatorInfo{CurrentGitBranch: "undefined"}), actualErr)
+}
+
+func TestCurrentBranchAggregator_Aggregate_BranchFound(t *testing.T) {
+	info := model.PluginInfo{}
+	master := "master"
+	info.Events.Branch = &master
+	target := model.AggregatorInfo{}
+
+	branch := CurrentBranchAggregator{}
+	actualErr := branch.Aggregate(info, &target)
+	assert.NoError(t, actualErr)
 }

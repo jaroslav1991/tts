@@ -121,7 +121,23 @@ func TestStorage_ReadDataToSend_Positive(t *testing.T) {
 
 	expectedModel := []model.DataModel{
 		{
-			PluginInfo:     model.PluginInfo{Program: "test", Duration: 5, PathProject: "testPath"},
+			PluginInfo: model.PluginInfo{
+				PluginType:    "1",
+				PluginVersion: "1",
+				CliType:       "1",
+				CliVersion:    "1",
+				DeviceName:    "1",
+				Events: model.Events{
+					Uid:       "1",
+					CreatedAt: "1",
+					Type:      "1",
+					Project:   "1",
+					Language:  "1",
+					Target:    "1",
+					Branch:    "master",
+					Params:    nil,
+				},
+			},
 			AggregatorInfo: model.AggregatorInfo{CurrentGitBranch: "testBranch"},
 		},
 	}

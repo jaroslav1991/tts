@@ -11,12 +11,24 @@ func TestAggregator_Aggregate_Empty(t *testing.T) {
 	aggregator := Aggregator{}
 
 	info := model.PluginInfo{
-		Program:     "test",
-		Duration:    5,
-		PathProject: "testPath",
+		PluginType:    "1",
+		PluginVersion: "1",
+		CliType:       "1",
+		CliVersion:    "1",
+		DeviceName:    "",
+		Events: model.Events{
+			Uid:       "qwerty",
+			CreatedAt: "1",
+			Type:      "1",
+			Project:   "",
+			Language:  "",
+			Target:    "",
+			Branch:    "",
+			Params:    "",
+		},
 	}
 	target := model.AggregatorInfo{
-		CurrentGitBranch: "",
+		CurrentGitBranch: nil,
 	}
 
 	actualData, err := aggregator.Aggregate(info)
@@ -45,7 +57,7 @@ func TestAggregator_Aggregate_Negative(t *testing.T) {
 type mergeAggregatorMock struct{}
 
 func (m mergeAggregatorMock) Aggregate(info model.PluginInfo, target *model.AggregatorInfo) error {
-	target.CurrentGitBranch = "testBranch"
+	target.CurrentGitBranch = nil
 	return nil
 }
 
@@ -57,13 +69,25 @@ func TestAggregator_Aggregate_Positive(t *testing.T) {
 	}
 
 	info := model.PluginInfo{
-		Program:     "test",
-		Duration:    5,
-		PathProject: "testPath",
+		PluginType:    "1",
+		PluginVersion: "1",
+		CliType:       "1",
+		CliVersion:    "1",
+		DeviceName:    nil,
+		Events: model.Events{
+			Uid:       "qwerty",
+			CreatedAt: "1",
+			Type:      "1",
+			Project:   nil,
+			Language:  nil,
+			Target:    nil,
+			Branch:    nil,
+			Params:    nil,
+		},
 	}
 
 	expected := model.AggregatorInfo{
-		CurrentGitBranch: "testBranch",
+		CurrentGitBranch: nil,
 	}
 
 	actualRes, err := aggregator.Aggregate(info)

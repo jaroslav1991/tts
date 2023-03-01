@@ -1,19 +1,32 @@
 package cli
 
 import (
-	"testing"
-	"time"
-
 	"github.com/stretchr/testify/assert"
+	"testing"
 
 	"github.com/jaroslav1991/tts/internal/model"
 )
 
 func TestDataReader_ReadData_Positive(t *testing.T) {
 	requestData := `{
-		"program": "Some IDE",
-		"durationMS": 15000
-	}`
+			"pluginType":"1",
+			"pluginVersion":"1",
+			"cliType":"1",
+			"cliVersion":"1",
+			"deviceName":"1",
+			"events":
+				[
+					{
+						"uid":"1",
+						"createdAt":"1",
+						"type":"1",
+						"project":"1",
+						"language":"1",
+						"target":"1",
+						"branch":"1"
+					}
+				]
+			}`
 
 	reader := DataReader{}
 
@@ -21,8 +34,23 @@ func TestDataReader_ReadData_Positive(t *testing.T) {
 	assert.NoError(t, actualErr)
 
 	assert.Equal(t, model.PluginInfo{
-		Program:  "Some IDE",
-		Duration: 15 * time.Second,
+		PluginType:    "1",
+		PluginVersion: "1",
+		CliType:       "1",
+		CliVersion:    "1",
+		DeviceName:    "1",
+		Events: []model.Events{
+			{
+				Uid:       "1",
+				CreatedAt: "1",
+				Type:      "1",
+				Project:   "1",
+				Language:  "1",
+				Target:    "1",
+				Branch:    "1",
+				Params:    nil,
+			},
+		},
 	}, actualData)
 }
 

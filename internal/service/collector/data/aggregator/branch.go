@@ -18,15 +18,23 @@ func (a *CurrentBranchAggregator) Aggregate(
 	info model.PluginInfo,
 	target *model.AggregatorInfo,
 ) error {
-	filename := info.PathProject + string(os.PathSeparator) + ".git" + string(os.PathSeparator) + "HEAD"
+	for i := range info.Events {
+		if info.Events[i].Branch == "" {
+			info.Events[i].Branch = GetBranchByTarget(info.Events[i].Target)
+			info.Events[i].Branch = target.CurrentGitBranch
+		}
+	}
+
+	return nil
+}
+
+func GetBranchByTarget(target string) string {
+	filename := target + string(os.PathSeparator) + ".git" + string(os.PathSeparator) + "HEAD"
 
 	currentBranch, err := os.ReadFile(filename)
 	if err != nil {
 		log.Printf("current branch path not found: %v", err)
-		target.CurrentGitBranch = "undefined"
-		return nil
+		return ""
 	}
-	target.CurrentGitBranch = strings.TrimSpace(strings.ReplaceAll(string(currentBranch), "ref: refs/heads/", ""))
-
-	return nil
+	return strings.TrimSpace(strings.ReplaceAll(string(currentBranch), "ref: refs/heads/", ""))
 }

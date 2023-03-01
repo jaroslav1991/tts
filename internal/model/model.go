@@ -23,7 +23,7 @@ type Events struct {
 
 // AggregatorInfo - info about project from aggregator
 type AggregatorInfo struct {
-	CurrentGitBranch string
+	GitBranchesByEventUID map[string]string
 }
 
 // DataModel - internal structure for store data before dispatching

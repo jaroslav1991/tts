@@ -1,11 +1,35 @@
 package cli
 
 import (
-	"github.com/stretchr/testify/assert"
+	"encoding/json"
+	"fmt"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 
 	"github.com/jaroslav1991/tts/internal/model"
 )
+
+func Test(t *testing.T) {
+	b, _ := json.Marshal(DTO{
+		PluginType:    "jetbrains",
+		PluginVersion: "1.0.0",
+		CliType:       "macos",
+		CliVersion:    "2.1.0",
+		DeviceName:    "vasya mac",
+		Events: []DTOEvents{
+			{
+				CreatedAt: "2022-01-11 14:23:01",
+				Type:      "modify file",
+				Project:   "some project",
+				Language:  "golang",
+				Target:    "../",
+			},
+		},
+	})
+
+	fmt.Println(string(b))
+}
 
 func TestDataReader_ReadData_Positive(t *testing.T) {
 	requestData := `{

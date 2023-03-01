@@ -1,27 +1,33 @@
 package aggregator
 
 import (
-	"github.com/jaroslav1991/tts/internal/model"
-	"github.com/jaroslav1991/tts/internal/service/collector/data"
 	"log"
 	"os"
 	"strings"
+
+	"github.com/jaroslav1991/tts/internal/model"
+	"github.com/jaroslav1991/tts/internal/service/collector/data"
 )
+
+var getBranchFn = GetBranchByTarget
 
 type CurrentBranchAggregator struct {
 	data.MergeAggregator
 }
 
-// todo implement if user not using "git" and write test
-
 func (a *CurrentBranchAggregator) Aggregate(
 	info model.PluginInfo,
 	target *model.AggregatorInfo,
 ) error {
+	target.GitBranchesByEventUID = map[string]string{}
+
 	for i := range info.Events {
-		if info.Events[i].Branch == "" {
-			info.Events[i].Branch = GetBranchByTarget(info.Events[i].Target)
-			info.Events[i].Branch = target.CurrentGitBranch
+		if info.Events[i].Branch != "" {
+			continue
+		}
+
+		if eventBranch := getBranchFn(info.Events[i].Target); eventBranch != "" {
+			target.GitBranchesByEventUID[info.Events[i].Uid] = eventBranch
 		}
 	}
 

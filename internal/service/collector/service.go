@@ -2,6 +2,8 @@ package collector
 
 import (
 	"fmt"
+
+	"github.com/google/uuid"
 )
 
 func NewService(
@@ -17,6 +19,7 @@ func NewService(
 		aggregator: aggregator,
 		preparer:   preparer,
 		saver:      saver,
+		uudGenFn:   uuid.NewString,
 	}
 }
 
@@ -26,6 +29,7 @@ type Service struct {
 	aggregator DataAggregator
 	preparer   DataPreparer
 	saver      DataSaver
+	uudGenFn   func() string
 }
 
 func (s *Service) SaveData(request any) error {
@@ -36,6 +40,10 @@ func (s *Service) SaveData(request any) error {
 
 	if err := s.validator.ValidateData(pluginInfo); err != nil {
 		return fmt.Errorf("validate pluginInfo failed: %w", err)
+	}
+
+	for i := range pluginInfo.Events {
+		pluginInfo.Events[i].Uid = s.uudGenFn()
 	}
 
 	aggregated, err := s.aggregator.Aggregate(pluginInfo)

@@ -57,6 +57,9 @@ func main() {
 		return
 	}
 
+	// newCollector
+	// - receive data from plugin
+	// - aggregate advanced data
 	newCollector := collector.NewService(
 		&cli.DataReader{},
 		&data.Validator{},

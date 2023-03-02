@@ -2,7 +2,6 @@ package sender
 
 import "github.com/jaroslav1991/tts/internal/model"
 
-// todo make test
 func NewRemoteRequestDTOFromDataModels(models []model.DataModel) RemoteRequestDTO {
 	result := make(RemoteRequestDTO, len(models))
 	for i, item := range models {

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"errors"
 	"flag"
 	"log"
 	"strings"
@@ -18,21 +17,21 @@ import (
 
 var (
 	tmpFileName = flag.String(
-		"tmpFile",
-		"./tempFile",
+		"t",
+		"./stats",
 		"File for temporary storage of stats",
 	)
 
 	inputData = flag.String(
 		"d",
 		"",
-		"Stats data JSON string",
+		"Stats data in JSON format string",
 	)
 
-	pathFileName = flag.String(
-		"pathToSend",
-		"./fileToSend",
-		"File for sending to server",
+	pathToSendingFiles = flag.String(
+		"o",
+		"./outbox",
+		"Path for temporary store files",
 	)
 
 	httpRemote = flag.String(
@@ -53,7 +52,7 @@ func main() {
 	}()
 
 	if strings.TrimSpace(*inputData) == "" {
-		err = errors.New("provide stats data JSON with key -data")
+		flag.Usage()
 		return
 	}
 
@@ -76,11 +75,10 @@ func main() {
 		&sender.Sender{HttpAddr: *httpRemote},
 		&storage.Storage{
 			NewStatsFileName: *tmpFileName,
-			FilePath:         *pathFileName,
+			FilePath:         *pathToSendingFiles,
 		},
 	)
 
-	// todo собирать информацию о проекте
 	if err = newCollector.SaveData(*inputData); err != nil {
 		return
 	}

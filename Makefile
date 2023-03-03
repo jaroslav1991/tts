@@ -30,3 +30,15 @@ build_all:
 run: build_all
 
 
+.PHONY: start-mock
+start-mock:
+	go run cmd/mock/main.go
+
+.PHONY: send-test-event
+send-test-event:
+	go run ./cmd/cli/main.go -d '{"pluginType":"jetbrains","pluginVersion":"1.0.0","cliType":"macos","cliVersion":"2.1.0","deviceName":"vasyamac","events":[{"uid":"3607bbe0-2c9a-4c51-b636-5e6a7db8b574","createdAt":"2022-01-1114:23:01","type":"modifyfile","project":"someproject","language":"golang","target":"./"}]}'
+
+.PHONY: help
+help:
+	go run ./cmd/cli/main.go -h
+

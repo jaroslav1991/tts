@@ -2,27 +2,41 @@ package data
 
 import (
 	"errors"
+	"testing"
+
 	"github.com/jaroslav1991/tts/internal/model"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
-func TestAggregator_Aggregate_Empty(t *testing.T) {
+func TestAggregator_Aggregate_NoMergeAggregators(t *testing.T) {
 	aggregator := Aggregator{}
 
 	info := model.PluginInfo{
-		Program:     "test",
-		Duration:    5,
-		PathProject: "testPath",
+		PluginType:    "1",
+		PluginVersion: "1",
+		CliType:       "1",
+		CliVersion:    "1",
+		DeviceName:    "",
+		Events: []model.Events{
+			{
+				Uid:       "qwerty",
+				CreatedAt: "1",
+				Type:      "1",
+				Project:   "",
+				Language:  "",
+				Target:    "",
+				Branch:    "",
+				Params:    nil,
+			},
+		},
 	}
-	target := model.AggregatorInfo{
-		CurrentGitBranch: "",
-	}
+
+	actualAggregatedInfo := model.AggregatorInfo{}
 
 	actualData, err := aggregator.Aggregate(info)
 	assert.NoError(t, err)
 
-	assert.Equal(t, target, actualData)
+	assert.Equal(t, actualAggregatedInfo, actualData)
 }
 
 type errorMergeAggregatorMock struct{}
@@ -45,7 +59,9 @@ func TestAggregator_Aggregate_Negative(t *testing.T) {
 type mergeAggregatorMock struct{}
 
 func (m mergeAggregatorMock) Aggregate(info model.PluginInfo, target *model.AggregatorInfo) error {
-	target.CurrentGitBranch = "testBranch"
+	target.GitBranchesByEventUID = map[string]string{
+		"some-uid": "some-branch",
+	}
 	return nil
 }
 
@@ -57,13 +73,29 @@ func TestAggregator_Aggregate_Positive(t *testing.T) {
 	}
 
 	info := model.PluginInfo{
-		Program:     "test",
-		Duration:    5,
-		PathProject: "testPath",
+		PluginType:    "1",
+		PluginVersion: "1",
+		CliType:       "1",
+		CliVersion:    "1",
+		DeviceName:    "",
+		Events: []model.Events{
+			{
+				Uid:       "some-uid",
+				CreatedAt: "1",
+				Type:      "1",
+				Project:   "",
+				Language:  "",
+				Target:    "",
+				Branch:    "",
+				Params:    nil,
+			},
+		},
 	}
 
 	expected := model.AggregatorInfo{
-		CurrentGitBranch: "testBranch",
+		GitBranchesByEventUID: map[string]string{
+			"some-uid": "some-branch",
+		},
 	}
 
 	actualRes, err := aggregator.Aggregate(info)

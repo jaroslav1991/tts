@@ -117,12 +117,33 @@ func TestStorage_GetFilesToSend_Negative(t *testing.T) {
 }
 
 func TestStorage_ReadDataToSend_Positive(t *testing.T) {
-	//expectedModel := []model.PluginInfo{{Program: "test1", Duration: 2}, {Program: "test1", Duration: 2}}
 
 	expectedModel := []model.DataModel{
 		{
-			PluginInfo:     model.PluginInfo{Program: "test", Duration: 5, PathProject: "testPath"},
-			AggregatorInfo: model.AggregatorInfo{CurrentGitBranch: "testBranch"},
+			PluginInfo: model.PluginInfo{
+				PluginType:    "1",
+				PluginVersion: "1",
+				CliType:       "1",
+				CliVersion:    "1",
+				DeviceName:    "1",
+				Events: []model.Events{
+					{
+						Uid:       "some-uuid",
+						CreatedAt: "1",
+						Type:      "1",
+						Project:   "1",
+						Language:  "1",
+						Target:    "1",
+						Branch:    "testBranch",
+						Params:    nil,
+					},
+				},
+			},
+			AggregatorInfo: model.AggregatorInfo{
+				GitBranchesByEventUID: map[string]string{
+					"some-uuid": "testBranch",
+				},
+			},
 		},
 	}
 
@@ -136,7 +157,8 @@ func TestStorage_ReadDataToSend_Positive(t *testing.T) {
 	file, err := os.CreateTemp(tempDir, "testingFile")
 	assert.NoError(t, err)
 
-	_, err = file.Write([]byte(`{"PluginInfo":{"Program":"test","Duration":5,"PathProject":"testPath"},"AggregatorInfo":{"CurrentGitBranch":"testBranch"}}`))
+	// todo переделать
+	_, err = file.Write([]byte(`{"PluginInfo":{"PluginType":"1","PluginVersion":"1","CliType":"1","CliVersion":"1","DeviceName":"1","Events":[{"Uid":"some-uuid","CreatedAt":"1","Type":"1","Project":"1","Language":"1","Target":"1","Branch":"testBranch","Params":null}]},"AggregatorInfo":{"GitBranchesByEventUID":{"some-uuid":"testBranch"}}}`))
 	assert.NoError(t, err)
 	assert.NoError(t, file.Close())
 
@@ -148,7 +170,7 @@ func TestStorage_ReadDataToSend_Positive(t *testing.T) {
 }
 
 func TestStorage_ReadDataToSend_UnmarshalErr(t *testing.T) {
-	expectedModelBytes := []byte(`[{"Program": "test1", "Duration": 2}, {"Program": "test2", "Duration": 3}]`)
+	expectedModelBytes := []byte(`[{"someBadField1":"testing1"}, {"someBadFiled2":"testing2"}]`)
 	tempDir := os.TempDir() + string(os.PathSeparator) + fmt.Sprintf("%d", time.Now().UnixNano())
 
 	err := os.Mkdir(tempDir, os.ModePerm)

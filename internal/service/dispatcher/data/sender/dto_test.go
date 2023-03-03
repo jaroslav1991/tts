@@ -2,7 +2,6 @@ package sender
 
 import (
 	"testing"
-	"time"
 
 	"github.com/jaroslav1991/tts/internal/model"
 	"github.com/stretchr/testify/assert"
@@ -23,21 +22,49 @@ func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 			models: []model.DataModel{
 				{
 					PluginInfo: model.PluginInfo{
-						Program:     "program",
-						Duration:    time.Second,
-						PathProject: "some project",
+						PluginType:    "1",
+						PluginVersion: "1",
+						CliType:       "1",
+						CliVersion:    "1",
+						DeviceName:    "1",
+						Events: []model.Events{
+							{
+								Uid:       "some-uuid",
+								CreatedAt: "1",
+								Type:      "1",
+								Project:   "1",
+								Language:  "1",
+								Target:    "1",
+								Params:    nil,
+							},
+						},
 					},
 					AggregatorInfo: model.AggregatorInfo{
-						CurrentGitBranch: "master",
+						GitBranchesByEventUID: map[string]string{
+							"some-uuid": "master",
+						},
 					},
 				},
 			},
 			expected: RemoteRequestDTO{
 				{
-					Program:          "program",
-					Duration:         time.Second,
-					PathProject:      "some project",
-					CurrentGitBranch: "master",
+					PluginType:    "1",
+					PluginVersion: "1",
+					CliType:       "1",
+					CliVersion:    "1",
+					DeviceName:    "1",
+					Events: []DTOEvents{
+						{
+							Uid:       "some-uuid",
+							CreatedAt: "1",
+							Type:      "1",
+							Project:   "1",
+							Language:  "1",
+							Target:    "1",
+							Branch:    "master",
+							Params:    nil,
+						},
+					},
 				},
 			},
 		},
@@ -45,37 +72,88 @@ func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 			models: []model.DataModel{
 				{
 					PluginInfo: model.PluginInfo{
-						Program:     "program",
-						Duration:    time.Second,
-						PathProject: "some project",
+						PluginType:    "1",
+						PluginVersion: "1",
+						CliType:       "1",
+						CliVersion:    "1",
+						DeviceName:    "1",
+						Events: []model.Events{
+							{
+								Uid:       "uuid-1",
+								CreatedAt: "1",
+								Type:      "1",
+								Project:   "1",
+								Language:  "1",
+								Target:    "1",
+								Params:    nil,
+							},
+						},
 					},
-					AggregatorInfo: model.AggregatorInfo{
-						CurrentGitBranch: "master",
-					},
+					AggregatorInfo: model.AggregatorInfo{},
 				},
 				{
 					PluginInfo: model.PluginInfo{
-						Program:     "program 2",
-						Duration:    2 * time.Second,
-						PathProject: "some project 2",
+						PluginType:    "2",
+						PluginVersion: "2",
+						CliType:       "2",
+						CliVersion:    "2",
+						DeviceName:    "2",
+						Events: []model.Events{
+							{
+								Uid:       "uuid-2",
+								CreatedAt: "2",
+								Type:      "2",
+								Project:   "2",
+								Language:  "2",
+								Target:    "2",
+								Params:    nil,
+							},
+						},
 					},
 					AggregatorInfo: model.AggregatorInfo{
-						CurrentGitBranch: "some-branch",
+						GitBranchesByEventUID: map[string]string{
+							"uuid-2": "master2",
+						},
 					},
 				},
 			},
 			expected: RemoteRequestDTO{
 				{
-					Program:          "program",
-					Duration:         time.Second,
-					PathProject:      "some project",
-					CurrentGitBranch: "master",
+					PluginType:    "1",
+					PluginVersion: "1",
+					CliType:       "1",
+					CliVersion:    "1",
+					DeviceName:    "1",
+					Events: []DTOEvents{
+						{
+							Uid:       "uuid-1",
+							CreatedAt: "1",
+							Type:      "1",
+							Project:   "1",
+							Language:  "1",
+							Target:    "1",
+							Params:    nil,
+						},
+					},
 				},
 				{
-					Program:          "program 2",
-					Duration:         2 * time.Second,
-					PathProject:      "some project 2",
-					CurrentGitBranch: "some-branch",
+					PluginType:    "2",
+					PluginVersion: "2",
+					CliType:       "2",
+					CliVersion:    "2",
+					DeviceName:    "2",
+					Events: []DTOEvents{
+						{
+							Uid:       "uuid-2",
+							CreatedAt: "2",
+							Type:      "2",
+							Project:   "2",
+							Language:  "2",
+							Target:    "2",
+							Branch:    "master2",
+							Params:    nil,
+						},
+					},
 				},
 			},
 		},

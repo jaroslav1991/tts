@@ -18,8 +18,29 @@ func TestService_SendData_Positive(t *testing.T) {
 	file := "fileToSend1"
 	dataToSend := []model.DataModel{
 		{
-			PluginInfo:     model.PluginInfo{Program: "test", Duration: 5, PathProject: "testPath"},
-			AggregatorInfo: model.AggregatorInfo{CurrentGitBranch: "testBranch"},
+			PluginInfo: model.PluginInfo{
+				PluginType:    "1",
+				PluginVersion: "1",
+				CliType:       "1",
+				CliVersion:    "1",
+				DeviceName:    "1",
+				Events: []model.Events{
+					{
+						Uid:       "some-uuid",
+						CreatedAt: "1",
+						Type:      "1",
+						Project:   "1",
+						Language:  "1",
+						Target:    "1",
+						Params:    nil,
+					},
+				},
+			},
+			AggregatorInfo: model.AggregatorInfo{
+				GitBranchesByEventUID: map[string]string{
+					"some-uuid": "some-branch",
+				},
+			},
 		},
 	}
 
@@ -47,8 +68,29 @@ func TestService_SendData_Positive_WhenNoDataToFix(t *testing.T) {
 	file := "fileToSend1"
 	dataToSend := []model.DataModel{
 		{
-			PluginInfo:     model.PluginInfo{Program: "test", Duration: 5, PathProject: "testPath"},
-			AggregatorInfo: model.AggregatorInfo{CurrentGitBranch: "testBranch"},
+			PluginInfo: model.PluginInfo{
+				PluginType:    "1",
+				PluginVersion: "1",
+				CliType:       "1",
+				CliVersion:    "1",
+				DeviceName:    "1",
+				Events: []model.Events{
+					{
+						Uid:       "some-uuid",
+						CreatedAt: "1",
+						Type:      "1",
+						Project:   "1",
+						Language:  "1",
+						Target:    "1",
+						Params:    nil,
+					},
+				},
+			},
+			AggregatorInfo: model.AggregatorInfo{
+				GitBranchesByEventUID: map[string]string{
+					"some-uuid": "some-branch",
+				},
+			},
 		},
 	}
 	storage := NewMockStorage(ctrl)
@@ -76,12 +118,54 @@ func TestService_SendData_Positive_MultiFiles(t *testing.T) {
 	file2 := "fileToSend2"
 	dataToSend := []model.DataModel{
 		{
-			PluginInfo:     model.PluginInfo{Program: "test", Duration: 5, PathProject: "testPath"},
-			AggregatorInfo: model.AggregatorInfo{CurrentGitBranch: "testBranch"},
+			PluginInfo: model.PluginInfo{
+				PluginType:    "1",
+				PluginVersion: "1",
+				CliType:       "1",
+				CliVersion:    "1",
+				DeviceName:    "1",
+				Events: []model.Events{
+					{
+						Uid:       "some-uuid-1",
+						CreatedAt: "1",
+						Type:      "1",
+						Project:   "1",
+						Language:  "1",
+						Target:    "1",
+						Params:    nil,
+					},
+				},
+			},
+			AggregatorInfo: model.AggregatorInfo{
+				GitBranchesByEventUID: map[string]string{
+					"some-uuid": "some-branch-1",
+				},
+			},
 		},
 		{
-			PluginInfo:     model.PluginInfo{Program: "test2", Duration: 5, PathProject: "testPath2"},
-			AggregatorInfo: model.AggregatorInfo{CurrentGitBranch: "testBranch2"},
+			PluginInfo: model.PluginInfo{
+				PluginType:    "1",
+				PluginVersion: "1",
+				CliType:       "1",
+				CliVersion:    "1",
+				DeviceName:    "1",
+				Events: []model.Events{
+					{
+						Uid:       "some-uuid-2",
+						CreatedAt: "1",
+						Type:      "1",
+						Project:   "1",
+						Language:  "1",
+						Target:    "1",
+						Params:    nil,
+					},
+				},
+			},
+			AggregatorInfo: model.AggregatorInfo{
+				GitBranchesByEventUID: map[string]string{
+					"some-uuid": "some-branch-2",
+				},
+			},
 		},
 	}
 	storage := NewMockStorage(ctrl)
@@ -112,8 +196,29 @@ func TestService_SendData_Negative_ClearError(t *testing.T) {
 	file := "fileToSend1"
 	dataToSend := []model.DataModel{
 		{
-			PluginInfo:     model.PluginInfo{Program: "test", Duration: 5, PathProject: "testPath"},
-			AggregatorInfo: model.AggregatorInfo{CurrentGitBranch: "testBranch"},
+			PluginInfo: model.PluginInfo{
+				PluginType:    "1",
+				PluginVersion: "1",
+				CliType:       "1",
+				CliVersion:    "1",
+				DeviceName:    "1",
+				Events: []model.Events{
+					{
+						Uid:       "some-uuid",
+						CreatedAt: "1",
+						Type:      "1",
+						Project:   "1",
+						Language:  "1",
+						Target:    "1",
+						Params:    nil,
+					},
+				},
+			},
+			AggregatorInfo: model.AggregatorInfo{
+				GitBranchesByEventUID: map[string]string{
+					"some-uuid": "some-branch",
+				},
+			},
 		},
 	}
 	storage := NewMockStorage(ctrl)
@@ -142,8 +247,29 @@ func TestService_SendData_Negative_SenderError(t *testing.T) {
 	file := "fileToSend1"
 	dataToSend := []model.DataModel{
 		{
-			PluginInfo:     model.PluginInfo{Program: "test", Duration: 5, PathProject: "testPath"},
-			AggregatorInfo: model.AggregatorInfo{CurrentGitBranch: "testBranch"},
+			PluginInfo: model.PluginInfo{
+				PluginType:    "1",
+				PluginVersion: "1",
+				CliType:       "1",
+				CliVersion:    "1",
+				DeviceName:    "1",
+				Events: []model.Events{
+					{
+						Uid:       "some-uuid",
+						CreatedAt: "1",
+						Type:      "1",
+						Project:   "1",
+						Language:  "1",
+						Target:    "1",
+						Params:    nil,
+					},
+				},
+			},
+			AggregatorInfo: model.AggregatorInfo{
+				GitBranchesByEventUID: map[string]string{
+					"some-uuid": "some-branch",
+				},
+			},
 		},
 	}
 	storage := NewMockStorage(ctrl)
@@ -170,8 +296,29 @@ func TestService_SendData_Negative_ReadDataError(t *testing.T) {
 	file := "fileToSend1"
 	dataToSend := []model.DataModel{
 		{
-			PluginInfo:     model.PluginInfo{Program: "test", Duration: 5, PathProject: "testPath"},
-			AggregatorInfo: model.AggregatorInfo{CurrentGitBranch: "testBranch"},
+			PluginInfo: model.PluginInfo{
+				PluginType:    "1",
+				PluginVersion: "1",
+				CliType:       "1",
+				CliVersion:    "1",
+				DeviceName:    "1",
+				Events: []model.Events{
+					{
+						Uid:       "some-uuid",
+						CreatedAt: "1",
+						Type:      "1",
+						Project:   "1",
+						Language:  "1",
+						Target:    "1",
+						Params:    nil,
+					},
+				},
+			},
+			AggregatorInfo: model.AggregatorInfo{
+				GitBranchesByEventUID: map[string]string{
+					"some-uuid": "some-branch",
+				},
+			},
 		},
 	}
 

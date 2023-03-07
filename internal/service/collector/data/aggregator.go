@@ -2,6 +2,7 @@ package data
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/jaroslav1991/tts/internal/model"
 	"github.com/jaroslav1991/tts/internal/service/collector"
@@ -23,6 +24,7 @@ func (a *Aggregator) Aggregate(info model.PluginInfo) (model.AggregatorInfo, err
 	var result model.AggregatorInfo
 	for _, aggregator := range a.Aggregators {
 		if err := aggregator.Aggregate(info, &result); err != nil {
+			log.Printf("aggregation failed: %v", err)
 			return model.AggregatorInfo{}, fmt.Errorf("aggregation failed: %w", err)
 		}
 	}

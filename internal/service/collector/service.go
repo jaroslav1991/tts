@@ -2,6 +2,7 @@ package collector
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/google/uuid"
 )
@@ -35,10 +36,12 @@ type Service struct {
 func (s *Service) SaveData(request any) error {
 	pluginInfo, err := s.reader.ReadData(request)
 	if err != nil {
+		log.Printf("read pluginInfo from request failed: %v", err)
 		return fmt.Errorf("read pluginInfo from request failed: %w", err)
 	}
 
 	if err := s.validator.ValidateData(pluginInfo); err != nil {
+		log.Printf("validate pluginInfo failed: %v", err)
 		return fmt.Errorf("validate pluginInfo failed: %w", err)
 	}
 
@@ -48,15 +51,18 @@ func (s *Service) SaveData(request any) error {
 
 	aggregated, err := s.aggregator.Aggregate(pluginInfo)
 	if err != nil {
+		log.Printf("aggregation failed: %v", err)
 		return fmt.Errorf("aggregation failed: %w", err)
 	}
 
 	dataForSave, err := s.preparer.PrepareData(pluginInfo, aggregated)
 	if err != nil {
+		log.Printf("prepare pluginInfo for save failed: %v", err)
 		return fmt.Errorf("prepare pluginInfo for save failed: %w", err)
 	}
 
 	if err := s.saver.SaveData(dataForSave); err != nil {
+		log.Printf("save pluginInfo failed: %v", err)
 		return fmt.Errorf("save pluginInfo failed: %w", err)
 	}
 

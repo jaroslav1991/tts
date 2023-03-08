@@ -20,7 +20,6 @@ func (s *Service) SendData() error {
 
 	filesToSend, err := s.storage.GetFilesToSend()
 	if err != nil {
-		log.Println(err)
 		return err
 	}
 
@@ -28,17 +27,14 @@ func (s *Service) SendData() error {
 		dataModels, err := s.storage.ReadDataToSend(file)
 
 		if err != nil {
-			log.Println(err)
 			return err
 		}
 
 		if err := s.sender.Send(dataModels); err != nil {
-			log.Println(err)
 			return err
 		}
 
 		if err := s.storage.ClearSentData(file); err != nil {
-			log.Println(err)
 			return err
 		}
 	}

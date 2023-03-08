@@ -54,7 +54,6 @@ func (s *Storage) GetFilesToSend() ([]string, error) {
 
 	files, err := os.ReadDir(s.FilePath)
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -70,7 +69,6 @@ func (s *Storage) GetFilesToSend() ([]string, error) {
 func (s *Storage) ReadDataToSend(file string) ([]model.DataModel, error) {
 	readData, err := os.ReadFile(file)
 	if err != nil {
-		log.Println(err)
 		return nil, err
 	}
 
@@ -83,7 +81,6 @@ func (s *Storage) ReadDataToSend(file string) ([]model.DataModel, error) {
 
 		if strings.TrimSpace(line) != "" {
 			if err := json.Unmarshal([]byte(line), &dataModel); err != nil {
-				log.Printf("%v: %v", ErrUnmarshalData, err)
 				return nil, fmt.Errorf("%w: %v", ErrUnmarshalData, err)
 			}
 			dataModels = append(dataModels, dataModel)

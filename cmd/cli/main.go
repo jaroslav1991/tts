@@ -41,7 +41,7 @@ var (
 )
 
 func init() {
-	fileInfo, err := os.OpenFile("logger.txt", os.O_CREATE|os.O_APPEND|os.O_WRONLY, os.ModePerm)
+	fileInfo, err := os.OpenFile("cli-logger.txt", os.O_CREATE|os.O_APPEND|os.O_WRONLY, os.ModePerm)
 	if err != nil {
 		log.Println(err)
 		return
@@ -95,5 +95,7 @@ func main() {
 	}
 
 	err = newDispatcher.SendData()
-	log.Println("sending success")
+	if err == nil {
+		log.Println("sending success")
+	}
 }

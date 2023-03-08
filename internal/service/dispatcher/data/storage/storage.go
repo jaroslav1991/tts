@@ -28,6 +28,7 @@ type Storage struct {
 func (s *Storage) FixDataToSend() (string, error) {
 	if err := os.Mkdir(s.FilePath, os.ModePerm); err != nil {
 		if !errors.Is(err, os.ErrExist) {
+			log.Printf("can't create path: %v, %v", s.FilePath+string(os.PathSeparator), err)
 			return "", fmt.Errorf("can't create path: %v, %w", s.FilePath+string(os.PathSeparator), err)
 		}
 	}

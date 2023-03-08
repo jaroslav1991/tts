@@ -2,7 +2,6 @@ package data
 
 import (
 	"fmt"
-
 	"github.com/jaroslav1991/tts/internal/model"
 	"github.com/jaroslav1991/tts/internal/service/collector"
 )

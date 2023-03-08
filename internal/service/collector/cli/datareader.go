@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/jaroslav1991/tts/internal/model"
 	"github.com/jaroslav1991/tts/internal/service/collector"
+	"log"
 )
 
 var (
@@ -20,12 +21,14 @@ type DataReader struct {
 func (r *DataReader) ReadData(untypedRequest any) (model.PluginInfo, error) {
 	request, ok := untypedRequest.(string)
 	if !ok {
+		log.Println(ErrInvalidRequestType)
 		return model.PluginInfo{}, ErrInvalidRequestType
 	}
 
 	var dto DTO
 
 	if err := json.Unmarshal([]byte(request), &dto); err != nil {
+		log.Printf("%v: %v", ErrUnmarshalRequestData, err)
 		return model.PluginInfo{}, fmt.Errorf("%w: %v", ErrUnmarshalRequestData, err)
 	}
 

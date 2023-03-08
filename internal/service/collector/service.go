@@ -2,6 +2,7 @@ package collector
 
 import (
 	"fmt"
+	"log"
 
 	"github.com/google/uuid"
 )
@@ -53,6 +54,7 @@ func (s *Service) SaveData(request any) error {
 
 	dataForSave, err := s.preparer.PrepareData(pluginInfo, aggregated)
 	if err != nil {
+		log.Printf("prepare pluginInfo for save failed: %v", err)
 		return fmt.Errorf("prepare pluginInfo for save failed: %w", err)
 	}
 

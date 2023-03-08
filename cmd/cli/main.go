@@ -2,17 +2,16 @@ package main
 
 import (
 	"flag"
-	"log"
-	"strings"
-
+	"github.com/jaroslav1991/tts/internal/service/collector"
+	"github.com/jaroslav1991/tts/internal/service/collector/cli"
+	"github.com/jaroslav1991/tts/internal/service/collector/data"
 	"github.com/jaroslav1991/tts/internal/service/collector/data/aggregator"
 	"github.com/jaroslav1991/tts/internal/service/dispatcher"
 	"github.com/jaroslav1991/tts/internal/service/dispatcher/data/sender"
 	"github.com/jaroslav1991/tts/internal/service/dispatcher/data/storage"
-
-	"github.com/jaroslav1991/tts/internal/service/collector"
-	"github.com/jaroslav1991/tts/internal/service/collector/cli"
-	"github.com/jaroslav1991/tts/internal/service/collector/data"
+	"log"
+	"os"
+	"strings"
 )
 
 var (
@@ -41,8 +40,20 @@ var (
 	)
 )
 
+func init() {
+	fileInfo, err := os.OpenFile("cli-logger.txt", os.O_CREATE|os.O_APPEND|os.O_WRONLY, os.ModePerm)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	log.SetOutput(fileInfo)
+
+}
+
 func main() {
 	flag.Parse()
+
+	log.Println("CLI starting...")
 
 	var err error
 	defer func() {
@@ -84,4 +95,7 @@ func main() {
 	}
 
 	err = newDispatcher.SendData()
+	if err == nil {
+		log.Println("sending success")
+	}
 }

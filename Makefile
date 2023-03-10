@@ -1,4 +1,5 @@
 PROJECT_NAME=cli
+BUILD_DIR=./bin
 
 # go tool dist list
 WINDOWS=windows/386 windows/amd64 windows/arm
@@ -6,21 +7,24 @@ DARWIN=darwin/amd64 darwin/arm64
 LINUX=linux/386 linux/amd64 linux/arm linux/arm64
 PLATFORMS=$(WINDOWS) $(LINUX) $(DARWIN)
 
+run: build-all
+
 .PHONY: build-all
 build-all: $(PLATFORMS)
 
-$(WINDOWS): export EXT=.exe
-
+$(WINDOWS): EXT=.exe
 $(PLATFORMS): split=$(subst /, ,$@)
-$(PLATFORMS): export OS=$(word 1,$(split))
-$(PLATFORMS): export ARCH=$(word 2,$(split))
+$(PLATFORMS): OS=$(word 1,$(split))
+$(PLATFORMS): ARCH=$(word 2,$(split))
+$(PLATFORMS): ARTIFACT_NAME=$(PROJECT_NAME)-$(OS)-$(ARCH)$(EXT)
 $(PLATFORMS):
-	@$(MAKE) build
+	env GOOS=$(OS) GOARCH=$(ARCH) go build -o $(BUILD_DIR)/$(ARTIFACT_NAME) cmd/cli/main.go
 
-build:
-	env GOOS=$(OS) GOARCH=$(ARCH) go build -o bin/$(PROJECT_NAME)-$(OS)-$(ARCH)$(EXT) cmd/cli/main.go
+.PHONY: zip-artifacts
+zip-artifacts: $(foreach f,$(wildcard $(BUILD_DIR)/*),$(f).zip)
 
-run: build-all
+$(BUILD_DIR)/%.zip:
+	@pushd $(BUILD_DIR) && zip $*.zip $*
 
 .PHONY: start-mock
 start-mock:

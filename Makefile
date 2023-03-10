@@ -5,8 +5,7 @@ BUILD_DIR=./bin
 WINDOWS=windows/386 windows/amd64 windows/arm
 DARWIN=darwin/amd64 darwin/arm64
 LINUX=linux/386 linux/amd64 linux/arm linux/arm64
-#PLATFORMS=$(WINDOWS) $(LINUX) $(DARWIN)
-PLATFORMS=darwin/arm64
+PLATFORMS=$(WINDOWS) $(LINUX) $(DARWIN)
 
 run: build-all
 

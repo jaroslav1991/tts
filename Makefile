@@ -24,7 +24,7 @@ $(PLATFORMS):
 zip-artifacts: $(foreach f,$(wildcard $(BUILD_DIR)/*),$(f).zip)
 
 $(BUILD_DIR)/%.zip:
-	@pushd $(BUILD_DIR) && zip $*.zip $*
+	@cd $(BUILD_DIR) && zip $*.zip $*
 
 .PHONY: start-mock
 start-mock:

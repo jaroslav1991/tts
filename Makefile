@@ -1,34 +1,26 @@
 PROJECT_NAME=cli
 
-.PHONY: build_all
-build_all:
-	set GOOS=darwin
-	set GOARCH=amd64
-	go build -o bin/$(PROJECT_NAME).mac-amd64 cmd/cli/main.go
+# go tool dist list
+WINDOWS=windows/386 windows/amd64 windows/arm
+DARWIN=darwin/amd64 darwin/arm64
+LINUX=linux/386 linux/amd64 linux/arm linux/arm64
+PLATFORMS=$(WINDOWS) $(LINUX) $(DARWIN)
 
-	set GOOS=darwin
-	set GOARCH=arm64
-	go build -o bin/$(PROJECT_NAME).mac-arm64 cmd/cli/main.go
+.PHONY: build-all
+build-all: $(PLATFORMS)
 
-	set GOOS=linux
-	set GOARCH=amd64
-	go build -o bin/$(PROJECT_NAME).linux-amd64 cmd/cli/main.go
+$(WINDOWS): export EXT=.exe
 
-	set GOOS=linux
-	set GOARCH=arm64
-	go build -o bin/$(PROJECT_NAME).linux-arm64 cmd/cli/main.go
+$(PLATFORMS): split=$(subst /, ,$@)
+$(PLATFORMS): export OS=$(word 1,$(split))
+$(PLATFORMS): export ARCH=$(word 2,$(split))
+$(PLATFORMS):
+	@$(MAKE) build
 
-	set GOOS=windows
-	set GOARCH=amd64
-	go build -o bin/$(PROJECT_NAME).win-amd64.exe cmd/cli/main.go
+build:
+	env GOOS=$(OS) GOARCH=$(ARCH) go build -o bin/$(PROJECT_NAME)-$(OS)-$(ARCH)$(EXT) cmd/cli/main.go
 
-	set GOOS=windows
-	set GOARCH=arm64
-	go build -o bin/$(PROJECT_NAME).win-arm64.exe cmd/cli/main.go
-
-
-run: build_all
-
+run: build-all
 
 .PHONY: start-mock
 start-mock:
@@ -41,4 +33,3 @@ send-test-event:
 .PHONY: help
 help:
 	go run ./cmd/cli/main.go -h
-

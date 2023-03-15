@@ -52,33 +52,11 @@ func TestService_SaveData_Positive(t *testing.T) {
 	validator := NewMockDataValidator(ctrl)
 	validator.EXPECT().ValidateData(dataFromPlugin).Return(nil)
 
-	dataFromPluginWithBranch := model.PluginInfo{
-		Uid:           "qwerty123",
-		PluginType:    "type",
-		PluginVersion: "1.0.0",
-		IdeType:       "intellij ide",
-		IdeVersion:    "2.1.1",
-		Events: []model.Events{
-			{
-				CreatedAt:      "2022-02-02 10:00:00",
-				Type:           "some-type",
-				Project:        "some project",
-				ProjectBaseDir: "some-base",
-				Language:       "golang",
-				Target:         "some target",
-				Branch:         "",
-				Params: map[string]any{
-					"param1": "value1",
-				},
-			},
-		},
-	}
-
 	aggregator := NewMockDataAggregator(ctrl)
-	aggregator.EXPECT().Aggregate(dataFromPluginWithBranch).Return(aggregatedData, nil)
+	aggregator.EXPECT().Aggregate(dataFromPlugin).Return(aggregatedData, nil)
 
 	preparer := NewMockDataPreparer(ctrl)
-	preparer.EXPECT().PrepareData(dataFromPluginWithBranch, aggregatedData).Return(preparedData, nil)
+	preparer.EXPECT().PrepareData(dataFromPlugin, aggregatedData).Return(preparedData, nil)
 
 	saver := NewMockDataSaver(ctrl)
 	saver.EXPECT().SaveData(preparedData).Return(nil)

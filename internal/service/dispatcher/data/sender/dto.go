@@ -9,16 +9,17 @@ func NewRemoteRequestDTOFromDataModels(models []model.DataModel) RemoteRequestDT
 		var events []DTOEvents
 		for _, event := range item.PluginInfo.Events {
 			dtoEvent := DTOEvents{
-				Uid:       event.Uid,
-				CreatedAt: event.CreatedAt,
-				Type:      event.Type,
-				Project:   event.Project,
-				Language:  event.Language,
-				Target:    event.Target,
-				Params:    event.Params,
+				CreatedAt:      event.CreatedAt,
+				Type:           event.Type,
+				Project:        event.Project,
+				ProjectBaseDir: event.ProjectBaseDir,
+				Language:       event.Language,
+				Target:         event.Target,
+				Branch:         event.Branch,
+				Params:         event.Params,
 			}
 
-			if eventBranch, ok := item.AggregatorInfo.GitBranchesByEventUID[event.Uid]; ok {
+			if eventBranch, ok := item.AggregatorInfo.GitBranchesByProjectBaseDir[event.ProjectBaseDir]; ok {
 				dtoEvent.Branch = eventBranch
 			}
 
@@ -26,11 +27,11 @@ func NewRemoteRequestDTOFromDataModels(models []model.DataModel) RemoteRequestDT
 		}
 
 		result[i] = RemoteRequestDTOItem{
+			Uid:           item.PluginInfo.Uid,
 			PluginType:    item.PluginInfo.PluginType,
 			PluginVersion: item.PluginInfo.PluginVersion,
-			CliType:       item.PluginInfo.CliType,
-			CliVersion:    item.PluginInfo.CliVersion,
-			DeviceName:    item.PluginInfo.DeviceName,
+			IdeType:       item.PluginInfo.IdeType,
+			IdeVersion:    item.PluginInfo.IdeVersion,
 			Events:        events,
 		}
 	}
@@ -40,21 +41,21 @@ func NewRemoteRequestDTOFromDataModels(models []model.DataModel) RemoteRequestDT
 type RemoteRequestDTO []RemoteRequestDTOItem
 
 type RemoteRequestDTOItem struct {
-	PluginType    string      `json:"pluginType"`
+	Uid           string      `json:"uid"`
+	PluginType    string      `json:"PluginType"`
 	PluginVersion string      `json:"pluginVersion"`
-	CliType       string      `json:"cliType"`
-	CliVersion    string      `json:"cliVersion"`
-	DeviceName    string      `json:"deviceName,omitempty"`
+	IdeType       string      `json:"ideType,omitempty"`
+	IdeVersion    string      `json:"ideVersion,omitempty"`
 	Events        []DTOEvents `json:"events"`
 }
 
 type DTOEvents struct {
-	Uid       string         `json:"uid"`
-	CreatedAt string         `json:"createdAt"`
-	Type      string         `json:"type"`
-	Project   string         `json:"project,omitempty"`
-	Language  string         `json:"language,omitempty"`
-	Target    string         `json:"target,omitempty"`
-	Branch    string         `json:"branch,omitempty"`
-	Params    map[string]any `json:"params,omitempty"`
+	CreatedAt      string         `json:"createdAt"`
+	Type           string         `json:"type"`
+	Project        string         `json:"project,omitempty"`
+	ProjectBaseDir string         `json:"projectBaseDir,omitempty"`
+	Language       string         `json:"language,omitempty"`
+	Target         string         `json:"target,omitempty"`
+	Branch         string         `json:"branch,omitempty"`
+	Params         map[string]any `json:"params,omitempty"`
 }

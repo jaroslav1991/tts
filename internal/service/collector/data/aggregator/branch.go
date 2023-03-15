@@ -9,7 +9,7 @@ import (
 	"github.com/jaroslav1991/tts/internal/service/collector/data"
 )
 
-var getBranchFn = GetBranchByTarget
+var getBranchFn = GetBranchByProjectBaseDir
 
 type CurrentBranchAggregator struct {
 	data.MergeAggregator
@@ -19,23 +19,24 @@ func (a *CurrentBranchAggregator) Aggregate(
 	info model.PluginInfo,
 	target *model.AggregatorInfo,
 ) error {
-	target.GitBranchesByEventUID = map[string]string{}
+	target.GitBranchesByProjectBaseDir = map[string]string{}
 
 	for i := range info.Events {
 		if info.Events[i].Branch != "" {
 			continue
 		}
 
-		if eventBranch := getBranchFn(info.Events[i].Target); eventBranch != "" {
-			target.GitBranchesByEventUID[info.Events[i].Uid] = eventBranch
+		if eventBranch := getBranchFn(info.Events[i].ProjectBaseDir); eventBranch != "" {
+			//target.GitBranchesByEventUID[info.Events[i].Uid] = eventBranch
+			target.GitBranchesByProjectBaseDir[info.Events[i].ProjectBaseDir] = eventBranch
 		}
 	}
 
 	return nil
 }
 
-func GetBranchByTarget(target string) string {
-	filename := target + string(os.PathSeparator) + ".git" + string(os.PathSeparator) + "HEAD"
+func GetBranchByProjectBaseDir(projectBaseDir string) string {
+	filename := projectBaseDir + string(os.PathSeparator) + ".git" + string(os.PathSeparator) + "HEAD"
 
 	currentBranch, err := os.ReadFile(filename)
 	if err != nil {

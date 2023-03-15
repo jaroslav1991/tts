@@ -12,21 +12,21 @@ func TestAggregator_Aggregate_NoMergeAggregators(t *testing.T) {
 	aggregator := Aggregator{}
 
 	info := model.PluginInfo{
+		Uid:           "qwerty123",
 		PluginType:    "1",
 		PluginVersion: "1",
-		CliType:       "1",
-		CliVersion:    "1",
-		DeviceName:    "",
+		IdeType:       "",
+		IdeVersion:    "",
 		Events: []model.Events{
 			{
-				Uid:       "qwerty",
-				CreatedAt: "1",
-				Type:      "1",
-				Project:   "",
-				Language:  "",
-				Target:    "",
-				Branch:    "",
-				Params:    nil,
+				CreatedAt:      "1",
+				Type:           "",
+				Project:        "",
+				ProjectBaseDir: "",
+				Language:       "",
+				Target:         "",
+				Branch:         "",
+				Params:         nil,
 			},
 		},
 	}
@@ -59,8 +59,8 @@ func TestAggregator_Aggregate_Negative(t *testing.T) {
 type mergeAggregatorMock struct{}
 
 func (m mergeAggregatorMock) Aggregate(info model.PluginInfo, target *model.AggregatorInfo) error {
-	target.GitBranchesByEventUID = map[string]string{
-		"some-uid": "some-branch",
+	target.GitBranchesByProjectBaseDir = map[string]string{
+		"some-base": "some-branch",
 	}
 	return nil
 }
@@ -73,28 +73,28 @@ func TestAggregator_Aggregate_Positive(t *testing.T) {
 	}
 
 	info := model.PluginInfo{
+		Uid:           "qwerty123",
 		PluginType:    "1",
 		PluginVersion: "1",
-		CliType:       "1",
-		CliVersion:    "1",
-		DeviceName:    "",
+		IdeType:       "",
+		IdeVersion:    "",
 		Events: []model.Events{
 			{
-				Uid:       "some-uid",
-				CreatedAt: "1",
-				Type:      "1",
-				Project:   "",
-				Language:  "",
-				Target:    "",
-				Branch:    "",
-				Params:    nil,
+				CreatedAt:      "1",
+				Type:           "1",
+				Project:        "",
+				ProjectBaseDir: "some-base",
+				Language:       "",
+				Target:         "",
+				Branch:         "",
+				Params:         nil,
 			},
 		},
 	}
 
 	expected := model.AggregatorInfo{
-		GitBranchesByEventUID: map[string]string{
-			"some-uid": "some-branch",
+		GitBranchesByProjectBaseDir: map[string]string{
+			"some-base": "some-branch",
 		},
 	}
 

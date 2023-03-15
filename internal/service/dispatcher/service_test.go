@@ -19,26 +19,27 @@ func TestService_SendData_Positive(t *testing.T) {
 	dataToSend := []model.DataModel{
 		{
 			PluginInfo: model.PluginInfo{
+				Uid:           "qwerty123",
 				PluginType:    "1",
 				PluginVersion: "1",
-				CliType:       "1",
-				CliVersion:    "1",
-				DeviceName:    "1",
+				IdeType:       "1",
+				IdeVersion:    "1",
 				Events: []model.Events{
 					{
-						Uid:       "some-uuid",
-						CreatedAt: "1",
-						Type:      "1",
-						Project:   "1",
-						Language:  "1",
-						Target:    "1",
-						Params:    nil,
+						CreatedAt:      "1",
+						Type:           "1",
+						Project:        "1",
+						ProjectBaseDir: "some-base",
+						Language:       "1",
+						Target:         "1",
+						Branch:         "",
+						Params:         nil,
 					},
 				},
 			},
 			AggregatorInfo: model.AggregatorInfo{
-				GitBranchesByEventUID: map[string]string{
-					"some-uuid": "some-branch",
+				GitBranchesByProjectBaseDir: map[string]string{
+					"some-base": "some-branch",
 				},
 			},
 		},
@@ -69,26 +70,27 @@ func TestService_SendData_Positive_WhenNoDataToFix(t *testing.T) {
 	dataToSend := []model.DataModel{
 		{
 			PluginInfo: model.PluginInfo{
+				Uid:           "qwerty123",
 				PluginType:    "1",
 				PluginVersion: "1",
-				CliType:       "1",
-				CliVersion:    "1",
-				DeviceName:    "1",
+				IdeType:       "1",
+				IdeVersion:    "1",
 				Events: []model.Events{
 					{
-						Uid:       "some-uuid",
-						CreatedAt: "1",
-						Type:      "1",
-						Project:   "1",
-						Language:  "1",
-						Target:    "1",
-						Params:    nil,
+						CreatedAt:      "1",
+						Type:           "1",
+						Project:        "1",
+						ProjectBaseDir: "some-base",
+						Language:       "1",
+						Target:         "1",
+						Branch:         "",
+						Params:         nil,
 					},
 				},
 			},
 			AggregatorInfo: model.AggregatorInfo{
-				GitBranchesByEventUID: map[string]string{
-					"some-uuid": "some-branch",
+				GitBranchesByProjectBaseDir: map[string]string{
+					"some-base": "some-branch",
 				},
 			},
 		},
@@ -119,51 +121,53 @@ func TestService_SendData_Positive_MultiFiles(t *testing.T) {
 	dataToSend := []model.DataModel{
 		{
 			PluginInfo: model.PluginInfo{
+				Uid:           "qwerty123",
 				PluginType:    "1",
 				PluginVersion: "1",
-				CliType:       "1",
-				CliVersion:    "1",
-				DeviceName:    "1",
+				IdeType:       "1",
+				IdeVersion:    "1",
 				Events: []model.Events{
 					{
-						Uid:       "some-uuid-1",
-						CreatedAt: "1",
-						Type:      "1",
-						Project:   "1",
-						Language:  "1",
-						Target:    "1",
-						Params:    nil,
+						CreatedAt:      "1",
+						Type:           "1",
+						Project:        "1",
+						ProjectBaseDir: "some-base",
+						Language:       "1",
+						Target:         "1",
+						Branch:         "",
+						Params:         nil,
 					},
 				},
 			},
 			AggregatorInfo: model.AggregatorInfo{
-				GitBranchesByEventUID: map[string]string{
-					"some-uuid": "some-branch-1",
+				GitBranchesByProjectBaseDir: map[string]string{
+					"some-base": "some-branch-1",
 				},
 			},
 		},
 		{
 			PluginInfo: model.PluginInfo{
+				Uid:           "qwerty123",
 				PluginType:    "1",
 				PluginVersion: "1",
-				CliType:       "1",
-				CliVersion:    "1",
-				DeviceName:    "1",
+				IdeType:       "1",
+				IdeVersion:    "1",
 				Events: []model.Events{
 					{
-						Uid:       "some-uuid-2",
-						CreatedAt: "1",
-						Type:      "1",
-						Project:   "1",
-						Language:  "1",
-						Target:    "1",
-						Params:    nil,
+						CreatedAt:      "1",
+						Type:           "1",
+						Project:        "1",
+						ProjectBaseDir: "some-base-2",
+						Language:       "1",
+						Target:         "1",
+						Branch:         "",
+						Params:         nil,
 					},
 				},
 			},
 			AggregatorInfo: model.AggregatorInfo{
-				GitBranchesByEventUID: map[string]string{
-					"some-uuid": "some-branch-2",
+				GitBranchesByProjectBaseDir: map[string]string{
+					"some-base-2": "some-branch-2",
 				},
 			},
 		},
@@ -197,26 +201,27 @@ func TestService_SendData_Negative_ClearError(t *testing.T) {
 	dataToSend := []model.DataModel{
 		{
 			PluginInfo: model.PluginInfo{
+				Uid:           "qwerty123",
 				PluginType:    "1",
 				PluginVersion: "1",
-				CliType:       "1",
-				CliVersion:    "1",
-				DeviceName:    "1",
+				IdeType:       "1",
+				IdeVersion:    "1",
 				Events: []model.Events{
 					{
-						Uid:       "some-uuid",
-						CreatedAt: "1",
-						Type:      "1",
-						Project:   "1",
-						Language:  "1",
-						Target:    "1",
-						Params:    nil,
+						CreatedAt:      "1",
+						Type:           "1",
+						Project:        "1",
+						ProjectBaseDir: "some-base",
+						Language:       "1",
+						Target:         "1",
+						Branch:         "",
+						Params:         nil,
 					},
 				},
 			},
 			AggregatorInfo: model.AggregatorInfo{
-				GitBranchesByEventUID: map[string]string{
-					"some-uuid": "some-branch",
+				GitBranchesByProjectBaseDir: map[string]string{
+					"some-base": "some-branch",
 				},
 			},
 		},
@@ -248,26 +253,27 @@ func TestService_SendData_Negative_SenderError(t *testing.T) {
 	dataToSend := []model.DataModel{
 		{
 			PluginInfo: model.PluginInfo{
+				Uid:           "qwerty123",
 				PluginType:    "1",
 				PluginVersion: "1",
-				CliType:       "1",
-				CliVersion:    "1",
-				DeviceName:    "1",
+				IdeType:       "1",
+				IdeVersion:    "1",
 				Events: []model.Events{
 					{
-						Uid:       "some-uuid",
-						CreatedAt: "1",
-						Type:      "1",
-						Project:   "1",
-						Language:  "1",
-						Target:    "1",
-						Params:    nil,
+						CreatedAt:      "1",
+						Type:           "1",
+						Project:        "1",
+						ProjectBaseDir: "some-base",
+						Language:       "1",
+						Target:         "1",
+						Branch:         "",
+						Params:         nil,
 					},
 				},
 			},
 			AggregatorInfo: model.AggregatorInfo{
-				GitBranchesByEventUID: map[string]string{
-					"some-uuid": "some-branch",
+				GitBranchesByProjectBaseDir: map[string]string{
+					"some-base": "some-branch",
 				},
 			},
 		},
@@ -297,26 +303,27 @@ func TestService_SendData_Negative_ReadDataError(t *testing.T) {
 	dataToSend := []model.DataModel{
 		{
 			PluginInfo: model.PluginInfo{
+				Uid:           "qwerty123",
 				PluginType:    "1",
 				PluginVersion: "1",
-				CliType:       "1",
-				CliVersion:    "1",
-				DeviceName:    "1",
+				IdeType:       "1",
+				IdeVersion:    "1",
 				Events: []model.Events{
 					{
-						Uid:       "some-uuid",
-						CreatedAt: "1",
-						Type:      "1",
-						Project:   "1",
-						Language:  "1",
-						Target:    "1",
-						Params:    nil,
+						CreatedAt:      "1",
+						Type:           "1",
+						Project:        "1",
+						ProjectBaseDir: "some-base",
+						Language:       "1",
+						Target:         "1",
+						Branch:         "",
+						Params:         nil,
 					},
 				},
 			},
 			AggregatorInfo: model.AggregatorInfo{
-				GitBranchesByEventUID: map[string]string{
-					"some-uuid": "some-branch",
+				GitBranchesByProjectBaseDir: map[string]string{
+					"some-base": "some-branch",
 				},
 			},
 		},

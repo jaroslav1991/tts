@@ -17,18 +17,20 @@ func TestService_SaveData_Positive(t *testing.T) {
 	request := "some request"
 
 	dataFromPlugin := model.PluginInfo{
+		Uid:           "qwerty123",
 		PluginType:    "type",
 		PluginVersion: "1.0.0",
-		CliType:       "macos",
-		CliVersion:    "3.9.1",
-		DeviceName:    "bambook",
+		IdeType:       "intellij ide",
+		IdeVersion:    "2.1.1",
 		Events: []model.Events{
 			{
-				CreatedAt: "2022-02-02 10:00:00",
-				Type:      "some-type",
-				Project:   "some project",
-				Language:  "golang",
-				Target:    "some target",
+				CreatedAt:      "2022-02-02 10:00:00",
+				Type:           "some-type",
+				Project:        "some project",
+				ProjectBaseDir: "some-base",
+				Language:       "golang",
+				Target:         "some target",
+				Branch:         "",
 				Params: map[string]any{
 					"param1": "value1",
 				},
@@ -37,8 +39,8 @@ func TestService_SaveData_Positive(t *testing.T) {
 	}
 
 	aggregatedData := model.AggregatorInfo{
-		GitBranchesByEventUID: map[string]string{
-			"some-uuid": "some-branch",
+		GitBranchesByProjectBaseDir: map[string]string{
+			"some-base": "some-branch",
 		},
 	}
 
@@ -50,20 +52,21 @@ func TestService_SaveData_Positive(t *testing.T) {
 	validator := NewMockDataValidator(ctrl)
 	validator.EXPECT().ValidateData(dataFromPlugin).Return(nil)
 
-	dataFromPluginWithUUID := model.PluginInfo{
+	dataFromPluginWithBranch := model.PluginInfo{
+		Uid:           "qwerty123",
 		PluginType:    "type",
 		PluginVersion: "1.0.0",
-		CliType:       "macos",
-		CliVersion:    "3.9.1",
-		DeviceName:    "bambook",
+		IdeType:       "intellij ide",
+		IdeVersion:    "2.1.1",
 		Events: []model.Events{
 			{
-				Uid:       "some-uuid",
-				CreatedAt: "2022-02-02 10:00:00",
-				Type:      "some-type",
-				Project:   "some project",
-				Language:  "golang",
-				Target:    "some target",
+				CreatedAt:      "2022-02-02 10:00:00",
+				Type:           "some-type",
+				Project:        "some project",
+				ProjectBaseDir: "some-base",
+				Language:       "golang",
+				Target:         "some target",
+				Branch:         "",
 				Params: map[string]any{
 					"param1": "value1",
 				},
@@ -72,18 +75,15 @@ func TestService_SaveData_Positive(t *testing.T) {
 	}
 
 	aggregator := NewMockDataAggregator(ctrl)
-	aggregator.EXPECT().Aggregate(dataFromPluginWithUUID).Return(aggregatedData, nil)
+	aggregator.EXPECT().Aggregate(dataFromPluginWithBranch).Return(aggregatedData, nil)
 
 	preparer := NewMockDataPreparer(ctrl)
-	preparer.EXPECT().PrepareData(dataFromPluginWithUUID, aggregatedData).Return(preparedData, nil)
+	preparer.EXPECT().PrepareData(dataFromPluginWithBranch, aggregatedData).Return(preparedData, nil)
 
 	saver := NewMockDataSaver(ctrl)
 	saver.EXPECT().SaveData(preparedData).Return(nil)
 
 	service := NewService(reader, validator, aggregator, preparer, saver)
-	service.uudGenFn = func() string {
-		return "some-uuid"
-	}
 
 	assert.NoError(t, service.SaveData(request))
 }
@@ -100,17 +100,15 @@ func TestService_SaveData_Negative_SaveError(t *testing.T) {
 		},
 	}
 
-	dataFromPluginWithUUID := model.PluginInfo{
+	dataFromPluginWithBranch := model.PluginInfo{
 		Events: []model.Events{
-			{
-				Uid: "some-uuid",
-			},
+			{},
 		},
 	}
 
 	aggregatedData := model.AggregatorInfo{
-		GitBranchesByEventUID: map[string]string{
-			"some-uuid": "some-branch",
+		GitBranchesByProjectBaseDir: map[string]string{
+			"some-base": "some-branch",
 		},
 	}
 
@@ -125,18 +123,15 @@ func TestService_SaveData_Negative_SaveError(t *testing.T) {
 	validator.EXPECT().ValidateData(dataFromPlugin).Return(nil)
 
 	aggregator := NewMockDataAggregator(ctrl)
-	aggregator.EXPECT().Aggregate(dataFromPluginWithUUID).Return(aggregatedData, nil)
+	aggregator.EXPECT().Aggregate(dataFromPluginWithBranch).Return(aggregatedData, nil)
 
 	preparer := NewMockDataPreparer(ctrl)
-	preparer.EXPECT().PrepareData(dataFromPluginWithUUID, aggregatedData).Return(preparedData, nil)
+	preparer.EXPECT().PrepareData(dataFromPluginWithBranch, aggregatedData).Return(preparedData, nil)
 
 	saver := NewMockDataSaver(ctrl)
 	saver.EXPECT().SaveData(preparedData).Return(err)
 
 	service := NewService(reader, validator, aggregator, preparer, saver)
-	service.uudGenFn = func() string {
-		return "some-uuid"
-	}
 
 	assert.Error(t, service.SaveData(request))
 }
@@ -153,17 +148,15 @@ func TestService_SaveData_Negative_PrepareError(t *testing.T) {
 		},
 	}
 
-	dataFromPluginWithUUID := model.PluginInfo{
+	dataFromPluginWithBranch := model.PluginInfo{
 		Events: []model.Events{
-			{
-				Uid: "some-uuid",
-			},
+			{},
 		},
 	}
 
 	aggregatedData := model.AggregatorInfo{
-		GitBranchesByEventUID: map[string]string{
-			"some-uuid": "some-branch",
+		GitBranchesByProjectBaseDir: map[string]string{
+			"some-base": "some-branch",
 		},
 	}
 
@@ -176,17 +169,15 @@ func TestService_SaveData_Negative_PrepareError(t *testing.T) {
 	validator.EXPECT().ValidateData(dataFromPlugin).Return(nil)
 
 	aggregator := NewMockDataAggregator(ctrl)
-	aggregator.EXPECT().Aggregate(dataFromPluginWithUUID).Return(aggregatedData, nil)
+	aggregator.EXPECT().Aggregate(dataFromPluginWithBranch).Return(aggregatedData, nil)
 
 	preparer := NewMockDataPreparer(ctrl)
-	preparer.EXPECT().PrepareData(dataFromPluginWithUUID, aggregatedData).Return(nil, err)
+	preparer.EXPECT().PrepareData(dataFromPluginWithBranch, aggregatedData).Return(nil, err)
 
 	saver := NewMockDataSaver(ctrl)
 
 	service := NewService(reader, validator, aggregator, preparer, saver)
-	service.uudGenFn = func() string {
-		return "some-uuid"
-	}
+
 	assert.Error(t, service.SaveData(request))
 }
 
@@ -202,11 +193,9 @@ func TestService_SaveData_Negative_AggregatorError(t *testing.T) {
 		},
 	}
 
-	dataFromPluginWithUUID := model.PluginInfo{
+	dataFromPluginWithBranch := model.PluginInfo{
 		Events: []model.Events{
-			{
-				Uid: "some-uuid",
-			},
+			{},
 		},
 	}
 
@@ -219,15 +208,13 @@ func TestService_SaveData_Negative_AggregatorError(t *testing.T) {
 	validator.EXPECT().ValidateData(dataFromPlugin).Return(nil)
 
 	aggregator := NewMockDataAggregator(ctrl)
-	aggregator.EXPECT().Aggregate(dataFromPluginWithUUID).Return(model.AggregatorInfo{}, err)
+	aggregator.EXPECT().Aggregate(dataFromPluginWithBranch).Return(model.AggregatorInfo{}, err)
 
 	preparer := NewMockDataPreparer(ctrl)
 	saver := NewMockDataSaver(ctrl)
 
 	service := NewService(reader, validator, aggregator, preparer, saver)
-	service.uudGenFn = func() string {
-		return "some-uuid"
-	}
+
 	assert.Error(t, service.SaveData(request))
 }
 
@@ -256,9 +243,7 @@ func TestService_SaveData_Negative_ValidateError(t *testing.T) {
 	saver := NewMockDataSaver(ctrl)
 
 	service := NewService(reader, validator, aggregator, preparer, saver)
-	service.uudGenFn = func() string {
-		return "some-uuid"
-	}
+
 	assert.Error(t, service.SaveData(request))
 }
 
@@ -279,8 +264,6 @@ func TestService_SaveData_Negative_ReadError(t *testing.T) {
 	saver := NewMockDataSaver(ctrl)
 
 	service := NewService(reader, validator, aggregator, preparer, saver)
-	service.uudGenFn = func() string {
-		return "some-uuid"
-	}
+
 	assert.Error(t, service.SaveData(request))
 }

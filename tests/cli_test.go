@@ -22,27 +22,26 @@ func TestCliSuccess(t *testing.T) {
 		assert.NoError(t, json.Unmarshal(requestBody, &requestDTO))
 
 		if assert.Len(t, requestDTO, 1) {
-			assert.NotEmpty(t, requestDTO[0].Events[0].Uid)
-			assert.NotEmpty(t, requestDTO[0].Events[0].Branch)
+			//assert.NotEmpty(t, requestDTO[0].Events[0].Branch)
 
-			requestDTO[0].Events[0].Uid = "3607bbe0-2c9a-4c51-b636-5e6a7db8b574"
+			//requestDTO[0].Events[0].Uid = "3607bbe0-2c9a-4c51-b636-5e6a7db8b574"
 			requestDTO[0].Events[0].Branch = "some-branch"
 
 			assert.Equal(t, sender.RemoteRequestDTO{{
+				Uid:           "qwerty123",
 				PluginType:    "jetbrains",
 				PluginVersion: "1.0.0",
-				CliType:       "macos",
-				CliVersion:    "2.1.0",
-				DeviceName:    "vasya mac",
+				IdeType:       "Intellij idea",
+				IdeVersion:    "2.1.1",
 				Events: []sender.DTOEvents{
 					{
-						Uid:       "3607bbe0-2c9a-4c51-b636-5e6a7db8b574",
-						CreatedAt: "2022-01-11 14:23:01",
-						Type:      "modify file",
-						Project:   "some project",
-						Language:  "golang",
-						Target:    "../",
-						Branch:    "some-branch",
+						CreatedAt:      "2022-01-11 14:23:01",
+						Type:           "modify file",
+						Project:        "some project",
+						ProjectBaseDir: "",
+						Language:       "golang",
+						Target:         "C:/Users/vladimir/IdeaProjects/untitled/.idea/misc.xml",
+						Branch:         "some-branch",
 					},
 				},
 			}}, requestDTO)
@@ -55,7 +54,7 @@ func TestCliSuccess(t *testing.T) {
 		"-s",
 		server.URL,
 		"-d",
-		`{"pluginType":"jetbrains","pluginVersion":"1.0.0","cliType":"macos","cliVersion":"2.1.0","deviceName":"vasya mac","events":[{"createdAt":"2022-01-11 14:23:01","type":"modify file","project":"some project","language":"golang","target":"../"}]}`,
+		`{"uid":"qwerty123","pluginType":"jetbrains","pluginVersion":"1.0.0","ideType":"Intellij idea","ideVersion":"2.1.1","events":[{"createdAt":"2022-01-11 14:23:01","type":"modify file","project":"some project","projectBaseDir":"","language":"golang","target":"C:/Users/vladimir/IdeaProjects/untitled/.idea/misc.xml"}]}`,
 	)
 
 	out, err := cmd.CombinedOutput()

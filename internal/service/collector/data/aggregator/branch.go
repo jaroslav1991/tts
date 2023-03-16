@@ -27,7 +27,6 @@ func (a *CurrentBranchAggregator) Aggregate(
 		}
 
 		if eventBranch := getBranchFn(info.Events[i].ProjectBaseDir); eventBranch != "" {
-			//target.GitBranchesByEventUID[info.Events[i].Uid] = eventBranch
 			target.GitBranchesByProjectBaseDir[info.Events[i].ProjectBaseDir] = eventBranch
 		}
 	}

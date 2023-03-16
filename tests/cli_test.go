@@ -22,10 +22,8 @@ func TestCliSuccess(t *testing.T) {
 		assert.NoError(t, json.Unmarshal(requestBody, &requestDTO))
 
 		if assert.Len(t, requestDTO, 1) {
-			//assert.NotEmpty(t, requestDTO[0].Events[0].Branch)
-
-			//requestDTO[0].Events[0].Uid = "3607bbe0-2c9a-4c51-b636-5e6a7db8b574"
 			requestDTO[0].Events[0].Branch = "some-branch"
+			assert.NotEmpty(t, requestDTO[0].Events[0].Branch)
 
 			assert.Equal(t, sender.RemoteRequestDTO{{
 				Uid:           "qwerty123",

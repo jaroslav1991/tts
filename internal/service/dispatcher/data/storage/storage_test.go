@@ -121,27 +121,27 @@ func TestStorage_ReadDataToSend_Positive(t *testing.T) {
 	expectedModel := []model.DataModel{
 		{
 			PluginInfo: model.PluginInfo{
+				Uid:           "qwerty123",
 				PluginType:    "1",
 				PluginVersion: "1",
-				CliType:       "1",
-				CliVersion:    "1",
-				DeviceName:    "1",
+				IdeType:       "1",
+				IdeVersion:    "1",
 				Events: []model.Events{
 					{
-						Uid:       "some-uuid",
-						CreatedAt: "1",
-						Type:      "1",
-						Project:   "1",
-						Language:  "1",
-						Target:    "1",
-						Branch:    "testBranch",
-						Params:    nil,
+						CreatedAt:      "1",
+						Type:           "1",
+						Project:        "1",
+						ProjectBaseDir: "some-base",
+						Language:       "1",
+						Target:         "1",
+						Branch:         "testBranch",
+						Params:         nil,
 					},
 				},
 			},
 			AggregatorInfo: model.AggregatorInfo{
-				GitBranchesByEventUID: map[string]string{
-					"some-uuid": "testBranch",
+				GitBranchesByProjectBaseDir: map[string]string{
+					"some-base": "testBranch",
 				},
 			},
 		},
@@ -158,7 +158,7 @@ func TestStorage_ReadDataToSend_Positive(t *testing.T) {
 	assert.NoError(t, err)
 
 	// todo переделать
-	_, err = file.Write([]byte(`{"PluginInfo":{"PluginType":"1","PluginVersion":"1","CliType":"1","CliVersion":"1","DeviceName":"1","Events":[{"Uid":"some-uuid","CreatedAt":"1","Type":"1","Project":"1","Language":"1","Target":"1","Branch":"testBranch","Params":null}]},"AggregatorInfo":{"GitBranchesByEventUID":{"some-uuid":"testBranch"}}}`))
+	_, err = file.Write([]byte(`{"PluginInfo":{"Uid":"qwerty123","PluginType":"1","PluginVersion":"1","IdeType":"1","IdeVersion":"1","Events":[{"CreatedAt":"1","Type":"1","Project":"1","ProjectBaseDir":"some-base","Language":"1","Target":"1","Branch":"testBranch","Params":null}]},"AggregatorInfo":{"GitBranchesByProjectBaseDir":{"some-base":"testBranch"}}}`))
 	assert.NoError(t, err)
 	assert.NoError(t, file.Close())
 

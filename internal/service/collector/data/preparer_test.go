@@ -12,34 +12,34 @@ func TestPreparer_PrepareData(t *testing.T) {
 	preparer := Preparer{}
 
 	pluginInfo := model.PluginInfo{
+		Uid:           "qwerty123",
 		PluginType:    "1",
 		PluginVersion: "1",
-		CliType:       "1",
-		CliVersion:    "1",
-		DeviceName:    "",
+		IdeType:       "",
+		IdeVersion:    "",
 		Events: []model.Events{
 			{
-				Uid:       "some-uuid",
-				CreatedAt: "1",
-				Type:      "1",
-				Project:   "",
-				Language:  "",
-				Target:    "",
-				Branch:    "",
-				Params:    nil,
+				CreatedAt:      "1",
+				Type:           "1",
+				Project:        "",
+				ProjectBaseDir: "1",
+				Language:       "",
+				Target:         "",
+				Branch:         "",
+				Params:         nil,
 			},
 		},
 	}
 
 	aggregationInfo := model.AggregatorInfo{
-		GitBranchesByEventUID: map[string]string{
-			"some-uuid": "some-branch",
+		GitBranchesByProjectBaseDir: map[string]string{
+			"1": "some-branch",
 		},
 	}
 
 	actualData, err := preparer.PrepareData(pluginInfo, aggregationInfo)
 	assert.NoError(t, err)
 
-	expected := `{"PluginInfo":{"PluginType":"1","PluginVersion":"1","CliType":"1","CliVersion":"1","DeviceName":"","Events":[{"Uid":"some-uuid","CreatedAt":"1","Type":"1","Project":"","Language":"","Target":"","Branch":"","Params":null}]},"AggregatorInfo":{"GitBranchesByEventUID":{"some-uuid":"some-branch"}}}`
+	expected := `{"PluginInfo":{"Uid":"qwerty123","PluginType":"1","PluginVersion":"1","IdeType":"","IdeVersion":"","Events":[{"CreatedAt":"1","Type":"1","Project":"","ProjectBaseDir":"1","Language":"","Target":"","Branch":"","Params":null}]},"AggregatorInfo":{"GitBranchesByProjectBaseDir":{"1":"some-branch"}}}`
 	assert.Equal(t, expected, string(actualData))
 }

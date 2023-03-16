@@ -9,10 +9,9 @@ import (
 )
 
 var (
+	ErrInvalidUidField           = errors.New("invalid uid field")
 	ErrInvalidPluginTypeField    = errors.New("invalid plugin type field")
 	ErrInvalidPluginVersionField = errors.New("invalid plugin version field")
-	ErrInvalidCliTypeFiled       = errors.New("invalid cli type field")
-	ErrInvalidCliVersionFiled    = errors.New("invalid cli version field")
 	ErrInvalidCreatedAtFiled     = errors.New("invalid created at field")
 	ErrInvalidTypeFiled          = errors.New("invalid type field")
 )
@@ -22,20 +21,16 @@ type Validator struct {
 }
 
 func (v Validator) ValidateData(data model.PluginInfo) error {
+	if strings.TrimSpace(data.Uid) == "" {
+		return ErrInvalidUidField
+	}
+
 	if strings.TrimSpace(data.PluginType) == "" {
 		return ErrInvalidPluginTypeField
 	}
 
 	if strings.TrimSpace(data.PluginVersion) == "" {
 		return ErrInvalidPluginVersionField
-	}
-
-	if strings.TrimSpace(data.CliType) == "" {
-		return ErrInvalidCliTypeFiled
-	}
-
-	if strings.TrimSpace(data.CliVersion) == "" {
-		return ErrInvalidCliVersionFiled
 	}
 
 	for _, event := range data.Events {

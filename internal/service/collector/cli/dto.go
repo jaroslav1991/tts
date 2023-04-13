@@ -2,7 +2,7 @@ package cli
 
 type DTO struct {
 	Uid           string      `json:"uid"`
-	PluginType    string      `json:"PluginType"`
+	PluginType    string      `json:"pluginType"`
 	PluginVersion string      `json:"pluginVersion"`
 	IdeType       string      `json:"ideType,omitempty"`
 	IdeVersion    string      `json:"ideVersion,omitempty"`

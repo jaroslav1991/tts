@@ -13,7 +13,7 @@ func TestSender_Send_Positive(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		body, err := io.ReadAll(request.Body)
 		assert.NoError(t, err)
-		assert.Equal(t, `[{"uid":"qwerty123","PluginType":"1","pluginVersion":"1","ideType":"1","ideVersion":"1","events":[{"createdAt":"1","type":"1","project":"1","projectBaseDir":"some-base","language":"1","target":"1","branch":"some-branch"}]}]`, string(body))
+		assert.Equal(t, `[{"uid":"qwerty123","pluginType":"1","pluginVersion":"1","ideType":"1","ideVersion":"1","events":[{"createdAt":"1","type":"1","project":"1","projectBaseDir":"some-base","language":"1","target":"1","branch":"some-branch"}]}]`, string(body))
 	}))
 
 	actualData := []model.DataModel{

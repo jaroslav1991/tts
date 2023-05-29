@@ -20,7 +20,7 @@ func TestSender_Send_Positive(t *testing.T) {
 	}))
 
 	req := httptest.NewRequest("POST", "/events", bytes.NewBuffer([]byte(reqData)))
-	req.Header.Set("Authorization", "token")
+	req.Header.Set("Authorization", "Bearer token")
 
 	actualData := []model.DataModel{
 		{
@@ -54,5 +54,5 @@ func TestSender_Send_Positive(t *testing.T) {
 	sender := Sender{HttpAddr: server.URL, AuthKey: "token"}
 	actualErr := sender.Send(actualData)
 	assert.NoError(t, actualErr)
-	assert.Equal(t, "token", req.Header.Get("Authorization"))
+	assert.Equal(t, "Bearer token", req.Header.Get("Authorization"))
 }

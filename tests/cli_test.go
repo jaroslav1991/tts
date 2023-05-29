@@ -21,7 +21,7 @@ func TestCliSuccess(t *testing.T) {
 		var requestDTO sender.RemoteRequestDTO
 		assert.NoError(t, json.Unmarshal(requestBody, &requestDTO))
 
-		assert.Equal(t, "secretKeyToken", request.Header.Get("Authorization"))
+		assert.Equal(t, "Bearer secretKeyToken", request.Header.Get("Authorization"))
 
 		if assert.Len(t, requestDTO, 1) {
 			requestDTO[0].Events[0].Branch = "some-branch"

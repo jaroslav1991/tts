@@ -31,7 +31,7 @@ func (s *Sender) Send(data []model.DataModel) error {
 	}
 
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", s.AuthKey)
+	req.Header.Set("Authorization", "Bearer "+s.AuthKey)
 
 	client := http.Client{}
 	resp, err := client.Do(req)

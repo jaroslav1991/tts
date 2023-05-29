@@ -1,7 +1,6 @@
 package sender
 
 import (
-	"bytes"
 	"github.com/jaroslav1991/tts/internal/model"
 	"github.com/stretchr/testify/assert"
 	"io"
@@ -17,10 +16,8 @@ func TestSender_Send_Positive(t *testing.T) {
 		body, err := io.ReadAll(request.Body)
 		assert.NoError(t, err)
 		assert.Equal(t, reqData, string(body))
+		assert.Equal(t, "Bearer token", request.Header.Get("Authorization"))
 	}))
-
-	req := httptest.NewRequest("POST", "/events", bytes.NewBuffer([]byte(reqData)))
-	req.Header.Set("Authorization", "Bearer token")
 
 	actualData := []model.DataModel{
 		{
@@ -54,5 +51,4 @@ func TestSender_Send_Positive(t *testing.T) {
 	sender := Sender{HttpAddr: server.URL, AuthKey: "token"}
 	actualErr := sender.Send(actualData)
 	assert.NoError(t, actualErr)
-	assert.Equal(t, "Bearer token", req.Header.Get("Authorization"))
 }

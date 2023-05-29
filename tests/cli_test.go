@@ -21,6 +21,8 @@ func TestCliSuccess(t *testing.T) {
 		var requestDTO sender.RemoteRequestDTO
 		assert.NoError(t, json.Unmarshal(requestBody, &requestDTO))
 
+		assert.Equal(t, "Bearer secretKeyToken", request.Header.Get("Authorization"))
+
 		if assert.Len(t, requestDTO, 1) {
 			requestDTO[0].Events[0].Branch = "some-branch"
 			assert.NotEmpty(t, requestDTO[0].Events[0].Branch)
@@ -53,6 +55,8 @@ func TestCliSuccess(t *testing.T) {
 		server.URL,
 		"-d",
 		`{"uid":"qwerty123","pluginType":"jetbrains","pluginVersion":"1.0.0","ideType":"Intellij idea","ideVersion":"2.1.1","events":[{"createdAt":"2022-01-11 14:23:01","type":"modify file","project":"some project","projectBaseDir":"","language":"golang","target":"C:/Users/vladimir/IdeaProjects/untitled/.idea/misc.xml"}]}`,
+		"-k",
+		"secretKeyToken",
 	)
 
 	out, err := cmd.CombinedOutput()

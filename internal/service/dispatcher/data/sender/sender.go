@@ -14,6 +14,7 @@ import (
 type Sender struct {
 	dispatcher.Sender
 	HttpAddr string
+	AuthKey  string
 }
 
 var ErrMarshalData = errors.New("can't marshal data to send")
@@ -24,7 +25,16 @@ func (s *Sender) Send(data []model.DataModel) error {
 		return fmt.Errorf("%w: %v", ErrMarshalData, err)
 	}
 
-	resp, err := http.Post(s.HttpAddr, "application/json", bytes.NewBuffer(bytesDataToSend))
+	req, err := http.NewRequest("POST", s.HttpAddr, bytes.NewBuffer(bytesDataToSend))
+	if err != nil {
+		return err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Authorization", s.AuthKey)
+
+	client := http.Client{}
+	resp, err := client.Do(req)
 	if err != nil {
 		return err
 	}

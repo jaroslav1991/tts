@@ -1,6 +1,7 @@
 package sender
 
 import (
+	"bytes"
 	"github.com/jaroslav1991/tts/internal/model"
 	"github.com/stretchr/testify/assert"
 	"io"
@@ -10,11 +11,16 @@ import (
 )
 
 func TestSender_Send_Positive(t *testing.T) {
+	reqData := `[{"uid":"qwerty123","pluginType":"1","pluginVersion":"1","ideType":"1","ideVersion":"1","events":[{"createdAt":"1","type":"1","project":"1","projectBaseDir":"some-base","language":"1","target":"1","branch":"some-branch"}]}]`
+
 	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		body, err := io.ReadAll(request.Body)
 		assert.NoError(t, err)
-		assert.Equal(t, `[{"uid":"qwerty123","pluginType":"1","pluginVersion":"1","ideType":"1","ideVersion":"1","events":[{"createdAt":"1","type":"1","project":"1","projectBaseDir":"some-base","language":"1","target":"1","branch":"some-branch"}]}]`, string(body))
+		assert.Equal(t, reqData, string(body))
 	}))
+
+	req := httptest.NewRequest("POST", "/events", bytes.NewBuffer([]byte(reqData)))
+	req.Header.Set("Authorization", "token")
 
 	actualData := []model.DataModel{
 		{
@@ -45,7 +51,8 @@ func TestSender_Send_Positive(t *testing.T) {
 		},
 	}
 
-	sender := Sender{HttpAddr: server.URL}
+	sender := Sender{HttpAddr: server.URL, AuthKey: "token"}
 	actualErr := sender.Send(actualData)
 	assert.NoError(t, actualErr)
+	assert.Equal(t, "token", req.Header.Get("Authorization"))
 }

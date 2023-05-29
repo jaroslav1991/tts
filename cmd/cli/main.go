@@ -38,6 +38,12 @@ var (
 		"http://localhost:8080/events",
 		"Http address for sending events",
 	)
+
+	authKey = flag.String(
+		"k",
+		"",
+		"authorization key",
+	)
 )
 
 func init() {
@@ -83,7 +89,7 @@ func main() {
 	)
 
 	newDispatcher := dispatcher.NewService(
-		&sender.Sender{HttpAddr: *httpRemote},
+		&sender.Sender{HttpAddr: *httpRemote, AuthKey: *authKey},
 		&storage.Storage{
 			NewStatsFileName: *tmpFileName,
 			FilePath:         *pathToSendingFiles,

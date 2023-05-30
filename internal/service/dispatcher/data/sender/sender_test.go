@@ -16,7 +16,7 @@ func TestSender_Send_Positive(t *testing.T) {
 		body, err := io.ReadAll(request.Body)
 		assert.NoError(t, err)
 		assert.Equal(t, reqData, string(body))
-		assert.Equal(t, "Bearer token", request.Header.Get("Authorization"))
+		assert.Equal(t, "token", request.Header.Get("Authorization"))
 	}))
 
 	actualData := []model.DataModel{

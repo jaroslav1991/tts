@@ -28,7 +28,7 @@ func TestService_SendData_Positive(t *testing.T) {
 				IdeVersion:    "1",
 				Events: []model.Events{
 					{
-						Uid:            "",
+						Id:             "",
 						CreatedAt:      "1",
 						Type:           "1",
 						Project:        "1",
@@ -46,7 +46,7 @@ func TestService_SendData_Positive(t *testing.T) {
 					"some-base": "some-branch",
 				},
 				OSName: "windows",
-				Uid:    "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
+				Id:     "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
 			},
 		},
 	}
@@ -85,7 +85,7 @@ func TestService_SendData_Positive_WhenNoDataToFix(t *testing.T) {
 				IdeVersion:    "1",
 				Events: []model.Events{
 					{
-						Uid:            "",
+						Id:             "",
 						CreatedAt:      "1",
 						Type:           "1",
 						Project:        "1",
@@ -103,7 +103,7 @@ func TestService_SendData_Positive_WhenNoDataToFix(t *testing.T) {
 					"some-base": "some-branch",
 				},
 				OSName: "windows",
-				Uid:    "",
+				Id:     "",
 			},
 		},
 	}
@@ -142,7 +142,7 @@ func TestService_SendData_Positive_MultiFiles(t *testing.T) {
 				IdeVersion:    "1",
 				Events: []model.Events{
 					{
-						Uid:            "",
+						Id:             "",
 						CreatedAt:      "1",
 						Type:           "1",
 						Project:        "1",
@@ -160,7 +160,7 @@ func TestService_SendData_Positive_MultiFiles(t *testing.T) {
 					"some-base": "some-branch-1",
 				},
 				OSName: "windows1",
-				Uid:    "",
+				Id:     "",
 			},
 		},
 		{
@@ -174,7 +174,7 @@ func TestService_SendData_Positive_MultiFiles(t *testing.T) {
 				IdeVersion:    "1",
 				Events: []model.Events{
 					{
-						Uid:            "",
+						Id:             "",
 						CreatedAt:      "1",
 						Type:           "1",
 						Project:        "1",
@@ -232,7 +232,7 @@ func TestService_SendData_Negative_ClearError(t *testing.T) {
 				IdeVersion:    "1",
 				Events: []model.Events{
 					{
-						Uid:            "",
+						Id:             "",
 						CreatedAt:      "1",
 						Type:           "1",
 						Project:        "1",
@@ -250,7 +250,7 @@ func TestService_SendData_Negative_ClearError(t *testing.T) {
 					"some-base": "some-branch",
 				},
 				OSName: "windows",
-				Uid:    "",
+				Id:     "",
 			},
 		},
 	}
@@ -290,7 +290,7 @@ func TestService_SendData_Negative_SenderError(t *testing.T) {
 				IdeVersion:    "1",
 				Events: []model.Events{
 					{
-						Uid:            "",
+						Id:             "",
 						CreatedAt:      "1",
 						Type:           "1",
 						Project:        "1",
@@ -308,7 +308,7 @@ func TestService_SendData_Negative_SenderError(t *testing.T) {
 					"some-base": "some-branch",
 				},
 				OSName: "windows",
-				Uid:    "",
+				Id:     "",
 			},
 		},
 	}
@@ -346,7 +346,7 @@ func TestService_SendData_Negative_ReadDataError(t *testing.T) {
 				IdeVersion:    "1",
 				Events: []model.Events{
 					{
-						Uid:            "",
+						Id:             "",
 						CreatedAt:      "1",
 						Type:           "1",
 						Project:        "1",
@@ -364,7 +364,7 @@ func TestService_SendData_Negative_ReadDataError(t *testing.T) {
 					"some-base": "some-branch",
 				},
 				OSName: "windows",
-				Uid:    "",
+				Id:     "",
 			},
 		},
 	}

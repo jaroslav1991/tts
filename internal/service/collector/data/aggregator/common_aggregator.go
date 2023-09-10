@@ -14,7 +14,7 @@ import (
 var (
 	getBranchFn = GetBranchByProjectBaseDir
 	currentOS   = GetOSName
-	uid         = GetUUID
+	id          = GetUUID
 )
 
 type CommonAggregator struct {
@@ -33,8 +33,8 @@ func (a *CommonAggregator) Aggregate(info model.PluginInfo, target *model.Aggreg
 			target.GitBranchesByProjectBaseDir[info.Events[i].ProjectBaseDir] = eventBranch
 		}
 
-		if info.Events[i].Uid == "" {
-			target.Uid = uid()
+		if info.Events[i].Id == "" {
+			target.Id = id()
 		}
 	}
 

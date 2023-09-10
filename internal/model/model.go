@@ -13,7 +13,7 @@ type PluginInfo struct {
 }
 
 type Events struct {
-	Uid            string
+	Id             string
 	CreatedAt      string
 	Type           string
 	Project        string
@@ -30,7 +30,7 @@ type Events struct {
 type AggregatorInfo struct {
 	GitBranchesByProjectBaseDir map[string]string
 	OSName                      string
-	Uid                         string
+	Id                          string
 }
 
 // DataModel - internal structure for store data before dispatching

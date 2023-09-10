@@ -10,7 +10,7 @@ import (
 )
 
 func TestSender_Send_Positive(t *testing.T) {
-	reqData := `[{"pluginType":"1","pluginVersion":"1","cliType":"windowsOS","cliVersion":"1.1.0","osName":"windows","ideType":"1","ideVersion":"1","events":[{"uid":"a6ac8ef0-28e2-4b6e-8568-aa8934f53c84","createdAt":"1","type":"1","project":"1","projectBaseDir":"some-base","language":"1","target":"1","branch":"some-branch","timezone":"1"}]}]`
+	reqData := `[{"pluginType":"1","pluginVersion":"1","cliType":"windowsOS","cliVersion":"1.1.0","osName":"windows","ideType":"1","ideVersion":"1","events":[{"id":"a6ac8ef0-28e2-4b6e-8568-aa8934f53c84","createdAt":"1","type":"1","project":"1","projectBaseDir":"some-base","language":"1","target":"1","branch":"some-branch","timezone":"1"}]}]`
 
 	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		body, err := io.ReadAll(request.Body)
@@ -31,7 +31,7 @@ func TestSender_Send_Positive(t *testing.T) {
 				IdeVersion:    "1",
 				Events: []model.Events{
 					{
-						Uid:            "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
+						Id:             "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
 						CreatedAt:      "1",
 						Type:           "1",
 						Project:        "1",
@@ -49,7 +49,7 @@ func TestSender_Send_Positive(t *testing.T) {
 					"some-base": "some-branch",
 				},
 				OSName: "windows",
-				Uid:    "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
+				Id:     "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
 			},
 		},
 	}

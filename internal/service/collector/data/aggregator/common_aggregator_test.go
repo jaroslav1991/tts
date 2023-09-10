@@ -62,7 +62,7 @@ func TestCurrentBranchAggregator_Aggregate_BranchNotFoundInEventAndFoundInGit(t 
 			"some-base-2": "some-branch-2",
 		},
 		OSName: target.OSName,
-		Uid:    target.Uid,
+		Id:     target.Id,
 	}, target)
 
 }

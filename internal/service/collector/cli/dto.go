@@ -12,7 +12,7 @@ type DTO struct {
 }
 
 type DTOEvents struct {
-	Uid            string         `json:"uid"`
+	Id             string         `json:"id"`
 	CreatedAt      string         `json:"createdAt"`
 	Type           string         `json:"type"`
 	Project        string         `json:"project,omitempty"`

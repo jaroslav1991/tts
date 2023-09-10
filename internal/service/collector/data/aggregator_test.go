@@ -21,7 +21,7 @@ func TestAggregator_Aggregate_NoMergeAggregators(t *testing.T) {
 		IdeVersion:    "",
 		Events: []model.Events{
 			{
-				Uid:            "",
+				Id:             "",
 				CreatedAt:      "1",
 				Type:           "",
 				Project:        "",
@@ -69,7 +69,7 @@ func (m mergeAggregatorMock) Aggregate(info model.PluginInfo, target *model.Aggr
 
 	target.OSName = "windows"
 
-	target.Uid = "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84"
+	target.Id = "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84"
 	return nil
 }
 
@@ -90,7 +90,7 @@ func TestAggregator_Aggregate_Positive(t *testing.T) {
 		IdeVersion:    "",
 		Events: []model.Events{
 			{
-				Uid:            "",
+				Id:             "",
 				CreatedAt:      "1",
 				Type:           "1",
 				Project:        "",
@@ -109,7 +109,7 @@ func TestAggregator_Aggregate_Positive(t *testing.T) {
 			"some-base": "some-branch",
 		},
 		OSName: "windows",
-		Uid:    "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
+		Id:     "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
 	}
 
 	actualRes, err := aggregator.Aggregate(info)

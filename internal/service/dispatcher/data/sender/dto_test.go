@@ -31,7 +31,7 @@ func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 						IdeVersion:    "1",
 						Events: []model.Events{
 							{
-								Uid:            "",
+								Id:             "",
 								CreatedAt:      "1",
 								Type:           "1",
 								Project:        "1",
@@ -49,7 +49,7 @@ func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 							"some-base": "master",
 						},
 						OSName: "windows",
-						Uid:    "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
+						Id:     "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
 					},
 				},
 			},
@@ -64,7 +64,7 @@ func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 					IdeVersion:    "1",
 					Events: []DTOEvents{
 						{
-							Uid:            "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
+							Id:             "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
 							CreatedAt:      "1",
 							Type:           "1",
 							Project:        "1",
@@ -92,7 +92,7 @@ func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 						IdeVersion:    "1",
 						Events: []model.Events{
 							{
-								Uid:            "",
+								Id:             "",
 								CreatedAt:      "1",
 								Type:           "1",
 								Project:        "1",
@@ -110,7 +110,7 @@ func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 							"some-base1": "master1",
 						},
 						OSName: "windows1",
-						Uid:    "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
+						Id:     "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
 					},
 				},
 				{
@@ -124,7 +124,7 @@ func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 						IdeVersion:    "2",
 						Events: []model.Events{
 							{
-								Uid:            "",
+								Id:             "",
 								CreatedAt:      "2",
 								Type:           "2",
 								Project:        "2",
@@ -142,7 +142,7 @@ func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 							"some-base2": "master2",
 						},
 						OSName: "windows2",
-						Uid:    "a6ac8ef0-28e2-4b6e-8568-aa8934f53c85",
+						Id:     "a6ac8ef0-28e2-4b6e-8568-aa8934f53c85",
 					},
 				},
 			},
@@ -157,7 +157,7 @@ func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 					IdeVersion:    "1",
 					Events: []DTOEvents{
 						{
-							Uid:            "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
+							Id:             "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
 							CreatedAt:      "1",
 							Type:           "1",
 							Project:        "1",
@@ -179,7 +179,7 @@ func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 					IdeVersion:    "2",
 					Events: []DTOEvents{
 						{
-							Uid:            "a6ac8ef0-28e2-4b6e-8568-aa8934f53c85",
+							Id:             "a6ac8ef0-28e2-4b6e-8568-aa8934f53c85",
 							CreatedAt:      "2",
 							Type:           "2",
 							Project:        "2",

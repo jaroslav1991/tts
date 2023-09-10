@@ -9,7 +9,7 @@ func NewRemoteRequestDTOFromDataModels(models []model.DataModel) RemoteRequestDT
 		var events []DTOEvents
 		for _, event := range item.PluginInfo.Events {
 			dtoEvent := DTOEvents{
-				Uid:            item.AggregatorInfo.Uid,
+				Id:             item.AggregatorInfo.Id,
 				CreatedAt:      event.CreatedAt,
 				Type:           event.Type,
 				Project:        event.Project,
@@ -56,7 +56,7 @@ type RemoteRequestDTOItem struct {
 }
 
 type DTOEvents struct {
-	Uid            string         `json:"uid"`
+	Id             string         `json:"id"`
 	CreatedAt      string         `json:"createdAt"`
 	Type           string         `json:"type"`
 	Project        string         `json:"project,omitempty"`

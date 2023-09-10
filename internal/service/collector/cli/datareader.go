@@ -36,7 +36,7 @@ func (r *DataReader) ReadData(untypedRequest any) (model.PluginInfo, error) {
 
 	for _, event := range dto.Events {
 		modelEvents = append(modelEvents, model.Events{
-			Uid:            event.Uid,
+			Id:             event.Id,
 			CreatedAt:      event.CreatedAt,
 			Type:           event.Type,
 			Project:        event.Project,

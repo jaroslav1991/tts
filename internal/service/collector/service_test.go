@@ -26,7 +26,7 @@ func TestService_SaveData_Positive(t *testing.T) {
 		IdeVersion:    "2.1.1",
 		Events: []model.Events{
 			{
-				Uid:            "",
+				Id:             "",
 				CreatedAt:      "2022-02-02 10:00:00",
 				Type:           "some-type",
 				Project:        "some project",
@@ -47,7 +47,7 @@ func TestService_SaveData_Positive(t *testing.T) {
 			"some-base": "some-branch",
 		},
 		OSName: "windows",
-		Uid:    "7edc942b-da5c-4d33-9a25-f0c8b4bb4afc",
+		Id:     "7edc942b-da5c-4d33-9a25-f0c8b4bb4afc",
 	}
 
 	preparedData := []byte(`prepared dataFromPlugin`)
@@ -95,7 +95,7 @@ func TestService_SaveData_Negative_SaveError(t *testing.T) {
 			"some-base": "some-branch",
 		},
 		OSName: "windows",
-		Uid:    "7edc942b-da5c-4d33-9a25-f0c8b4bb4afc",
+		Id:     "7edc942b-da5c-4d33-9a25-f0c8b4bb4afc",
 	}
 
 	preparedData := []byte(`prepared data`)
@@ -145,7 +145,7 @@ func TestService_SaveData_Negative_PrepareError(t *testing.T) {
 			"some-base": "some-branch",
 		},
 		OSName: "windows",
-		Uid:    "7edc942b-da5c-4d33-9a25-f0c8b4bb4afc",
+		Id:     "7edc942b-da5c-4d33-9a25-f0c8b4bb4afc",
 	}
 
 	err := errors.New("some error")

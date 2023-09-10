@@ -12,9 +12,10 @@ import (
 
 func Test(t *testing.T) {
 	b, _ := json.Marshal(DTO{
-		Uid:           "qwerty123",
 		PluginType:    "jetbrains",
 		PluginVersion: "1.0.0",
+		CliType:       "windowsOS",
+		CliVersion:    "1.1.0",
 		IdeType:       "intellij ide",
 		IdeVersion:    "2.1.1",
 		Events: []DTOEvents{
@@ -25,6 +26,7 @@ func Test(t *testing.T) {
 				ProjectBaseDir: "some dir",
 				Language:       "golang",
 				Target:         "../",
+				Timezone:       "123456789",
 			},
 		},
 	})
@@ -34,9 +36,10 @@ func Test(t *testing.T) {
 
 func TestDataReader_ReadData_Positive(t *testing.T) {
 	requestData := `{
-			"uid":"qwerty123",
 			"pluginType":"1",
 			"pluginVersion":"1",
+			"cliType":"windowsOS",
+			"cliVersion":"1.1.0",
 			"ideType":"intellij ide",
 			"ideVersion":"2.1.1",
 			"events":
@@ -58,9 +61,10 @@ func TestDataReader_ReadData_Positive(t *testing.T) {
 	assert.NoError(t, actualErr)
 
 	assert.Equal(t, model.PluginInfo{
-		Uid:           "qwerty123",
 		PluginType:    "1",
 		PluginVersion: "1",
+		CliType:       "windowsOS",
+		CliVersion:    "1.1.0",
 		IdeType:       "intellij ide",
 		IdeVersion:    "2.1.1",
 		Events: []model.Events{

@@ -12,9 +12,10 @@ func TestPreparer_PrepareData(t *testing.T) {
 	preparer := Preparer{}
 
 	pluginInfo := model.PluginInfo{
-		Uid:           "qwerty123",
 		PluginType:    "1",
 		PluginVersion: "1",
+		CliType:       "windowsOS",
+		CliVersion:    "1.1.0",
 		IdeType:       "",
 		IdeVersion:    "",
 		Events: []model.Events{
@@ -26,6 +27,7 @@ func TestPreparer_PrepareData(t *testing.T) {
 				Language:       "",
 				Target:         "",
 				Branch:         "",
+				Timezone:       "",
 				Params:         nil,
 			},
 		},
@@ -35,11 +37,13 @@ func TestPreparer_PrepareData(t *testing.T) {
 		GitBranchesByProjectBaseDir: map[string]string{
 			"1": "some-branch",
 		},
+		OSName: "windows",
+		Uid:    "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
 	}
 
 	actualData, err := preparer.PrepareData(pluginInfo, aggregationInfo)
 	assert.NoError(t, err)
 
-	expected := `{"PluginInfo":{"Uid":"qwerty123","PluginType":"1","PluginVersion":"1","IdeType":"","IdeVersion":"","Events":[{"CreatedAt":"1","Type":"1","Project":"","ProjectBaseDir":"1","Language":"","Target":"","Branch":"","Params":null}]},"AggregatorInfo":{"GitBranchesByProjectBaseDir":{"1":"some-branch"}}}`
+	expected := `{"PluginInfo":{"PluginType":"1","PluginVersion":"1","CliType":"windowsOS","CliVersion":"1.1.0","OSName":"","IdeType":"","IdeVersion":"","Events":[{"Uid":"","CreatedAt":"1","Type":"1","Project":"","ProjectBaseDir":"1","Language":"","Target":"","Branch":"","Timezone":"","Params":null}]},"AggregatorInfo":{"GitBranchesByProjectBaseDir":{"1":"some-branch"},"OSName":"windows","Uid":"a6ac8ef0-28e2-4b6e-8568-aa8934f53c84"}}`
 	assert.Equal(t, expected, string(actualData))
 }

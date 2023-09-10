@@ -121,13 +121,16 @@ func TestStorage_ReadDataToSend_Positive(t *testing.T) {
 	expectedModel := []model.DataModel{
 		{
 			PluginInfo: model.PluginInfo{
-				Uid:           "qwerty123",
 				PluginType:    "1",
 				PluginVersion: "1",
+				CliType:       "windowsOS",
+				CliVersion:    "1.1.0",
+				OSName:        "windows",
 				IdeType:       "1",
 				IdeVersion:    "1",
 				Events: []model.Events{
 					{
+						Uid:            "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
 						CreatedAt:      "1",
 						Type:           "1",
 						Project:        "1",
@@ -135,6 +138,7 @@ func TestStorage_ReadDataToSend_Positive(t *testing.T) {
 						Language:       "1",
 						Target:         "1",
 						Branch:         "testBranch",
+						Timezone:       "1",
 						Params:         nil,
 					},
 				},
@@ -143,6 +147,8 @@ func TestStorage_ReadDataToSend_Positive(t *testing.T) {
 				GitBranchesByProjectBaseDir: map[string]string{
 					"some-base": "testBranch",
 				},
+				OSName: "windows",
+				Uid:    "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
 			},
 		},
 	}
@@ -158,7 +164,7 @@ func TestStorage_ReadDataToSend_Positive(t *testing.T) {
 	assert.NoError(t, err)
 
 	// todo переделать
-	_, err = file.Write([]byte(`{"PluginInfo":{"Uid":"qwerty123","PluginType":"1","PluginVersion":"1","IdeType":"1","IdeVersion":"1","Events":[{"CreatedAt":"1","Type":"1","Project":"1","ProjectBaseDir":"some-base","Language":"1","Target":"1","Branch":"testBranch","Params":null}]},"AggregatorInfo":{"GitBranchesByProjectBaseDir":{"some-base":"testBranch"}}}`))
+	_, err = file.Write([]byte(`{"PluginInfo":{"PluginType":"1","PluginVersion":"1","CLiType":"windowsOS","CLiVersion":"1.1.0","OSName":"windows","IdeType":"1","IdeVersion":"1","Events":[{"Uid":"a6ac8ef0-28e2-4b6e-8568-aa8934f53c84","CreatedAt":"1","Type":"1","Project":"1","ProjectBaseDir":"some-base","Language":"1","Target":"1","Branch":"testBranch","Timezone":"1","Params":null}]},"AggregatorInfo":{"GitBranchesByProjectBaseDir":{"some-base":"testBranch"},"OSName":"windows","Uid":"a6ac8ef0-28e2-4b6e-8568-aa8934f53c84"}}`))
 	assert.NoError(t, err)
 	assert.NoError(t, file.Close())
 

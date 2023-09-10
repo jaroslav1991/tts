@@ -19,13 +19,16 @@ func TestService_SendData_Positive(t *testing.T) {
 	dataToSend := []model.DataModel{
 		{
 			PluginInfo: model.PluginInfo{
-				Uid:           "qwerty123",
 				PluginType:    "1",
 				PluginVersion: "1",
+				CliType:       "windowsOS",
+				CliVersion:    "1.1.0",
+				OSName:        "",
 				IdeType:       "1",
 				IdeVersion:    "1",
 				Events: []model.Events{
 					{
+						Uid:            "",
 						CreatedAt:      "1",
 						Type:           "1",
 						Project:        "1",
@@ -33,6 +36,7 @@ func TestService_SendData_Positive(t *testing.T) {
 						Language:       "1",
 						Target:         "1",
 						Branch:         "",
+						Timezone:       "1",
 						Params:         nil,
 					},
 				},
@@ -41,6 +45,8 @@ func TestService_SendData_Positive(t *testing.T) {
 				GitBranchesByProjectBaseDir: map[string]string{
 					"some-base": "some-branch",
 				},
+				OSName: "windows",
+				Uid:    "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
 			},
 		},
 	}
@@ -70,13 +76,16 @@ func TestService_SendData_Positive_WhenNoDataToFix(t *testing.T) {
 	dataToSend := []model.DataModel{
 		{
 			PluginInfo: model.PluginInfo{
-				Uid:           "qwerty123",
 				PluginType:    "1",
 				PluginVersion: "1",
+				CliType:       "windowsOS",
+				CliVersion:    "1.1.0",
+				OSName:        "",
 				IdeType:       "1",
 				IdeVersion:    "1",
 				Events: []model.Events{
 					{
+						Uid:            "",
 						CreatedAt:      "1",
 						Type:           "1",
 						Project:        "1",
@@ -84,6 +93,7 @@ func TestService_SendData_Positive_WhenNoDataToFix(t *testing.T) {
 						Language:       "1",
 						Target:         "1",
 						Branch:         "",
+						Timezone:       "1",
 						Params:         nil,
 					},
 				},
@@ -92,6 +102,8 @@ func TestService_SendData_Positive_WhenNoDataToFix(t *testing.T) {
 				GitBranchesByProjectBaseDir: map[string]string{
 					"some-base": "some-branch",
 				},
+				OSName: "windows",
+				Uid:    "",
 			},
 		},
 	}
@@ -121,13 +133,16 @@ func TestService_SendData_Positive_MultiFiles(t *testing.T) {
 	dataToSend := []model.DataModel{
 		{
 			PluginInfo: model.PluginInfo{
-				Uid:           "qwerty123",
 				PluginType:    "1",
 				PluginVersion: "1",
+				CliType:       "windowsOS",
+				CliVersion:    "1.1.0",
+				OSName:        "",
 				IdeType:       "1",
 				IdeVersion:    "1",
 				Events: []model.Events{
 					{
+						Uid:            "",
 						CreatedAt:      "1",
 						Type:           "1",
 						Project:        "1",
@@ -135,6 +150,7 @@ func TestService_SendData_Positive_MultiFiles(t *testing.T) {
 						Language:       "1",
 						Target:         "1",
 						Branch:         "",
+						Timezone:       "1",
 						Params:         nil,
 					},
 				},
@@ -143,17 +159,22 @@ func TestService_SendData_Positive_MultiFiles(t *testing.T) {
 				GitBranchesByProjectBaseDir: map[string]string{
 					"some-base": "some-branch-1",
 				},
+				OSName: "windows1",
+				Uid:    "",
 			},
 		},
 		{
 			PluginInfo: model.PluginInfo{
-				Uid:           "qwerty123",
 				PluginType:    "1",
 				PluginVersion: "1",
+				CliType:       "windowsOS",
+				CliVersion:    "1.1.0",
+				OSName:        "",
 				IdeType:       "1",
 				IdeVersion:    "1",
 				Events: []model.Events{
 					{
+						Uid:            "",
 						CreatedAt:      "1",
 						Type:           "1",
 						Project:        "1",
@@ -161,6 +182,7 @@ func TestService_SendData_Positive_MultiFiles(t *testing.T) {
 						Language:       "1",
 						Target:         "1",
 						Branch:         "",
+						Timezone:       "1",
 						Params:         nil,
 					},
 				},
@@ -201,13 +223,16 @@ func TestService_SendData_Negative_ClearError(t *testing.T) {
 	dataToSend := []model.DataModel{
 		{
 			PluginInfo: model.PluginInfo{
-				Uid:           "qwerty123",
 				PluginType:    "1",
 				PluginVersion: "1",
+				CliType:       "windowsOS",
+				CliVersion:    "1.1.0",
+				OSName:        "",
 				IdeType:       "1",
 				IdeVersion:    "1",
 				Events: []model.Events{
 					{
+						Uid:            "",
 						CreatedAt:      "1",
 						Type:           "1",
 						Project:        "1",
@@ -215,6 +240,7 @@ func TestService_SendData_Negative_ClearError(t *testing.T) {
 						Language:       "1",
 						Target:         "1",
 						Branch:         "",
+						Timezone:       "1",
 						Params:         nil,
 					},
 				},
@@ -223,6 +249,8 @@ func TestService_SendData_Negative_ClearError(t *testing.T) {
 				GitBranchesByProjectBaseDir: map[string]string{
 					"some-base": "some-branch",
 				},
+				OSName: "windows",
+				Uid:    "",
 			},
 		},
 	}
@@ -253,13 +281,16 @@ func TestService_SendData_Negative_SenderError(t *testing.T) {
 	dataToSend := []model.DataModel{
 		{
 			PluginInfo: model.PluginInfo{
-				Uid:           "qwerty123",
 				PluginType:    "1",
 				PluginVersion: "1",
+				CliType:       "windowsOS",
+				CliVersion:    "1.1.0",
+				OSName:        "",
 				IdeType:       "1",
 				IdeVersion:    "1",
 				Events: []model.Events{
 					{
+						Uid:            "",
 						CreatedAt:      "1",
 						Type:           "1",
 						Project:        "1",
@@ -267,6 +298,7 @@ func TestService_SendData_Negative_SenderError(t *testing.T) {
 						Language:       "1",
 						Target:         "1",
 						Branch:         "",
+						Timezone:       "1",
 						Params:         nil,
 					},
 				},
@@ -275,6 +307,8 @@ func TestService_SendData_Negative_SenderError(t *testing.T) {
 				GitBranchesByProjectBaseDir: map[string]string{
 					"some-base": "some-branch",
 				},
+				OSName: "windows",
+				Uid:    "",
 			},
 		},
 	}
@@ -303,13 +337,16 @@ func TestService_SendData_Negative_ReadDataError(t *testing.T) {
 	dataToSend := []model.DataModel{
 		{
 			PluginInfo: model.PluginInfo{
-				Uid:           "qwerty123",
 				PluginType:    "1",
 				PluginVersion: "1",
+				CliType:       "windowsOS",
+				CliVersion:    "1.1.0",
+				OSName:        "",
 				IdeType:       "1",
 				IdeVersion:    "1",
 				Events: []model.Events{
 					{
+						Uid:            "",
 						CreatedAt:      "1",
 						Type:           "1",
 						Project:        "1",
@@ -317,6 +354,7 @@ func TestService_SendData_Negative_ReadDataError(t *testing.T) {
 						Language:       "1",
 						Target:         "1",
 						Branch:         "",
+						Timezone:       "1",
 						Params:         nil,
 					},
 				},
@@ -325,6 +363,8 @@ func TestService_SendData_Negative_ReadDataError(t *testing.T) {
 				GitBranchesByProjectBaseDir: map[string]string{
 					"some-base": "some-branch",
 				},
+				OSName: "windows",
+				Uid:    "",
 			},
 		},
 	}

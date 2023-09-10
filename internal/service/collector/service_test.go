@@ -17,13 +17,16 @@ func TestService_SaveData_Positive(t *testing.T) {
 	request := "some request"
 
 	dataFromPlugin := model.PluginInfo{
-		Uid:           "qwerty123",
 		PluginType:    "type",
 		PluginVersion: "1.0.0",
+		CliType:       "windowsOS",
+		CliVersion:    "1.1.0",
+		OSName:        "",
 		IdeType:       "intellij ide",
 		IdeVersion:    "2.1.1",
 		Events: []model.Events{
 			{
+				Uid:            "",
 				CreatedAt:      "2022-02-02 10:00:00",
 				Type:           "some-type",
 				Project:        "some project",
@@ -31,6 +34,7 @@ func TestService_SaveData_Positive(t *testing.T) {
 				Language:       "golang",
 				Target:         "some target",
 				Branch:         "",
+				Timezone:       "123456789",
 				Params: map[string]any{
 					"param1": "value1",
 				},
@@ -42,6 +46,8 @@ func TestService_SaveData_Positive(t *testing.T) {
 		GitBranchesByProjectBaseDir: map[string]string{
 			"some-base": "some-branch",
 		},
+		OSName: "windows",
+		Uid:    "7edc942b-da5c-4d33-9a25-f0c8b4bb4afc",
 	}
 
 	preparedData := []byte(`prepared dataFromPlugin`)
@@ -88,6 +94,8 @@ func TestService_SaveData_Negative_SaveError(t *testing.T) {
 		GitBranchesByProjectBaseDir: map[string]string{
 			"some-base": "some-branch",
 		},
+		OSName: "windows",
+		Uid:    "7edc942b-da5c-4d33-9a25-f0c8b4bb4afc",
 	}
 
 	preparedData := []byte(`prepared data`)
@@ -136,6 +144,8 @@ func TestService_SaveData_Negative_PrepareError(t *testing.T) {
 		GitBranchesByProjectBaseDir: map[string]string{
 			"some-base": "some-branch",
 		},
+		OSName: "windows",
+		Uid:    "7edc942b-da5c-4d33-9a25-f0c8b4bb4afc",
 	}
 
 	err := errors.New("some error")

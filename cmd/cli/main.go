@@ -81,7 +81,7 @@ func main() {
 		&data.Validator{},
 		&data.Aggregator{
 			Aggregators: []data.MergeAggregator{
-				&aggregator.CurrentBranchAggregator{},
+				&aggregator.CommonAggregator{},
 			},
 		},
 		&data.Preparer{},

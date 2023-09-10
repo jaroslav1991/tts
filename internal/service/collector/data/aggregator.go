@@ -7,10 +7,7 @@ import (
 )
 
 type MergeAggregator interface {
-	Aggregate(
-		info model.PluginInfo,
-		target *model.AggregatorInfo,
-	) error
+	Aggregate(info model.PluginInfo, target *model.AggregatorInfo) error
 }
 
 type Aggregator struct {
@@ -24,6 +21,7 @@ func (a *Aggregator) Aggregate(info model.PluginInfo) (model.AggregatorInfo, err
 		if err := aggregator.Aggregate(info, &result); err != nil {
 			return model.AggregatorInfo{}, fmt.Errorf("aggregation failed: %w", err)
 		}
+
 	}
 	return result, nil
 }

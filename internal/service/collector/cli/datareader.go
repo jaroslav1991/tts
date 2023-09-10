@@ -36,6 +36,7 @@ func (r *DataReader) ReadData(untypedRequest any) (model.PluginInfo, error) {
 
 	for _, event := range dto.Events {
 		modelEvents = append(modelEvents, model.Events{
+			Uid:            event.Uid,
 			CreatedAt:      event.CreatedAt,
 			Type:           event.Type,
 			Project:        event.Project,
@@ -43,14 +44,17 @@ func (r *DataReader) ReadData(untypedRequest any) (model.PluginInfo, error) {
 			Language:       event.Language,
 			Target:         event.Target,
 			Branch:         event.Branch,
+			Timezone:       event.Timezone,
 			Params:         event.Params,
 		})
 	}
 
 	return model.PluginInfo{
-		Uid:           dto.Uid,
 		PluginType:    dto.PluginType,
 		PluginVersion: dto.PluginVersion,
+		CliType:       dto.CliType,
+		CliVersion:    dto.CliVersion,
+		OSName:        dto.OSName,
 		IdeType:       dto.IdeType,
 		IdeVersion:    dto.IdeVersion,
 		Events:        modelEvents,

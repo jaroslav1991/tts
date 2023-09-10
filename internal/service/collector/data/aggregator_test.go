@@ -12,13 +12,16 @@ func TestAggregator_Aggregate_NoMergeAggregators(t *testing.T) {
 	aggregator := Aggregator{}
 
 	info := model.PluginInfo{
-		Uid:           "qwerty123",
 		PluginType:    "1",
 		PluginVersion: "1",
+		CliType:       "1",
+		CliVersion:    "1.1.0",
+		OSName:        "",
 		IdeType:       "",
 		IdeVersion:    "",
 		Events: []model.Events{
 			{
+				Uid:            "",
 				CreatedAt:      "1",
 				Type:           "",
 				Project:        "",
@@ -26,6 +29,7 @@ func TestAggregator_Aggregate_NoMergeAggregators(t *testing.T) {
 				Language:       "",
 				Target:         "",
 				Branch:         "",
+				Timezone:       "",
 				Params:         nil,
 			},
 		},
@@ -62,6 +66,10 @@ func (m mergeAggregatorMock) Aggregate(info model.PluginInfo, target *model.Aggr
 	target.GitBranchesByProjectBaseDir = map[string]string{
 		"some-base": "some-branch",
 	}
+
+	target.OSName = "windows"
+
+	target.Uid = "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84"
 	return nil
 }
 
@@ -73,13 +81,16 @@ func TestAggregator_Aggregate_Positive(t *testing.T) {
 	}
 
 	info := model.PluginInfo{
-		Uid:           "qwerty123",
 		PluginType:    "1",
 		PluginVersion: "1",
+		CliType:       "windowsOS",
+		CliVersion:    "1.1.0",
+		OSName:        "",
 		IdeType:       "",
 		IdeVersion:    "",
 		Events: []model.Events{
 			{
+				Uid:            "",
 				CreatedAt:      "1",
 				Type:           "1",
 				Project:        "",
@@ -87,6 +98,7 @@ func TestAggregator_Aggregate_Positive(t *testing.T) {
 				Language:       "",
 				Target:         "",
 				Branch:         "",
+				Timezone:       "",
 				Params:         nil,
 			},
 		},
@@ -96,6 +108,8 @@ func TestAggregator_Aggregate_Positive(t *testing.T) {
 		GitBranchesByProjectBaseDir: map[string]string{
 			"some-base": "some-branch",
 		},
+		OSName: "windows",
+		Uid:    "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
 	}
 
 	actualRes, err := aggregator.Aggregate(info)

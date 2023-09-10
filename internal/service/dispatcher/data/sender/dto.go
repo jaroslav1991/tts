@@ -9,6 +9,7 @@ func NewRemoteRequestDTOFromDataModels(models []model.DataModel) RemoteRequestDT
 		var events []DTOEvents
 		for _, event := range item.PluginInfo.Events {
 			dtoEvent := DTOEvents{
+				Uid:            item.AggregatorInfo.Uid,
 				CreatedAt:      event.CreatedAt,
 				Type:           event.Type,
 				Project:        event.Project,
@@ -16,6 +17,7 @@ func NewRemoteRequestDTOFromDataModels(models []model.DataModel) RemoteRequestDT
 				Language:       event.Language,
 				Target:         event.Target,
 				Branch:         event.Branch,
+				Timezone:       event.Timezone,
 				Params:         event.Params,
 			}
 
@@ -27,9 +29,11 @@ func NewRemoteRequestDTOFromDataModels(models []model.DataModel) RemoteRequestDT
 		}
 
 		result[i] = RemoteRequestDTOItem{
-			Uid:           item.PluginInfo.Uid,
 			PluginType:    item.PluginInfo.PluginType,
 			PluginVersion: item.PluginInfo.PluginVersion,
+			CliType:       item.PluginInfo.CliType,
+			CliVersion:    item.PluginInfo.CliVersion,
+			OSName:        item.AggregatorInfo.OSName,
 			IdeType:       item.PluginInfo.IdeType,
 			IdeVersion:    item.PluginInfo.IdeVersion,
 			Events:        events,
@@ -41,15 +45,18 @@ func NewRemoteRequestDTOFromDataModels(models []model.DataModel) RemoteRequestDT
 type RemoteRequestDTO []RemoteRequestDTOItem
 
 type RemoteRequestDTOItem struct {
-	Uid           string      `json:"uid"`
 	PluginType    string      `json:"pluginType"`
 	PluginVersion string      `json:"pluginVersion"`
+	CliType       string      `json:"cliType"`
+	CliVersion    string      `json:"cliVersion"`
+	OSName        string      `json:"osName"`
 	IdeType       string      `json:"ideType,omitempty"`
 	IdeVersion    string      `json:"ideVersion,omitempty"`
 	Events        []DTOEvents `json:"events"`
 }
 
 type DTOEvents struct {
+	Uid            string         `json:"uid"`
 	CreatedAt      string         `json:"createdAt"`
 	Type           string         `json:"type"`
 	Project        string         `json:"project,omitempty"`
@@ -57,5 +64,6 @@ type DTOEvents struct {
 	Language       string         `json:"language,omitempty"`
 	Target         string         `json:"target,omitempty"`
 	Branch         string         `json:"branch,omitempty"`
+	Timezone       string         `json:"timezone"`
 	Params         map[string]any `json:"params,omitempty"`
 }

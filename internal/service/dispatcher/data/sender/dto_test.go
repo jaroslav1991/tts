@@ -22,13 +22,16 @@ func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 			models: []model.DataModel{
 				{
 					PluginInfo: model.PluginInfo{
-						Uid:           "qwerty123",
 						PluginType:    "1",
 						PluginVersion: "1",
+						CliType:       "windowsOS",
+						CliVersion:    "1.1.0",
+						OSName:        "",
 						IdeType:       "1",
 						IdeVersion:    "1",
 						Events: []model.Events{
 							{
+								Uid:            "",
 								CreatedAt:      "1",
 								Type:           "1",
 								Project:        "1",
@@ -36,6 +39,7 @@ func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 								Language:       "1",
 								Target:         "1",
 								Branch:         "",
+								Timezone:       "",
 								Params:         nil,
 							},
 						},
@@ -44,18 +48,23 @@ func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 						GitBranchesByProjectBaseDir: map[string]string{
 							"some-base": "master",
 						},
+						OSName: "windows",
+						Uid:    "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
 					},
 				},
 			},
 			expected: RemoteRequestDTO{
 				{
-					Uid:           "qwerty123",
 					PluginType:    "1",
 					PluginVersion: "1",
+					CliType:       "windowsOS",
+					CliVersion:    "1.1.0",
+					OSName:        "windows",
 					IdeType:       "1",
 					IdeVersion:    "1",
 					Events: []DTOEvents{
 						{
+							Uid:            "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
 							CreatedAt:      "1",
 							Type:           "1",
 							Project:        "1",
@@ -63,6 +72,7 @@ func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 							Language:       "1",
 							Target:         "1",
 							Branch:         "master",
+							Timezone:       "",
 							Params:         nil,
 						},
 					},
@@ -73,13 +83,16 @@ func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 			models: []model.DataModel{
 				{
 					PluginInfo: model.PluginInfo{
-						Uid:           "qwerty123",
 						PluginType:    "1",
 						PluginVersion: "1",
+						CliType:       "windowsOS1",
+						CliVersion:    "1.1.01",
+						OSName:        "",
 						IdeType:       "1",
 						IdeVersion:    "1",
 						Events: []model.Events{
 							{
+								Uid:            "",
 								CreatedAt:      "1",
 								Type:           "1",
 								Project:        "1",
@@ -87,21 +100,31 @@ func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 								Language:       "1",
 								Target:         "1",
 								Branch:         "",
+								Timezone:       "1",
 								Params:         nil,
 							},
 						},
 					},
-					AggregatorInfo: model.AggregatorInfo{},
+					AggregatorInfo: model.AggregatorInfo{
+						GitBranchesByProjectBaseDir: map[string]string{
+							"some-base1": "master1",
+						},
+						OSName: "windows1",
+						Uid:    "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
+					},
 				},
 				{
 					PluginInfo: model.PluginInfo{
-						Uid:           "qwerty234",
 						PluginType:    "2",
 						PluginVersion: "2",
+						CliType:       "windowsOS2",
+						CliVersion:    "1.1.02",
+						OSName:        "",
 						IdeType:       "2",
 						IdeVersion:    "2",
 						Events: []model.Events{
 							{
+								Uid:            "",
 								CreatedAt:      "2",
 								Type:           "2",
 								Project:        "2",
@@ -109,6 +132,7 @@ func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 								Language:       "2",
 								Target:         "2",
 								Branch:         "",
+								Timezone:       "2",
 								Params:         nil,
 							},
 						},
@@ -117,36 +141,45 @@ func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 						GitBranchesByProjectBaseDir: map[string]string{
 							"some-base2": "master2",
 						},
+						OSName: "windows2",
+						Uid:    "a6ac8ef0-28e2-4b6e-8568-aa8934f53c85",
 					},
 				},
 			},
 			expected: RemoteRequestDTO{
 				{
-					Uid:           "qwerty123",
 					PluginType:    "1",
 					PluginVersion: "1",
+					CliType:       "windowsOS1",
+					CliVersion:    "1.1.01",
+					OSName:        "windows1",
 					IdeType:       "1",
 					IdeVersion:    "1",
 					Events: []DTOEvents{
 						{
+							Uid:            "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84",
 							CreatedAt:      "1",
 							Type:           "1",
 							Project:        "1",
 							ProjectBaseDir: "some-base",
 							Language:       "1",
 							Target:         "1",
+							Timezone:       "1",
 							Params:         nil,
 						},
 					},
 				},
 				{
-					Uid:           "qwerty234",
 					PluginType:    "2",
 					PluginVersion: "2",
+					CliType:       "windowsOS2",
+					CliVersion:    "1.1.02",
+					OSName:        "windows2",
 					IdeType:       "2",
 					IdeVersion:    "2",
 					Events: []DTOEvents{
 						{
+							Uid:            "a6ac8ef0-28e2-4b6e-8568-aa8934f53c85",
 							CreatedAt:      "2",
 							Type:           "2",
 							Project:        "2",
@@ -154,6 +187,7 @@ func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 							Language:       "2",
 							Target:         "2",
 							Branch:         "master2",
+							Timezone:       "2",
 							Params:         nil,
 						},
 					},

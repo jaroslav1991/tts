@@ -8,7 +8,7 @@ import (
 )
 
 func TestCurrentBranchAggregator_Aggregate_BranchNotFoundInEvent(t *testing.T) {
-	aggregator := CurrentBranchAggregator{}
+	aggregator := CommonAggregator{}
 	pluginInfo := model.PluginInfo{
 		Events: []model.Events{
 			{
@@ -38,7 +38,7 @@ func TestCurrentBranchAggregator_Aggregate_BranchNotFoundInEventAndFoundInGit(t 
 		getBranchFn = GetBranchByProjectBaseDir
 	}()
 
-	aggregator := CurrentBranchAggregator{}
+	aggregator := CommonAggregator{}
 	pluginInfo := model.PluginInfo{
 		Events: []model.Events{
 			{
@@ -61,12 +61,14 @@ func TestCurrentBranchAggregator_Aggregate_BranchNotFoundInEventAndFoundInGit(t 
 			"some-base-1": "some-branch-1",
 			"some-base-2": "some-branch-2",
 		},
+		OSName: target.OSName,
+		Uid:    target.Uid,
 	}, target)
 
 }
 
 func TestCurrentBranchAggregator_Aggregate_BranchFoundInEvent(t *testing.T) {
-	aggregator := CurrentBranchAggregator{}
+	aggregator := CommonAggregator{}
 	pluginInfo := model.PluginInfo{
 		Events: []model.Events{
 			{

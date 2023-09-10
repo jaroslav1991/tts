@@ -12,9 +12,11 @@ func TestValidator_ValidateData_Positive(t *testing.T) {
 	validator := Validator{}
 
 	actualErr := validator.ValidateData(model.PluginInfo{
-		Uid:           "qwerty123",
 		PluginType:    "1",
 		PluginVersion: "1",
+		CliType:       "windowsOS",
+		CliVersion:    "1.1.0",
+		OSName:        "",
 		IdeType:       "",
 		IdeVersion:    "",
 		Events: []model.Events{
@@ -26,6 +28,7 @@ func TestValidator_ValidateData_Positive(t *testing.T) {
 				Language:       "",
 				Target:         "",
 				Branch:         "",
+				Timezone:       "",
 				Params:         nil,
 			},
 		},
@@ -33,38 +36,14 @@ func TestValidator_ValidateData_Positive(t *testing.T) {
 	assert.NoError(t, actualErr)
 }
 
-func TestValidator_ValidateData_Negative_Uid_Filed(t *testing.T) {
+func TestValidator_ValidateData_Negative_CliType_Filed(t *testing.T) {
 	validator := Validator{}
 
 	actualErr := validator.ValidateData(model.PluginInfo{
-		Uid:           "",
-		PluginType:    "1",
-		PluginVersion: "1",
-		IdeType:       "",
-		IdeVersion:    "",
-		Events: []model.Events{
-			{
-				CreatedAt:      "1",
-				Type:           "1",
-				Project:        "",
-				ProjectBaseDir: "",
-				Language:       "",
-				Target:         "",
-				Branch:         "",
-				Params:         nil,
-			},
-		},
-	})
-	assert.ErrorIs(t, actualErr, ErrInvalidUidField)
-}
-
-func TestValidator_ValidateData_Negative_PluginType_Filed(t *testing.T) {
-	validator := Validator{}
-
-	actualErr := validator.ValidateData(model.PluginInfo{
-		Uid:           "qwerty123",
 		PluginType:    "",
 		PluginVersion: "1",
+		CliVersion:    "1.1.0",
+		OSName:        "",
 		IdeType:       "",
 		IdeVersion:    "",
 		Events: []model.Events{
@@ -80,16 +59,43 @@ func TestValidator_ValidateData_Negative_PluginType_Filed(t *testing.T) {
 			},
 		},
 	})
-	assert.ErrorIs(t, actualErr, ErrInvalidPluginTypeField)
+	assert.ErrorIs(t, actualErr, ErrInvalidCliTypeField)
+}
+
+func TestValidator_ValidateData_Negative_CliVersion_Filed(t *testing.T) {
+	validator := Validator{}
+
+	actualErr := validator.ValidateData(model.PluginInfo{
+		PluginType:    "",
+		PluginVersion: "1",
+		CliType:       "windowsOS",
+		OSName:        "",
+		IdeType:       "",
+		IdeVersion:    "",
+		Events: []model.Events{
+			{
+				CreatedAt:      "1",
+				Type:           "1",
+				Project:        "",
+				ProjectBaseDir: "",
+				Language:       "",
+				Target:         "",
+				Branch:         "",
+				Params:         nil,
+			},
+		},
+	})
+	assert.ErrorIs(t, actualErr, ErrInvalidCliVersionField)
 }
 
 func TestValidator_ValidateData_Negative_PluginVersion_Filed(t *testing.T) {
 	validator := Validator{}
 
 	actualErr := validator.ValidateData(model.PluginInfo{
-		Uid:           "qwerty123",
 		PluginType:    "1",
 		PluginVersion: "",
+		CliType:       "windowsOS",
+		CliVersion:    "1.1.0",
 		IdeType:       "",
 		IdeVersion:    "",
 		Events: []model.Events{
@@ -112,9 +118,11 @@ func TestValidator_ValidateData_Negative_CreatedAt_Filed(t *testing.T) {
 	validator := Validator{}
 
 	actualErr := validator.ValidateData(model.PluginInfo{
-		Uid:           "qwerty123",
 		PluginType:    "1",
 		PluginVersion: "1",
+		CliType:       "windowsOS",
+		CliVersion:    "1.1.0",
+		OSName:        "",
 		IdeType:       "",
 		IdeVersion:    "",
 		Events: []model.Events{
@@ -137,9 +145,11 @@ func TestValidator_ValidateData_Negative_Type_Filed(t *testing.T) {
 	validator := Validator{}
 
 	actualErr := validator.ValidateData(model.PluginInfo{
-		Uid:           "qwerty123",
 		PluginType:    "1",
 		PluginVersion: "1",
+		CliType:       "windowsOS",
+		CliVersion:    "1.1.0",
+		OSName:        "",
 		IdeType:       "",
 		IdeVersion:    "",
 		Events: []model.Events{

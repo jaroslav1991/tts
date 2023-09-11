@@ -29,6 +29,7 @@ func TestCliSuccess(t *testing.T) {
 			requestDTO[0].Events[0].Id = "a6ac8ef0-28e2-4b6e-8568-aa8934f53c84"
 			assert.NotEmpty(t, requestDTO[0].Events[0].Branch)
 			assert.NotEmpty(t, requestDTO[0].OSName)
+			assert.NotEmpty(t, requestDTO[0].Events[0].Id)
 
 			assert.Equal(t, sender.RemoteRequestDTO{{
 				PluginType:    "jetbrains",

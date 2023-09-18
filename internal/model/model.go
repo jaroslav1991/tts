@@ -2,15 +2,11 @@ package model
 
 // PluginInfo - info received from plugin
 type PluginInfo struct {
-	Uid           string
-	PluginType    string
-	PluginVersion string
-	IdeType       string
-	IdeVersion    string
-	Events        []Events
+	Events []Events
 }
 
 type Events struct {
+	Id             string
 	CreatedAt      string
 	Type           string
 	Project        string
@@ -18,12 +14,14 @@ type Events struct {
 	Language       string
 	Target         string
 	Branch         string
+	Timezone       string
 	Params         map[string]any
 }
 
 // AggregatorInfo - info about project from aggregator
 type AggregatorInfo struct {
 	GitBranchesByProjectBaseDir map[string]string
+	Id                          string
 }
 
 // DataModel - internal structure for store data before dispatching

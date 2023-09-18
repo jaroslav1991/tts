@@ -8,7 +8,6 @@ type Sender interface {
 }
 
 type Storage interface {
-	FixDataToSend() (string, error)
 	ClearSentData(file string) error
 
 	GetFilesToSend() ([]string, error)

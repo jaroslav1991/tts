@@ -121,11 +121,6 @@ func TestStorage_ReadDataToSend_Positive(t *testing.T) {
 	expectedModel := []model.DataModel{
 		{
 			PluginInfo: model.PluginInfo{
-				Uid:           "qwerty123",
-				PluginType:    "1",
-				PluginVersion: "1",
-				IdeType:       "1",
-				IdeVersion:    "1",
 				Events: []model.Events{
 					{
 						CreatedAt:      "1",

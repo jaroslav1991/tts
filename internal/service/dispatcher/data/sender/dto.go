@@ -27,12 +27,7 @@ func NewRemoteRequestDTOFromDataModels(models []model.DataModel) RemoteRequestDT
 		}
 
 		result[i] = RemoteRequestDTOItem{
-			Uid:           item.PluginInfo.Uid,
-			PluginType:    item.PluginInfo.PluginType,
-			PluginVersion: item.PluginInfo.PluginVersion,
-			IdeType:       item.PluginInfo.IdeType,
-			IdeVersion:    item.PluginInfo.IdeVersion,
-			Events:        events,
+			Events: events,
 		}
 	}
 	return result
@@ -41,15 +36,11 @@ func NewRemoteRequestDTOFromDataModels(models []model.DataModel) RemoteRequestDT
 type RemoteRequestDTO []RemoteRequestDTOItem
 
 type RemoteRequestDTOItem struct {
-	Uid           string      `json:"uid"`
-	PluginType    string      `json:"pluginType"`
-	PluginVersion string      `json:"pluginVersion"`
-	IdeType       string      `json:"ideType,omitempty"`
-	IdeVersion    string      `json:"ideVersion,omitempty"`
-	Events        []DTOEvents `json:"events"`
+	Events []DTOEvents `json:"events"`
 }
 
 type DTOEvents struct {
+	Id             string         `json:"id"`
 	CreatedAt      string         `json:"createdAt"`
 	Type           string         `json:"type"`
 	Project        string         `json:"project,omitempty"`
@@ -57,5 +48,6 @@ type DTOEvents struct {
 	Language       string         `json:"language,omitempty"`
 	Target         string         `json:"target,omitempty"`
 	Branch         string         `json:"branch,omitempty"`
+	Timezone       string         `json:"timezone,omitempty"`
 	Params         map[string]any `json:"params,omitempty"`
 }

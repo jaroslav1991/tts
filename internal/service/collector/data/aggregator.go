@@ -7,10 +7,7 @@ import (
 )
 
 type MergeAggregator interface {
-	Aggregate(
-		info model.PluginInfo,
-		target *model.AggregatorInfo,
-	) error
+	Aggregate(info model.PluginInfo, target *model.AggregatorInfo) error
 }
 
 type Aggregator struct {

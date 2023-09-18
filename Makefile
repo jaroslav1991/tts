@@ -32,7 +32,7 @@ start-mock:
 
 .PHONY: send-test-event
 send-test-event:
-	go run ./cmd/cli/main.go -d '{"uid":"qwerty123","pluginType":"jetbrains","pluginVersion":"1.0.0","ideType":"intellij idea","ideVersion":"2.1.1","events":[{"createdAt":"2022-01-1114:23:01","type":"modifyfile","project":"someproject","projectBaseDir":"./","language":"golang","target":"C/Projects/Golang/cli-tts"}]}'
+	go run ./cmd/cli/main.go -d '{"events":[{"createdAt":"2022-01-1114:23:01","type":"modifyfile","project":"someproject","projectBaseDir":"./","language":"golang","target":"C/Projects/Golang/cli-tts"}]}' -k '123'
 
 .PHONY: help
 help:

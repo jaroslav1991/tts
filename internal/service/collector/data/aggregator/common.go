@@ -1,6 +1,7 @@
 package aggregator
 
 import (
+	"github.com/google/uuid"
 	"log"
 	"os"
 	"strings"
@@ -9,21 +10,27 @@ import (
 	"github.com/jaroslav1991/tts/internal/service/collector/data"
 )
 
-var getBranchFn = GetBranchByProjectBaseDir
+var (
+	getBranchFn = GetBranchByProjectBaseDir
+	getIDFn     = GetUUID
+)
 
-type CurrentBranchAggregator struct {
+type CommonAggregator struct {
 	data.MergeAggregator
 }
 
-func (a *CurrentBranchAggregator) Aggregate(
-	info model.PluginInfo,
-	target *model.AggregatorInfo,
-) error {
+func (a *CommonAggregator) Aggregate(info model.PluginInfo, target *model.AggregatorInfo) error {
 	target.GitBranchesByProjectBaseDir = map[string]string{}
 
 	for i := range info.Events {
 		if info.Events[i].Branch != "" {
 			continue
+		}
+
+		if info.Events[i].Id != "" {
+			continue
+		} else if info.Events[i].Id == "" {
+			target.Id = getIDFn()
 		}
 
 		if eventBranch := getBranchFn(info.Events[i].ProjectBaseDir); eventBranch != "" {
@@ -43,4 +50,10 @@ func GetBranchByProjectBaseDir(projectBaseDir string) string {
 		return ""
 	}
 	return strings.TrimSpace(strings.ReplaceAll(string(currentBranch), "ref: refs/heads/", ""))
+}
+
+func GetUUID() string {
+	id := uuid.New()
+
+	return id.String()
 }

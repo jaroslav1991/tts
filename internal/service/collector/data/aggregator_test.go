@@ -12,11 +12,6 @@ func TestAggregator_Aggregate_NoMergeAggregators(t *testing.T) {
 	aggregator := Aggregator{}
 
 	info := model.PluginInfo{
-		Uid:           "qwerty123",
-		PluginType:    "1",
-		PluginVersion: "1",
-		IdeType:       "",
-		IdeVersion:    "",
 		Events: []model.Events{
 			{
 				CreatedAt:      "1",
@@ -73,11 +68,6 @@ func TestAggregator_Aggregate_Positive(t *testing.T) {
 	}
 
 	info := model.PluginInfo{
-		Uid:           "qwerty123",
-		PluginType:    "1",
-		PluginVersion: "1",
-		IdeType:       "",
-		IdeVersion:    "",
 		Events: []model.Events{
 			{
 				CreatedAt:      "1",

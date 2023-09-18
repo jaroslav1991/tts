@@ -85,21 +85,6 @@ func (mr *MockStorageMockRecorder) ClearSentData(file interface{}) *gomock.Call 
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ClearSentData", reflect.TypeOf((*MockStorage)(nil).ClearSentData), file)
 }
 
-// FixDataToSend mocks base method.
-func (m *MockStorage) FixDataToSend() (string, error) {
-	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "FixDataToSend")
-	ret0, _ := ret[0].(string)
-	ret1, _ := ret[1].(error)
-	return ret0, ret1
-}
-
-// FixDataToSend indicates an expected call of FixDataToSend.
-func (mr *MockStorageMockRecorder) FixDataToSend() *gomock.Call {
-	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FixDataToSend", reflect.TypeOf((*MockStorage)(nil).FixDataToSend))
-}
-
 // GetFilesToSend mocks base method.
 func (m *MockStorage) GetFilesToSend() ([]string, error) {
 	m.ctrl.T.Helper()

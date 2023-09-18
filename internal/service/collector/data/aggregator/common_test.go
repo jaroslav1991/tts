@@ -7,8 +7,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestCurrentBranchAggregator_Aggregate_BranchNotFoundInEvent(t *testing.T) {
-	aggregator := CurrentBranchAggregator{}
+func TestCommonAggregator_Aggregate_BranchNotFoundInEvent(t *testing.T) {
+	aggregator := CommonAggregator{}
 	pluginInfo := model.PluginInfo{
 		Events: []model.Events{
 			{
@@ -20,7 +20,7 @@ func TestCurrentBranchAggregator_Aggregate_BranchNotFoundInEvent(t *testing.T) {
 	assert.NoError(t, aggregator.Aggregate(pluginInfo, &model.AggregatorInfo{}))
 }
 
-func TestCurrentBranchAggregator_Aggregate_BranchNotFoundInEventAndFoundInGit(t *testing.T) {
+func TestCommonAggregator_Aggregate_BranchNotFoundInEventAndFoundInGit(t *testing.T) {
 	getBranchFn = func(projectBaseDir string) string {
 		if projectBaseDir == "some-base-1" {
 			return "some-branch-1"
@@ -38,7 +38,7 @@ func TestCurrentBranchAggregator_Aggregate_BranchNotFoundInEventAndFoundInGit(t 
 		getBranchFn = GetBranchByProjectBaseDir
 	}()
 
-	aggregator := CurrentBranchAggregator{}
+	aggregator := CommonAggregator{}
 	pluginInfo := model.PluginInfo{
 		Events: []model.Events{
 			{
@@ -61,12 +61,13 @@ func TestCurrentBranchAggregator_Aggregate_BranchNotFoundInEventAndFoundInGit(t 
 			"some-base-1": "some-branch-1",
 			"some-base-2": "some-branch-2",
 		},
+		Id: target.Id,
 	}, target)
 
 }
 
-func TestCurrentBranchAggregator_Aggregate_BranchFoundInEvent(t *testing.T) {
-	aggregator := CurrentBranchAggregator{}
+func TestCommonAggregator_Aggregate_BranchFoundInEvent(t *testing.T) {
+	aggregator := CommonAggregator{}
 	pluginInfo := model.PluginInfo{
 		Events: []model.Events{
 			{
@@ -80,4 +81,22 @@ func TestCurrentBranchAggregator_Aggregate_BranchFoundInEvent(t *testing.T) {
 	actualErr := aggregator.Aggregate(pluginInfo, &target)
 	assert.NoError(t, actualErr)
 	assert.Empty(t, target.GitBranchesByProjectBaseDir)
+}
+
+func TestCommonAggregate_IDNotEmpty(t *testing.T) {
+	aggregator := CommonAggregator{}
+	pluginInfo := model.PluginInfo{
+		Events: []model.Events{
+			{
+				Id: "qwerty",
+			},
+		},
+	}
+
+	target := model.AggregatorInfo{
+		GitBranchesByProjectBaseDir: nil,
+	}
+
+	assert.NoError(t, aggregator.Aggregate(pluginInfo, &target))
+	assert.Equal(t, model.AggregatorInfo{GitBranchesByProjectBaseDir: map[string]string{}}, target)
 }

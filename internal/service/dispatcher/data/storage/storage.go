@@ -21,26 +21,26 @@ var (
 
 type Storage struct {
 	dispatcher.Storage
-	NewStatsFileName string
-	FilePath         string
+	//NewStatsFileName string
+	FilePath string
 }
 
-func (s *Storage) FixDataToSend() (string, error) {
-	if err := os.Mkdir(s.FilePath, os.ModePerm); err != nil {
-		if !errors.Is(err, os.ErrExist) {
-			log.Printf("can't create path: %v, %v", s.FilePath+string(os.PathSeparator), err)
-			return "", fmt.Errorf("can't create path: %v, %w", s.FilePath+string(os.PathSeparator), err)
-		}
-	}
-
-	nowUnixNano := currentTime().UnixNano()
-	newFileName := fmt.Sprintf("%s%d", s.FilePath+string(os.PathSeparator), nowUnixNano)
-
-	if err := os.Rename(s.NewStatsFileName, newFileName); err != nil {
-		return "", err
-	}
-	return newFileName, nil
-}
+//func (s *Storage) FixDataToSend() (string, error) {
+//	if err := os.Mkdir(s.FilePath, os.ModePerm); err != nil {
+//		if !errors.Is(err, os.ErrExist) {
+//			log.Printf("can't create path: %v, %v", s.FilePath+string(os.PathSeparator), err)
+//			return "", fmt.Errorf("can't create path: %v, %w", s.FilePath+string(os.PathSeparator), err)
+//		}
+//	}
+//
+//	nowUnixNano := currentTime().UnixNano()
+//	newFileName := fmt.Sprintf("%s%d", s.FilePath+string(os.PathSeparator), nowUnixNano)
+//
+//	if err := os.Rename(s.NewStatsFileName, newFileName); err != nil {
+//		return "", err
+//	}
+//	return newFileName, nil
+//}
 
 func (s *Storage) ClearSentData(file string) error {
 	return os.Remove(file)

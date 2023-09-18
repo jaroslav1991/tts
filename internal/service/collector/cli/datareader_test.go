@@ -12,19 +12,16 @@ import (
 
 func Test(t *testing.T) {
 	b, _ := json.Marshal(DTO{
-		Uid:           "qwerty123",
-		PluginType:    "jetbrains",
-		PluginVersion: "1.0.0",
-		IdeType:       "intellij ide",
-		IdeVersion:    "2.1.1",
 		Events: []DTOEvents{
 			{
+				Id:             "1a03028f-6f1c-43f9-a08d-c13c28fa97cb",
 				CreatedAt:      "2022-01-11 14:23:01",
 				Type:           "modify file",
 				Project:        "some project",
 				ProjectBaseDir: "some dir",
 				Language:       "golang",
 				Target:         "../",
+				Timezone:       "123456789",
 			},
 		},
 	})
@@ -34,20 +31,17 @@ func Test(t *testing.T) {
 
 func TestDataReader_ReadData_Positive(t *testing.T) {
 	requestData := `{
-			"uid":"qwerty123",
-			"pluginType":"1",
-			"pluginVersion":"1",
-			"ideType":"intellij ide",
-			"ideVersion":"2.1.1",
 			"events":
 				[
 					{
+						"id":"1a03028f-6f1c-43f9-a08d-c13c28fa97cb",
 						"createdAt":"1",
 						"type":"1",
 						"project":"1",
 						"language":"1",
 						"target":"1",
-						"branch":"1"
+						"branch":"1",
+						"timezone":"123456789"
 					}
 				]
 			}`
@@ -58,19 +52,16 @@ func TestDataReader_ReadData_Positive(t *testing.T) {
 	assert.NoError(t, actualErr)
 
 	assert.Equal(t, model.PluginInfo{
-		Uid:           "qwerty123",
-		PluginType:    "1",
-		PluginVersion: "1",
-		IdeType:       "intellij ide",
-		IdeVersion:    "2.1.1",
 		Events: []model.Events{
 			{
+				Id:        "1a03028f-6f1c-43f9-a08d-c13c28fa97cb",
 				CreatedAt: "1",
 				Type:      "1",
 				Project:   "1",
 				Language:  "1",
 				Target:    "1",
 				Branch:    "1",
+				Timezone:  "123456789",
 				Params:    nil,
 			},
 		},

@@ -6,9 +6,6 @@ import (
 	"github.com/jaroslav1991/tts/internal/service/collector/cli"
 	"github.com/jaroslav1991/tts/internal/service/collector/data"
 	"github.com/jaroslav1991/tts/internal/service/collector/data/aggregator"
-	"github.com/jaroslav1991/tts/internal/service/dispatcher"
-	"github.com/jaroslav1991/tts/internal/service/dispatcher/data/sender"
-	"github.com/jaroslav1991/tts/internal/service/dispatcher/data/storage"
 	"log"
 	"os"
 	"strings"
@@ -81,27 +78,27 @@ func main() {
 		&data.Validator{},
 		&data.Aggregator{
 			Aggregators: []data.MergeAggregator{
-				&aggregator.CurrentBranchAggregator{},
+				&aggregator.CommonAggregator{},
 			},
 		},
 		&data.Preparer{},
-		&data.Saver{NewStatsFileName: *tmpFileName},
+		&data.Saver{NewStatsFileName: *tmpFileName, AuthKey: *authKey},
 	)
 
-	newDispatcher := dispatcher.NewService(
-		&sender.Sender{HttpAddr: *httpRemote, AuthKey: *authKey},
-		&storage.Storage{
-			NewStatsFileName: *tmpFileName,
-			FilePath:         *pathToSendingFiles,
-		},
-	)
+	//newDispatcher := dispatcher.NewService(
+	//	&sender.Sender{HttpAddr: *httpRemote, AuthKey: *authKey},
+	//	&storage.Storage{
+	//		NewStatsFileName: *tmpFileName,
+	//		FilePath:         *pathToSendingFiles,
+	//	},
+	//)
 
 	if err = newCollector.SaveData(*inputData); err != nil {
 		return
 	}
 
-	err = newDispatcher.SendData()
-	if err == nil {
-		log.Println("sending success")
-	}
+	//err = newDispatcher.SendData()
+	//if err == nil {
+	//	log.Println("sending success")
+	//}
 }

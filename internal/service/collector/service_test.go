@@ -17,11 +17,6 @@ func TestService_SaveData_Positive(t *testing.T) {
 	request := "some request"
 
 	dataFromPlugin := model.PluginInfo{
-		Uid:           "qwerty123",
-		PluginType:    "type",
-		PluginVersion: "1.0.0",
-		IdeType:       "intellij ide",
-		IdeVersion:    "2.1.1",
 		Events: []model.Events{
 			{
 				CreatedAt:      "2022-02-02 10:00:00",

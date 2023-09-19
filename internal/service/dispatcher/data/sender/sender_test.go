@@ -10,7 +10,7 @@ import (
 )
 
 func TestSender_Send_Positive(t *testing.T) {
-	reqData := `[{"uid":"qwerty123","pluginType":"1","pluginVersion":"1","ideType":"1","ideVersion":"1","events":[{"createdAt":"1","type":"1","project":"1","projectBaseDir":"some-base","language":"1","target":"1","branch":"some-branch"}]}]`
+	reqData := `{"events":[{"id":"qwerty","createdAt":"2022-01-1114:23:01","type":"modifyfile","project":"someproject","projectBaseDir":"/mnt/c/Users/jaros/GolandProjects/tts","language":"golang","target":"C/Projects/Golang/cli-tts","branch":"new_contract_v1"}]}`
 
 	server := httptest.NewServer(http.HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
 		body, err := io.ReadAll(request.Body)
@@ -22,27 +22,24 @@ func TestSender_Send_Positive(t *testing.T) {
 	actualData := []model.DataModel{
 		{
 			PluginInfo: model.PluginInfo{
-				Uid:           "qwerty123",
-				PluginType:    "1",
-				PluginVersion: "1",
-				IdeType:       "1",
-				IdeVersion:    "1",
 				Events: []model.Events{
 					{
-						CreatedAt:      "1",
-						Type:           "1",
-						Project:        "1",
-						ProjectBaseDir: "some-base",
-						Language:       "1",
-						Target:         "1",
-						Branch:         "some-branch",
+						Id:             "qwerty",
+						CreatedAt:      "2022-01-1114:23:01",
+						Type:           "modifyfile",
+						Project:        "someproject",
+						ProjectBaseDir: "/mnt/c/Users/jaros/GolandProjects/tts",
+						Language:       "golang",
+						Target:         "C/Projects/Golang/cli-tts",
+						Branch:         "",
+						Timezone:       "",
 						Params:         nil,
 					},
 				},
 			},
 			AggregatorInfo: model.AggregatorInfo{
 				GitBranchesByProjectBaseDir: map[string]string{
-					"some-base": "some-branch",
+					"/mnt/c/Users/jaros/GolandProjects/tts": "new_contract_v1",
 				},
 			},
 		},

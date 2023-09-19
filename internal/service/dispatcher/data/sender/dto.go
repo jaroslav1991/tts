@@ -1,14 +1,17 @@
 package sender
 
-import "github.com/jaroslav1991/tts/internal/model"
+import (
+	"github.com/jaroslav1991/tts/internal/model"
+)
 
-func NewRemoteRequestDTOFromDataModels(models []model.DataModel) RemoteRequestDTO {
-	result := make(RemoteRequestDTO, len(models))
-	for i, item := range models {
+func NewRemoteRequestDTOFromDataModels(models []model.DataModel) RemoteRequestDTOItem {
+	var result RemoteRequestDTOItem
+	for _, item := range models {
 
 		var events []DTOEvents
-		for _, event := range item.PluginInfo.Events {
+		for j, event := range item.PluginInfo.Events {
 			dtoEvent := DTOEvents{
+				Id:             event.Id,
 				CreatedAt:      event.CreatedAt,
 				Type:           event.Type,
 				Project:        event.Project,
@@ -16,6 +19,7 @@ func NewRemoteRequestDTOFromDataModels(models []model.DataModel) RemoteRequestDT
 				Language:       event.Language,
 				Target:         event.Target,
 				Branch:         event.Branch,
+				Timezone:       event.Timezone,
 				Params:         event.Params,
 			}
 
@@ -23,17 +27,18 @@ func NewRemoteRequestDTOFromDataModels(models []model.DataModel) RemoteRequestDT
 				dtoEvent.Branch = eventBranch
 			}
 
+			if dtoEvent.Id == "" {
+				dtoEvent.Id = item.AggregatorInfo.Id[j]
+			}
+
 			events = append(events, dtoEvent)
 		}
 
-		result[i] = RemoteRequestDTOItem{
-			Events: events,
-		}
+		result.Events = append(result.Events, events...)
+
 	}
 	return result
 }
-
-type RemoteRequestDTO []RemoteRequestDTOItem
 
 type RemoteRequestDTOItem struct {
 	Events []DTOEvents `json:"events"`

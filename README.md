@@ -20,9 +20,6 @@ Stats data in JSON format string
 -k string                                                                     
 authorization key
 
--o string                                                                     
-Path for temporary store files (default "./outbox")
-
 -s string                                                                     
 Http address for sending events (default "http://localhost:8080/events")
 
@@ -30,4 +27,4 @@ Http address for sending events (default "http://localhost:8080/events")
 File for temporary storage of stats (default "./stats")  
 
 ## Example:
-go run ./cmd/cli/main.go -d '{"uid":"123e4567-e89b-12d3-a456-426655440000","pluginType":"jetbrains","pluginVersion":"1.0.0","ideType":"intellij idea","ideVersion":"2.1.1","events":[{"createdAt":"2022-01-1114:23:01","type":"modifyfile","project":"someproject","projectBaseDir":"./","language":"golang","target":"C/Projects/Golang/cli-tts"}]}' -s "http://localhost:8181/events" 
+go run ./cmd/cli/main.go -d '{"events":[{"createdAt":"2022-01-1114:23:01","type":"modifyfile","project":"someproject","projectBaseDir":"/mnt/c/Users/jaros/GolandProjects/tts","language":"golang","target":"C/Projects/Golang/cli-tts"},{"id":"qwerty","createdAt":"2022-02-1114:23:01","type":"modifyfile2","project":"someproject2","projectBaseDir":"/mnt/c/Users/jaros/GolandProjects/leetcode","language":"golang","target":"C/Projects/Golang/cli-tts"},{"createdAt":"2023-01-1114:23:01","type":"modifyfile3","project":"someproject3","projectBaseDir":"/mnt/c/Users/jaros/GolandProjects/tts","language":"golang","target":"C/Projects/Golang/cli-tts"}]}' -k 'b94f9d44-2cd9-4a30-aefc-1578a4eb9d6c'

@@ -28,10 +28,11 @@ func TestPreparer_PrepareData(t *testing.T) {
 		},
 	}
 
-	aggregationInfo := model.AggregatorInfo{
+	aggregationInfo := []model.AggregatorInfo{{
 		GitBranchesByProjectBaseDir: map[string]string{
 			"1": "some-branch",
 		},
+	},
 	}
 
 	actualData, err := preparer.PrepareData(pluginInfo, aggregationInfo)

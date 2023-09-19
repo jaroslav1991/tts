@@ -2,12 +2,11 @@ package aggregator
 
 import (
 	"github.com/google/uuid"
+	"github.com/jaroslav1991/tts/internal/model"
+	"github.com/jaroslav1991/tts/internal/service/collector/data"
 	"log"
 	"os"
 	"strings"
-
-	"github.com/jaroslav1991/tts/internal/model"
-	"github.com/jaroslav1991/tts/internal/service/collector/data"
 )
 
 var (
@@ -21,20 +20,22 @@ type CommonAggregator struct {
 
 func (a *CommonAggregator) Aggregate(info model.PluginInfo, target *model.AggregatorInfo) error {
 	target.GitBranchesByProjectBaseDir = map[string]string{}
+	target.Id = make([]string, 0, len(info.Events))
 
 	for i := range info.Events {
+
 		if info.Events[i].Branch != "" {
 			continue
 		}
 
-		if info.Events[i].Id != "" {
-			continue
-		} else if info.Events[i].Id == "" {
-			target.Id = getIDFn()
-		}
-
 		if eventBranch := getBranchFn(info.Events[i].ProjectBaseDir); eventBranch != "" {
 			target.GitBranchesByProjectBaseDir[info.Events[i].ProjectBaseDir] = eventBranch
+		}
+
+		if info.Events[i].Id != "" {
+			target.Id = append(target.Id, info.Events[i].Id)
+		} else if info.Events[i].Id == "" {
+			target.Id = append(target.Id, getIDFn())
 		}
 	}
 

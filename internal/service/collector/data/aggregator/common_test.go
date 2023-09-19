@@ -98,5 +98,5 @@ func TestCommonAggregate_IDNotEmpty(t *testing.T) {
 	}
 
 	assert.NoError(t, aggregator.Aggregate(pluginInfo, &target))
-	assert.Equal(t, model.AggregatorInfo{GitBranchesByProjectBaseDir: map[string]string{}}, target)
+	assert.Equal(t, model.AggregatorInfo{GitBranchesByProjectBaseDir: map[string]string{}, Id: []string{"qwerty"}}, target)
 }

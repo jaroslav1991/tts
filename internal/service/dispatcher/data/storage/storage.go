@@ -4,18 +4,15 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/jaroslav1991/tts/internal/model"
+	"github.com/jaroslav1991/tts/internal/service/dispatcher"
 	"log"
 	"os"
 	"path/filepath"
 	"strings"
-	"time"
-
-	"github.com/jaroslav1991/tts/internal/model"
-	"github.com/jaroslav1991/tts/internal/service/dispatcher"
 )
 
 var (
-	currentTime      = time.Now
 	ErrUnmarshalData = errors.New("can't unmarshal read data")
 )
 

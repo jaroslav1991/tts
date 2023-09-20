@@ -13,6 +13,6 @@ type DTOEvents struct {
 	Language       string         `json:"language,omitempty"`
 	Target         string         `json:"target,omitempty"`
 	Branch         string         `json:"branch,omitempty"`
-	Timezone       string         `json:"timezone"`
+	Timezone       string         `json:"timezone,omitempty"`
 	Params         map[string]any `json:"params,omitempty"`
 }

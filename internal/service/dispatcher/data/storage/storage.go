@@ -18,7 +18,6 @@ var (
 
 type Storage struct {
 	dispatcher.Storage
-	//NewStatsFileName string
 	FilePath string
 }
 

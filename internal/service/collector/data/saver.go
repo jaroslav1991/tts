@@ -44,18 +44,4 @@ func (s *Saver) SaveData(data []byte) error {
 	}
 
 	return nil
-
-	//file, err := os.OpenFile(s.NewStatsFileName, os.O_CREATE|os.O_APPEND|os.O_RDWR, os.ModePerm)
-	//if err != nil {
-	//	return fmt.Errorf("%w: %v", ErrCantOpenFile, err)
-	//}
-	//
-	//defer file.Close()
-	//
-	//_, err = file.WriteString(string(data) + "\n")
-	//if err != nil {
-	//	return fmt.Errorf("%w: %v", ErrCantWriteDataFile, err)
-	//}
-	//
-	//return nil
 }

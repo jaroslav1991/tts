@@ -19,11 +19,6 @@ func TestService_SendData_Positive(t *testing.T) {
 	dataToSend := []model.DataModel{
 		{
 			PluginInfo: model.PluginInfo{
-				Uid:           "qwerty123",
-				PluginType:    "1",
-				PluginVersion: "1",
-				IdeType:       "1",
-				IdeVersion:    "1",
 				Events: []model.Events{
 					{
 						CreatedAt:      "1",
@@ -46,7 +41,6 @@ func TestService_SendData_Positive(t *testing.T) {
 	}
 
 	storage := NewMockStorage(ctrl)
-	storage.EXPECT().FixDataToSend().Return("", nil)
 
 	storage.EXPECT().GetFilesToSend().Return(filesToSend, nil)
 
@@ -61,55 +55,49 @@ func TestService_SendData_Positive(t *testing.T) {
 	assert.NoError(t, service.SendData())
 }
 
-func TestService_SendData_Positive_WhenNoDataToFix(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-
-	filesToSend := []string{"fileToSend1"}
-	file := "fileToSend1"
-	dataToSend := []model.DataModel{
-		{
-			PluginInfo: model.PluginInfo{
-				Uid:           "qwerty123",
-				PluginType:    "1",
-				PluginVersion: "1",
-				IdeType:       "1",
-				IdeVersion:    "1",
-				Events: []model.Events{
-					{
-						CreatedAt:      "1",
-						Type:           "1",
-						Project:        "1",
-						ProjectBaseDir: "some-base",
-						Language:       "1",
-						Target:         "1",
-						Branch:         "",
-						Params:         nil,
-					},
-				},
-			},
-			AggregatorInfo: model.AggregatorInfo{
-				GitBranchesByProjectBaseDir: map[string]string{
-					"some-base": "some-branch",
-				},
-			},
-		},
-	}
-	storage := NewMockStorage(ctrl)
-	storage.EXPECT().FixDataToSend().Return("", errors.New("no new data"))
-
-	storage.EXPECT().GetFilesToSend().Return(filesToSend, nil)
-
-	storage.EXPECT().ReadDataToSend(file).Return(dataToSend, nil)
-
-	sender := NewMockSender(ctrl)
-	sender.EXPECT().Send(dataToSend).Return(nil)
-
-	storage.EXPECT().ClearSentData(file).Return(nil)
-
-	service := NewService(sender, storage)
-	assert.NoError(t, service.SendData())
-}
+//func TestService_SendData_Positive_WhenNoDataToFix(t *testing.T) {
+//	ctrl := gomock.NewController(t)
+//	defer ctrl.Finish()
+//
+//	filesToSend := []string{"fileToSend1"}
+//	file := "fileToSend1"
+//	dataToSend := []model.DataModel{
+//		{
+//			PluginInfo: model.PluginInfo{
+//				Events: []model.Events{
+//					{
+//						CreatedAt:      "1",
+//						Type:           "1",
+//						Project:        "1",
+//						ProjectBaseDir: "some-base",
+//						Language:       "1",
+//						Target:         "1",
+//						Branch:         "",
+//						Params:         nil,
+//					},
+//				},
+//			},
+//			AggregatorInfo: model.AggregatorInfo{
+//				GitBranchesByProjectBaseDir: map[string]string{
+//					"some-base": "some-branch",
+//				},
+//			},
+//		},
+//	}
+//	storage := NewMockStorage(ctrl)
+//
+//	storage.EXPECT().GetFilesToSend().Return(filesToSend, nil)
+//
+//	storage.EXPECT().ReadDataToSend(file).Return(dataToSend, nil)
+//
+//	sender := NewMockSender(ctrl)
+//	sender.EXPECT().Send(dataToSend).Return(nil)
+//
+//	storage.EXPECT().ClearSentData(file).Return(nil)
+//
+//	service := NewService(sender, storage)
+//	assert.NoError(t, service.SendData())
+//}
 
 func TestService_SendData_Positive_MultiFiles(t *testing.T) {
 	ctrl := gomock.NewController(t)
@@ -121,11 +109,6 @@ func TestService_SendData_Positive_MultiFiles(t *testing.T) {
 	dataToSend := []model.DataModel{
 		{
 			PluginInfo: model.PluginInfo{
-				Uid:           "qwerty123",
-				PluginType:    "1",
-				PluginVersion: "1",
-				IdeType:       "1",
-				IdeVersion:    "1",
 				Events: []model.Events{
 					{
 						CreatedAt:      "1",
@@ -147,11 +130,6 @@ func TestService_SendData_Positive_MultiFiles(t *testing.T) {
 		},
 		{
 			PluginInfo: model.PluginInfo{
-				Uid:           "qwerty123",
-				PluginType:    "1",
-				PluginVersion: "1",
-				IdeType:       "1",
-				IdeVersion:    "1",
 				Events: []model.Events{
 					{
 						CreatedAt:      "1",
@@ -175,7 +153,6 @@ func TestService_SendData_Positive_MultiFiles(t *testing.T) {
 	storage := NewMockStorage(ctrl)
 	sender := NewMockSender(ctrl)
 
-	storage.EXPECT().FixDataToSend().Return("", nil)
 	storage.EXPECT().GetFilesToSend().Return(filesToSend, nil)
 
 	storage.EXPECT().ReadDataToSend(file1).Return(dataToSend, nil)
@@ -201,11 +178,6 @@ func TestService_SendData_Negative_ClearError(t *testing.T) {
 	dataToSend := []model.DataModel{
 		{
 			PluginInfo: model.PluginInfo{
-				Uid:           "qwerty123",
-				PluginType:    "1",
-				PluginVersion: "1",
-				IdeType:       "1",
-				IdeVersion:    "1",
 				Events: []model.Events{
 					{
 						CreatedAt:      "1",
@@ -227,7 +199,6 @@ func TestService_SendData_Negative_ClearError(t *testing.T) {
 		},
 	}
 	storage := NewMockStorage(ctrl)
-	storage.EXPECT().FixDataToSend().Return("", nil)
 
 	storage.EXPECT().GetFilesToSend().Return(filesToSend, nil)
 
@@ -253,11 +224,6 @@ func TestService_SendData_Negative_SenderError(t *testing.T) {
 	dataToSend := []model.DataModel{
 		{
 			PluginInfo: model.PluginInfo{
-				Uid:           "qwerty123",
-				PluginType:    "1",
-				PluginVersion: "1",
-				IdeType:       "1",
-				IdeVersion:    "1",
 				Events: []model.Events{
 					{
 						CreatedAt:      "1",
@@ -279,7 +245,6 @@ func TestService_SendData_Negative_SenderError(t *testing.T) {
 		},
 	}
 	storage := NewMockStorage(ctrl)
-	storage.EXPECT().FixDataToSend().Return("", nil)
 
 	storage.EXPECT().GetFilesToSend().Return(filesToSend, nil)
 
@@ -303,11 +268,6 @@ func TestService_SendData_Negative_ReadDataError(t *testing.T) {
 	dataToSend := []model.DataModel{
 		{
 			PluginInfo: model.PluginInfo{
-				Uid:           "qwerty123",
-				PluginType:    "1",
-				PluginVersion: "1",
-				IdeType:       "1",
-				IdeVersion:    "1",
 				Events: []model.Events{
 					{
 						CreatedAt:      "1",
@@ -330,7 +290,6 @@ func TestService_SendData_Negative_ReadDataError(t *testing.T) {
 	}
 
 	storage := NewMockStorage(ctrl)
-	storage.EXPECT().FixDataToSend().Return("", nil)
 
 	storage.EXPECT().GetFilesToSend().Return(filesToSend, nil)
 
@@ -351,7 +310,6 @@ func TestService_SendData_Negative_GetFilesError(t *testing.T) {
 	filesToSend := []string{"fileToSend1"}
 
 	storage := NewMockStorage(ctrl)
-	storage.EXPECT().FixDataToSend().Return("", nil)
 
 	storage.EXPECT().GetFilesToSend().Return(filesToSend, err)
 

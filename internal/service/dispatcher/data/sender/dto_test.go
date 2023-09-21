@@ -10,25 +10,21 @@ import (
 func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 	type testCase struct {
 		models   []model.DataModel
-		expected RemoteRequestDTO
+		expected RemoteRequestDTOItem
 	}
 
 	testCases := map[string]testCase{
 		"empty models": {
 			models:   nil,
-			expected: RemoteRequestDTO{},
+			expected: RemoteRequestDTOItem{},
 		},
 		"one model": {
 			models: []model.DataModel{
 				{
 					PluginInfo: model.PluginInfo{
-						Uid:           "qwerty123",
-						PluginType:    "1",
-						PluginVersion: "1",
-						IdeType:       "1",
-						IdeVersion:    "1",
 						Events: []model.Events{
 							{
+								Id:             "1",
 								CreatedAt:      "1",
 								Type:           "1",
 								Project:        "1",
@@ -44,42 +40,31 @@ func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 						GitBranchesByProjectBaseDir: map[string]string{
 							"some-base": "master",
 						},
+						Id: []string{"1"},
 					},
 				},
 			},
-			expected: RemoteRequestDTO{
+			expected: RemoteRequestDTOItem{Events: []DTOEvents{
 				{
-					Uid:           "qwerty123",
-					PluginType:    "1",
-					PluginVersion: "1",
-					IdeType:       "1",
-					IdeVersion:    "1",
-					Events: []DTOEvents{
-						{
-							CreatedAt:      "1",
-							Type:           "1",
-							Project:        "1",
-							ProjectBaseDir: "some-base",
-							Language:       "1",
-							Target:         "1",
-							Branch:         "master",
-							Params:         nil,
-						},
-					},
+					Id:             "1",
+					CreatedAt:      "1",
+					Type:           "1",
+					Project:        "1",
+					ProjectBaseDir: "some-base",
+					Language:       "1",
+					Target:         "1",
+					Branch:         "master",
+					Params:         nil,
 				},
-			},
+			}},
 		},
 		"some model": {
 			models: []model.DataModel{
 				{
 					PluginInfo: model.PluginInfo{
-						Uid:           "qwerty123",
-						PluginType:    "1",
-						PluginVersion: "1",
-						IdeType:       "1",
-						IdeVersion:    "1",
 						Events: []model.Events{
 							{
+								Id:             "1",
 								CreatedAt:      "1",
 								Type:           "1",
 								Project:        "1",
@@ -89,76 +74,52 @@ func TestNewRemoteRequestDTOFromDataModels(t *testing.T) {
 								Branch:         "",
 								Params:         nil,
 							},
-						},
-					},
-					AggregatorInfo: model.AggregatorInfo{},
-				},
-				{
-					PluginInfo: model.PluginInfo{
-						Uid:           "qwerty234",
-						PluginType:    "2",
-						PluginVersion: "2",
-						IdeType:       "2",
-						IdeVersion:    "2",
-						Events: []model.Events{
 							{
+								Id:             "2",
 								CreatedAt:      "2",
 								Type:           "2",
 								Project:        "2",
 								ProjectBaseDir: "some-base2",
 								Language:       "2",
 								Target:         "2",
-								Branch:         "",
+								Branch:         "master2",
 								Params:         nil,
 							},
 						},
 					},
 					AggregatorInfo: model.AggregatorInfo{
 						GitBranchesByProjectBaseDir: map[string]string{
+							"some-base":  "master",
 							"some-base2": "master2",
 						},
+						Id: []string{"1", "2"},
 					},
 				},
 			},
-			expected: RemoteRequestDTO{
+			expected: RemoteRequestDTOItem{Events: []DTOEvents{
 				{
-					Uid:           "qwerty123",
-					PluginType:    "1",
-					PluginVersion: "1",
-					IdeType:       "1",
-					IdeVersion:    "1",
-					Events: []DTOEvents{
-						{
-							CreatedAt:      "1",
-							Type:           "1",
-							Project:        "1",
-							ProjectBaseDir: "some-base",
-							Language:       "1",
-							Target:         "1",
-							Params:         nil,
-						},
-					},
+					Id:             "1",
+					CreatedAt:      "1",
+					Type:           "1",
+					Project:        "1",
+					ProjectBaseDir: "some-base",
+					Language:       "1",
+					Target:         "1",
+					Branch:         "master",
+					Params:         nil,
 				},
 				{
-					Uid:           "qwerty234",
-					PluginType:    "2",
-					PluginVersion: "2",
-					IdeType:       "2",
-					IdeVersion:    "2",
-					Events: []DTOEvents{
-						{
-							CreatedAt:      "2",
-							Type:           "2",
-							Project:        "2",
-							ProjectBaseDir: "some-base2",
-							Language:       "2",
-							Target:         "2",
-							Branch:         "master2",
-							Params:         nil,
-						},
-					},
+					Id:             "2",
+					CreatedAt:      "2",
+					Type:           "2",
+					Project:        "2",
+					ProjectBaseDir: "some-base2",
+					Language:       "2",
+					Target:         "2",
+					Branch:         "master2",
+					Params:         nil,
 				},
-			},
+			}},
 		},
 	}
 

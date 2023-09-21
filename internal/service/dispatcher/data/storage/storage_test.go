@@ -12,60 +12,13 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var now = time.Date(2007, 02, 05, 16, 31, 17, 0, time.UTC)
-
-func freezeTime(t *testing.T) func() {
-	t.Helper()
-
-	currentTime = func() time.Time {
-		return now
-	}
-
-	unFreezeTime := func() {
-		currentTime = time.Now
-	}
-
-	return unFreezeTime
-}
-
-func TestStorage_FixDataToSend_Positive(t *testing.T) {
-	unFreezeTime := freezeTime(t)
-	defer unFreezeTime()
-
-	f, err := os.CreateTemp(os.TempDir(), "testfile")
-	assert.NoError(t, err)
-	assert.NoError(t, f.Close())
-
-	fixData := Storage{NewStatsFileName: f.Name(), FilePath: os.TempDir()}
-
-	actualNewName, actualError := fixData.FixDataToSend()
-	expectedNewName := fmt.Sprintf("%s%d", fixData.FilePath+string(os.PathSeparator), currentTime().UnixNano())
-
-	assert.NoError(t, actualError)
-	assert.NoError(t, os.Remove(actualNewName))
-	assert.Equal(t, expectedNewName, actualNewName)
-}
-
-func TestStorage_FixDataToSend_Negative(t *testing.T) {
-	f, err := os.CreateTemp(os.TempDir(), "testfile")
-	assert.NoError(t, err)
-	assert.NoError(t, f.Close())
-	assert.NoError(t, os.Remove(f.Name()))
-
-	fixData := Storage{NewStatsFileName: f.Name(), FilePath: os.TempDir()}
-
-	actualNewName, actualError := fixData.FixDataToSend()
-	assert.Empty(t, actualNewName)
-	assert.ErrorIs(t, actualError, os.ErrNotExist)
-}
-
 func TestStorage_ClearSentData_Negative(t *testing.T) {
 	f, err := os.CreateTemp(os.TempDir(), "testfile")
 	assert.NoError(t, err)
 	assert.NoError(t, f.Close())
 	assert.NoError(t, os.Remove(f.Name()))
 
-	fixData := Storage{NewStatsFileName: ""}
+	fixData := Storage{FilePath: ""}
 
 	assert.ErrorIs(t, fixData.ClearSentData(f.Name()), os.ErrNotExist)
 }
@@ -75,7 +28,7 @@ func TestStorage_ClearSentData_Positive(t *testing.T) {
 	assert.NoError(t, err)
 	assert.NoError(t, f.Close())
 
-	fixData := Storage{NewStatsFileName: ""}
+	fixData := Storage{FilePath: ""}
 
 	assert.NoError(t, fixData.ClearSentData(f.Name()))
 }
@@ -121,11 +74,6 @@ func TestStorage_ReadDataToSend_Positive(t *testing.T) {
 	expectedModel := []model.DataModel{
 		{
 			PluginInfo: model.PluginInfo{
-				Uid:           "qwerty123",
-				PluginType:    "1",
-				PluginVersion: "1",
-				IdeType:       "1",
-				IdeVersion:    "1",
 				Events: []model.Events{
 					{
 						CreatedAt:      "1",

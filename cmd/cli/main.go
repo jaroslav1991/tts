@@ -15,7 +15,7 @@ import (
 )
 
 var (
-	tmpFileName = flag.String(
+	pathToSendingFiles = flag.String(
 		"t",
 		"./stats",
 		"File for temporary storage of stats",
@@ -25,12 +25,6 @@ var (
 		"d",
 		"",
 		"Stats data in JSON format string",
-	)
-
-	pathToSendingFiles = flag.String(
-		"o",
-		"./outbox",
-		"Path for temporary store files",
 	)
 
 	httpRemote = flag.String(
@@ -73,26 +67,22 @@ func main() {
 		return
 	}
 
-	// newCollector
-	// - receive data from plugin
-	// - aggregate advanced data
 	newCollector := collector.NewService(
 		&cli.DataReader{},
 		&data.Validator{},
 		&data.Aggregator{
 			Aggregators: []data.MergeAggregator{
-				&aggregator.CurrentBranchAggregator{},
+				&aggregator.CommonAggregator{},
 			},
 		},
 		&data.Preparer{},
-		&data.Saver{NewStatsFileName: *tmpFileName},
+		&data.Saver{NewStatsFileName: *pathToSendingFiles, AuthKey: *authKey},
 	)
 
 	newDispatcher := dispatcher.NewService(
 		&sender.Sender{HttpAddr: *httpRemote, AuthKey: *authKey},
 		&storage.Storage{
-			NewStatsFileName: *tmpFileName,
-			FilePath:         *pathToSendingFiles,
+			FilePath: *pathToSendingFiles,
 		},
 	)
 

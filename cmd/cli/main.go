@@ -2,6 +2,11 @@ package main
 
 import (
 	"flag"
+	"log"
+	"net/http"
+	"os"
+	"strings"
+
 	"github.com/jaroslav1991/tts/internal/service/collector"
 	"github.com/jaroslav1991/tts/internal/service/collector/cli"
 	"github.com/jaroslav1991/tts/internal/service/collector/data"
@@ -9,9 +14,6 @@ import (
 	"github.com/jaroslav1991/tts/internal/service/dispatcher"
 	"github.com/jaroslav1991/tts/internal/service/dispatcher/data/sender"
 	"github.com/jaroslav1991/tts/internal/service/dispatcher/data/storage"
-	"log"
-	"os"
-	"strings"
 )
 
 var (
@@ -57,6 +59,14 @@ func init() {
 }
 
 func main() {
+	http.HandleFunc("/", func(writer http.ResponseWriter, request *http.Request) {
+		writer.Write([]byte(`превед`))
+	})
+
+	if err := http.ListenAndServe(":9191", nil); err != nil {
+		log.Fatalln(err)
+	}
+
 	flag.Parse()
 
 	log.Println("CLI starting...")
@@ -104,4 +114,5 @@ func main() {
 	if err == nil {
 		log.Println("sending success")
 	}
+
 }

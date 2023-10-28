@@ -1,0 +1,17 @@
+version: '3'
+services:
+  balancer:
+    ports:
+      - "9494:8181"  # Пробрасываем порт
+    build:
+      context: .  # Указываем путь к директории с Dockerfile
+      dockerfile: ./balancer/Dockerfile  # Указываем имя Dockerfile, если оно отличается от стандартного имени
+    depends_on:
+    - tts-service
+
+  tts-service:
+    deploy:
+      replicas: 3
+    build:
+      context: .  # Указываем путь к директории с Dockerfile
+      dockerfile: Dockerfile  # Указываем имя Dockerfile, если оно отличается от стандартного имени
